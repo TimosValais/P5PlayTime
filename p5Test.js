@@ -3,6 +3,7 @@ let drawing = false;
 const shapeDropdownButton = document.getElementById("shapeDropdown");
 let prevMouseX = 0;
 let prevMouseY = 0;
+const brushStatus = document.getElementById("brushStatus");
 
 document.querySelectorAll(".dropdown-item").forEach((item) => {
   item.addEventListener("click", (event) => {
@@ -93,14 +94,16 @@ function toggleDrawing() {
   console.log("drawing after : ", drawing);
 }
 function toggleBrushButton() {
-  if (drawing) {
-    brushButton.classList.remove("btn-danger");
-    brushButton.classList.add("btn-primary");
-    brushButton.textContent = "Brush";
+  if (!drawing) {
+    brushStatus.classList.remove("d-none");
+    // brushButton.classList.remove("btn-danger");
+    // brushButton.classList.add("btn-primary");
+    // brushButton.textContent = "Brush";
   } else {
-    brushButton.classList.remove("btn-primary");
-    brushButton.classList.add("btn-danger");
-    brushButton.textContent = "Unbrush";
+    brushStatus.classList.add("d-none");
+    // brushButton.classList.remove("btn-primary");
+    // brushButton.classList.add("btn-danger");
+    // brushButton.textContent = "Unbrush";
   }
 }
 function handleCanvasClick() {
