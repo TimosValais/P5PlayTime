@@ -4,9 +4,14 @@ import ColorObject from "./models/contracts/colorObj.js";
 import Platform from "./models/staticObjects/platform.js";
 
 const gravity = 1;
+const handleCollision = (object1, object2) => {
+  object1.handleCollision(object2);
+  object2.handleCollision(object1);
+};
 const p5Map = (p) => {
   //   let groundY;
   let gameCharacters = [];
+  let gameObjects = [];
   let mapY = window.innerHeight;
   let mapX = window.innerWidth;
   p.allObjects = gameCharacters;
@@ -45,18 +50,18 @@ const p5Map = (p) => {
       20
     );
     let platform3 = new Platform(
-      300,
+      900,
       250,
-      "Low Platform",
+      "Midle Platform",
       ObjectTypes.BackgroundObject,
       new ColorObject(153, 234, 123),
       500,
       20
     );
     gameCharacters.push(character);
-    gameCharacters.push(platform1);
-    gameCharacters.push(platform2);
-    gameCharacters.push(platform3);
+    gameObjects.push(platform1);
+    gameObjects.push(platform3);
+    gameObjects.push(platform2);
   };
 
   p.draw = function () {
@@ -67,30 +72,27 @@ const p5Map = (p) => {
       char.draw(p);
       //   char.move(p);
     });
-    // console.log("all the gameCharacters are : ", gameCharacters);
+    gameObjects.forEach((obj) => obj.draw(p));
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
-
-    let platform = gameCharacters.find(
-      (char) => char.type === ObjectTypes.BackgroundObject
-    );
-    let collition = gamer.collidesWith(platform);
-
-    switch (collition) {
-      case Directions.UP:
-        gamer.stop(true, platform.y + platform.height);
-        break;
-      case Directions.DOWN:
-        gamer.stop(true);
-        break;
-      case Directions.LEFT:
-      case Directions.RIGHT:
-        gamer.stop();
-      default:
-        gamer.start();
-        break;
-    }
+    gamer.handleCollisions(gameObjects);
+    // let collisionObject = null;
+    // gameObjects.forEach((obj) => {
+    //   if (!!gamer.collidesWith(obj)) collisionObject = obj;
+    // });
+    // console.log(collisionObject);
+    // if (!!collisionObject) gamer.handleCollision(collisionObject);
+    // gameObjects.find((obj) => !!gamer.collidesWith(obj));
+    // console.log(collisionObject);
+    // if (!!collisionObject) gamer.handleCollision(collisionObject);
+    // gameObjects.forEach((object, index) => {
+    //   console.log("calling this first : ", object.name, index);
+    //   gamer.handleCollision(object);
+    // });
+    // let platform = gameCharacters.find(
+    //   (char) => char.type === ObjectTypes.BackgroundObject
+    // );
   };
 
   p.keyPressed = (e) => {
@@ -120,4 +122,5 @@ function drawBackground(p) {
   p.fill(50, 205, 50);
   p.rect(0, p.groundY, p.width, p.height - p.groundY);
 }
+
 new p5(p5Map);
