@@ -73,6 +73,7 @@ export default class Character extends GameOjbect {
   }
 
   move(action, direction = null) {
+    console.log("actually moving ", action, direction);
     if (action === MovementTypes.Jump) {
       if (this.#jumps >= this.maxJumps) {
         return;

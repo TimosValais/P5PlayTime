@@ -2,6 +2,7 @@ import Character from "./models/movingObjects/character.js";
 import { ObjectTypes, MovementTypes, Directions } from "./helpers/enums.js";
 import ColorObject from "./models/contracts/colorObj.js";
 import Platform from "./models/staticObjects/platform.js";
+import SampleEnemy from "./models/movingObjects/sampleEnemy.js";
 
 const gravity = 1;
 const handleCollision = (object1, object2) => {
@@ -58,7 +59,21 @@ const p5Map = (p) => {
       500,
       20
     );
+    let enemy = new SampleEnemy(
+      1100,
+      0,
+      "Sample Enemy 1",
+      ObjectTypes.Enemy,
+      10,
+      10,
+      gravity,
+      new ColorObject(250, 20, 15),
+      60,
+      90,
+      0
+    );
     gameCharacters.push(character);
+    gameCharacters.push(enemy);
     gameObjects.push(platform1);
     gameObjects.push(platform3);
     gameObjects.push(platform2);

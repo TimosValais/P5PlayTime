@@ -39,7 +39,6 @@ export default class GameOjbect {
       let under =
         this.y + this.height <= otherObject.y + this.stepY &&
         this.y + this.height >= otherObject.y - this.stepY;
-      if (over) console.log("returning UP!!!!!");
       if (over) return Directions.UP;
       if (under) return Directions.DOWN;
     }
