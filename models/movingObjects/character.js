@@ -34,7 +34,7 @@ export default class Character extends GameOjbect {
     this.maxJumps = maxJumps;
     this.damage = 1;
     this.#damage = this.damage;
-    this.armor = 0;
+    this.armor = 2;
     this.lives = 3;
     this.isDead = false;
   }

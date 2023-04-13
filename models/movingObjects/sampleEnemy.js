@@ -1,5 +1,6 @@
 import Character from "./character.js";
 import { MovementTypes, Directions, ObjectTypes } from "../../helpers/enums.js";
+import ColorObject from "../contracts/colorObj.js";
 
 export default class SampleEnemy extends Character {
   #direction = Directions.RIGHT;
@@ -31,6 +32,7 @@ export default class SampleEnemy extends Character {
     );
     this.lives = 1;
     this.isDead = false;
+    this.armor = 0;
   }
 
   checkScreenBoundaries(p5Map) {
@@ -45,7 +47,7 @@ export default class SampleEnemy extends Character {
   draw(p5Map) {
     this.checkScreenBoundaries(p5Map);
     super.draw(p5Map);
-    this.handleCollisions(p5Map.allObjects);
+    // this.handleCollisions(p5Map.allObjects);
   }
   takeDamage(damageTaken) {
     if (damageTaken >= this.armor) {
@@ -76,7 +78,7 @@ export default class SampleEnemy extends Character {
   }
   #hanldeCharacterCollisions = (characterObjects) => {
     let collision = null;
-    let collisionCharacter = characterObjects.find((obj) => {
+    characterObjects.find((obj) => {
       collision = this.collidesWith(obj);
       return collision != null;
     });
@@ -85,7 +87,7 @@ export default class SampleEnemy extends Character {
         this.#direction = Directions.RIGHT;
         break;
       case Directions.RIGHT:
-        this.#direction = Directions.RIGHT;
+        this.#direction = Directions.LEFT;
         break;
     }
   };
