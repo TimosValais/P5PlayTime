@@ -6,6 +6,7 @@ export default class Character extends GameOjbect {
   #horizontalSpeed = 0;
   #jumps = 0;
   #isGrounded = true;
+  #damage = 1;
   constructor(
     x,
     y,
@@ -31,6 +32,11 @@ export default class Character extends GameOjbect {
     this.sizeX = sizeX;
     this.sizeY = sizeY;
     this.maxJumps = maxJumps;
+    this.damage = 1;
+    this.#damage = this.damage;
+    this.armor = 0;
+    this.lives = 3;
+    this.isDead = false;
   }
 
   draw(p5Map) {
@@ -70,10 +76,10 @@ export default class Character extends GameOjbect {
         this.sizeY
       );
     }
+    this.handleCollisions(p5Map.allObjects);
   }
 
   move(action, direction = null) {
-    console.log("actually moving ", action, direction);
     if (action === MovementTypes.Jump) {
       if (this.#jumps >= this.maxJumps) {
         return;
@@ -122,11 +128,18 @@ export default class Character extends GameOjbect {
         default:
           break;
       }
-      // if (collisionObject.type == ObjectTypes.BackgroundObject) {
-      //   // this.#handleBackgroundObjectCollision(collisionObject);
-      // }
     });
     this.#handleBackgroundObjectCollision(backgroundObjects);
+    this.#handleEnemyCollision(enemies);
+  }
+  takeDamage(damageTaken) {
+    this.lives -= damageTaken;
+    if (this.lives <= 0) {
+      this.isDead = true;
+    } else {
+      this.x = 0;
+      this.y = 200;
+    }
   }
   #handleBackgroundObjectCollision = (collisionObjects) => {
     let collision = null;
@@ -137,6 +150,10 @@ export default class Character extends GameOjbect {
 
     switch (collision) {
       case Directions.UP:
+        if (!!collisionObject.isSticky) {
+          //TODO:tv need to create object with direction + position of collision for this to work properly
+          this.#horizontalSpeed = collisionObject.horizontalSpeed;
+        }
         this.stop(true, collisionObject.y + collisionObject.height);
         break;
       case Directions.DOWN:
@@ -148,6 +165,28 @@ export default class Character extends GameOjbect {
       default:
         this.start();
         break;
+    }
+  };
+  #handleEnemyCollision = (collisionEnemies) => {
+    let collision = null;
+    let collisionEnemy = collisionEnemies.find((obj) => {
+      collision = this.collidesWith(obj);
+      return collision != null;
+    });
+    switch (collision) {
+      case Directions.UP:
+        collisionEnemy.takeDamage(this.#damage);
+        this.#verticalSpeed = this.verticalSpeedCapacity;
+        break;
+      case Directions.DOWN:
+      case Directions.LEFT:
+      case Directions.RIGHT:
+        if (collisionEnemy.damage >= this.armor) {
+          this.takeDamage(collisionEnemy.damage);
+          this.stop();
+        } else {
+          this.#verticalSpeed = 5;
+        }
     }
   };
 }

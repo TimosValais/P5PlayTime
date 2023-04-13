@@ -25,10 +25,10 @@ export default class MovingPlatform extends GameOjbect {
     this.verticalSpeed = verticalSpeed;
     this.horizontalDistance = horizontalDistance;
     this.verticalDistance = verticalDistance;
+    this.isSticky = true;
   }
 
   draw(p5Map) {
-    console.log("this x : ", this.x, "this y : ", this.y);
     this.x += this.horizontalSpeed;
     this.y += this.verticalSpeed;
     this.#xMovement += this.horizontalSpeed;
@@ -37,17 +37,13 @@ export default class MovingPlatform extends GameOjbect {
       this.#xMovement >= this.horizontalDistance ||
       this.#xMovement <= -this.horizontalDistance
     ) {
-      console.log("changing horizontal speed to :");
       this.horizontalSpeed *= -1;
-      console.log(this.horizontalSpeed);
     }
     if (
       this.#yMovement >= this.verticalDistance ||
       this.#yMovement <= -this.verticalDistance
     ) {
-      console.log("changing vertical speed to :");
       this.verticalSpeed *= -1;
-      console.log(this.verticalSpeed);
     }
 
     super.draw(p5Map);

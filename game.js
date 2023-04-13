@@ -4,6 +4,7 @@ import ColorObject from "./models/contracts/colorObj.js";
 import Platform from "./models/staticObjects/platform.js";
 import SampleEnemy from "./models/movingObjects/sampleEnemy.js";
 import MovingPlatform from "./models/movingObjects/movingPlatform.js";
+import Heart from "./models/staticObjects/heart.js";
 
 const gravity = 1;
 const handleCollision = (object1, object2) => {
@@ -11,12 +12,12 @@ const handleCollision = (object1, object2) => {
   object2.handleCollision(object1);
 };
 const p5Map = (p) => {
-  //   let groundY;
+  //TODO:tv  move this to a create map logic
   let gameCharacters = [];
   let gameObjects = [];
+  let lives = 0;
   let mapY = window.innerHeight;
   let mapX = window.innerWidth;
-  p.allObjects = gameCharacters;
   p.setup = function () {
     p.createCanvas(mapX, mapY);
     p.groundY = p.height * 0.9;
@@ -86,43 +87,53 @@ const p5Map = (p) => {
       90,
       0
     );
+    let enemy2 = new SampleEnemy(
+      1500,
+      450,
+      "Sample Enemy 2",
+      ObjectTypes.Enemy,
+      10,
+      10,
+      gravity,
+      new ColorObject(250, 20, 15),
+      60,
+      90,
+      0
+    );
     gameCharacters.push(character);
     gameCharacters.push(enemy);
+    gameCharacters.push(enemy2);
     gameObjects.push(platform1);
     gameObjects.push(platform3);
     gameObjects.push(platform2);
     gameObjects.push(movingPlatform);
+    p.allObjects = [...gameCharacters, ...gameObjects];
   };
 
   p.draw = function () {
+    let gamer = gameCharacters.find(
+      (char) => char.type === ObjectTypes.Character
+    );
+    if (!!!gamer) {
+      p.background(255, 0, 0);
+      return;
+    }
     p.background(135, 206, 250);
     drawBackground(p);
-
+    gameCharacters = gameCharacters.filter((c) => !!!c.isDead);
+    p.allObjects = p.allObjects.filter((c) => !!!c.isDead);
     gameCharacters.forEach((char) => {
       char.draw(p);
       //   char.move(p);
     });
     gameObjects.forEach((obj) => obj.draw(p));
-    let gamer = gameCharacters.find(
-      (char) => char.type === ObjectTypes.Character
-    );
-    gamer.handleCollisions(gameObjects);
-    // let collisionObject = null;
-    // gameObjects.forEach((obj) => {
-    //   if (!!gamer.collidesWith(obj)) collisionObject = obj;
-    // });
-    // console.log(collisionObject);
-    // if (!!collisionObject) gamer.handleCollision(collisionObject);
-    // gameObjects.find((obj) => !!gamer.collidesWith(obj));
-    // console.log(collisionObject);
-    // if (!!collisionObject) gamer.handleCollision(collisionObject);
-    // gameObjects.forEach((object, index) => {
-    //   console.log("calling this first : ", object.name, index);
-    //   gamer.handleCollision(object);
-    // });
-    // let platform = gameCharacters.find(
-    //   (char) => char.type === ObjectTypes.BackgroundObject
-    // );
+
+    lives = gamer.lives;
+    console.log(gamer.lives);
+    for (let i = 0; i < lives; i++) {
+      let heart = new Heart(i + i * 10, 10, 20, 20, new ColorObject(255, 0, 0));
+      heart.draw(p);
+    }
   };
 
   p.keyPressed = (e) => {
