@@ -34,13 +34,14 @@ export default class Character extends GameOjbect {
     this.maxJumps = maxJumps;
     this.damage = 1;
     this.#damage = this.damage;
-    this.armor = 2;
+    this.armor = 0;
     this.lives = 3;
     this.isDead = false;
+    this.gravitationalHorizontalSpeed = 0;
   }
 
   draw(p5Map) {
-    this.x += this.#horizontalSpeed;
+    this.x += this.#horizontalSpeed + this.gravitationalHorizontalSpeed;
     // Apply gravity
     if (!!!this.#isGrounded) {
       this.#verticalSpeed -= this.gravity;
@@ -138,7 +139,7 @@ export default class Character extends GameOjbect {
       this.isDead = true;
     } else {
       this.x = 0;
-      this.y = 200;
+      this.y = 800;
     }
   }
   #handleBackgroundObjectCollision = (collisionObjects) => {
@@ -147,12 +148,12 @@ export default class Character extends GameOjbect {
       collision = this.collidesWith(obj);
       return collision != null;
     });
-
+    this.gravitationalHorizontalSpeed = 0;
     switch (collision) {
       case Directions.UP:
         if (!!collisionObject.isSticky) {
           //TODO:tv need to create object with direction + position of collision for this to work properly
-          this.#horizontalSpeed = collisionObject.horizontalSpeed;
+          this.gravitationalHorizontalSpeed = collisionObject.horizontalSpeed;
         }
         this.stop(true, collisionObject.y + collisionObject.height);
         break;
