@@ -1,4 +1,5 @@
 import GameOjbect from "../contracts/gameObject.js";
+import ColorObject from "../contracts/colorObj.js";
 
 export default class Platform extends GameOjbect {
   constructor(
