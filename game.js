@@ -3,6 +3,7 @@ import { ObjectTypes, MovementTypes, Directions } from "./helpers/enums.js";
 import ColorObject from "./models/contracts/colorObj.js";
 import Platform from "./models/staticObjects/platform.js";
 import SampleEnemy from "./models/movingObjects/sampleEnemy.js";
+import MovingPlatform from "./models/movingObjects/movingPlatform.js";
 
 const gravity = 1;
 const handleCollision = (object1, object2) => {
@@ -59,6 +60,19 @@ const p5Map = (p) => {
       500,
       20
     );
+    let movingPlatform = new MovingPlatform(
+      680,
+      350,
+      "Moving Platform",
+      ObjectTypes.BackgroundObject,
+      new ColorObject(132, 214, 93),
+      240,
+      30,
+      3,
+      1,
+      20,
+      600
+    );
     let enemy = new SampleEnemy(
       1100,
       0,
@@ -77,6 +91,7 @@ const p5Map = (p) => {
     gameObjects.push(platform1);
     gameObjects.push(platform3);
     gameObjects.push(platform2);
+    gameObjects.push(movingPlatform);
   };
 
   p.draw = function () {
