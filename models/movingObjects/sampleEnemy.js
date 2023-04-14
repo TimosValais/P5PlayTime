@@ -92,32 +92,35 @@ export default class SampleEnemy extends Character {
     }
   };
   #handleBackgroundObjectCollision = (collisionObjects) => {
-    let collision = null;
-    let collisionObject = collisionObjects.find((obj) => {
-      collision = this.collidesWith(obj);
-      return collision != null;
+    let collisions = [];
+    let landed = false;
+    collisionObjects.forEach((obj) => {
+      let collision = this.collidesWith(obj);
+      if (collision === Directions.UP) {
+        landed = true;
+      }
+      collisions.push({ collision, collisionObject: obj });
     });
-    switch (collision) {
-      case Directions.UP:
-        console.log(collisionObject);
-        if (!!collisionObject.isSticky) {
-          //TODO:tv need to create object with direction + position of collision for this to work properly
-          this.horizontalSpeed = collisionObject.horizontalSpeed;
-        }
-        this.stop(true, collisionObject.y + collisionObject.height);
-        break;
-      case Directions.DOWN:
-        this.stop(true);
-        break;
-      case Directions.LEFT:
-        this.#direction = Directions.RIGHT;
-        break;
-      case Directions.RIGHT:
-        this.#direction = Directions.RIGHT;
-        break;
-      default:
-        this.start();
-        break;
-    }
+    collisions.forEach((c) => {
+      switch (c.collision) {
+        case Directions.UP:
+          this.stop(true, c.collisionObject.y + c.collisionObject.height);
+          break;
+        case Directions.DOWN:
+          this.stop(true);
+          break;
+        case Directions.LEFT:
+          this.#direction = Directions.RIGHT;
+          break;
+        case Directions.RIGHT:
+          this.#direction = Directions.LEFT;
+          break;
+        default:
+          if (!!!landed) {
+            this.start();
+          }
+          break;
+      }
+    });
   };
 }

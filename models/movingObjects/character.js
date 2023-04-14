@@ -37,6 +37,7 @@ export default class Character extends GameOjbect {
     this.armor = 0;
     this.lives = 3;
     this.isDead = false;
+    this.isVictorious = false;
     this.gravitationalHorizontalSpeed = 0;
   }
 
@@ -115,6 +116,7 @@ export default class Character extends GameOjbect {
     let backgroundObjects = [];
     let enemies = [];
     let otherCharacters = [];
+    let trophy = null;
     collisionObjects.forEach((collisionObject) => {
       switch (collisionObject.type) {
         case ObjectTypes.BackgroundObject:
@@ -126,12 +128,16 @@ export default class Character extends GameOjbect {
         case ObjectTypes.Character:
           otherCharacters.push(collisionObject);
           break;
+        case ObjectTypes.Trophy:
+          trophy = collisionObject;
+          break;
         default:
           break;
       }
     });
     this.#handleBackgroundObjectCollision(backgroundObjects);
     this.#handleEnemyCollision(enemies);
+    this.#handleTrophy(trophy);
   }
   takeDamage(damageTaken) {
     this.lives -= damageTaken;
@@ -189,5 +195,9 @@ export default class Character extends GameOjbect {
           this.#verticalSpeed = 5;
         }
     }
+  };
+  #handleTrophy = (trophy) => {
+    let collision = this.collidesWith(trophy);
+    if (!!collision && collision != Directions.DOWN) this.isVictorious = true;
   };
 }

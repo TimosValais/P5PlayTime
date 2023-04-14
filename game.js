@@ -5,19 +5,37 @@ import Platform from "./models/staticObjects/platform.js";
 import SampleEnemy from "./models/movingObjects/sampleEnemy.js";
 import MovingPlatform from "./models/movingObjects/movingPlatform.js";
 import Heart from "./models/staticObjects/heart.js";
+import Flag from "./models/staticObjects/flag.js";
 
 const gravity = 1;
-const handleCollision = (object1, object2) => {
-  object1.handleCollision(object2);
-  object2.handleCollision(object1);
+const monsterRefreshTimeMs = 3000;
+
+const addRandomEnemy = (enemies, mapX, mapY) => {
+  let randomX = Math.random() * mapX;
+  let randomY = mapY;
+  let newEnemy = new SampleEnemy(
+    randomX,
+    randomY,
+    "Sample Enemy" + (enemies.length + 1),
+    ObjectTypes.Enemy,
+    10,
+    10,
+    gravity,
+    new ColorObject(250, 20, 15),
+    60,
+    90,
+    0
+  );
+  enemies.push(newEnemy);
 };
 const p5Map = (p) => {
   //TODO:tv  move this to a create map logic
   let gameCharacters = [];
   let gameObjects = [];
   let lives = 0;
-  let mapY = window.innerHeight;
-  let mapX = window.innerWidth;
+  let mapY = window.innerHeight - 26;
+  let mapX = window.innerWidth - 26;
+  let score = 0;
   p.setup = function () {
     p.createCanvas(mapX, mapY);
     p.groundY = p.height * 0.9;
@@ -27,12 +45,12 @@ const p5Map = (p) => {
       0,
       ObjectTypes.Character,
       10,
-      25,
+      20,
       gravity,
       new ColorObject(178, 234, 124),
       50,
       50,
-      2
+      1
     );
     let platform1 = new Platform(
       120,
@@ -60,6 +78,15 @@ const p5Map = (p) => {
       new ColorObject(153, 234, 123),
       500,
       20
+    );
+    let blockingPlatform = new Platform(
+      180,
+      480,
+      "Blocking Platform",
+      ObjectTypes.BackgroundObject,
+      new ColorObject(255, 255, 255, 0),
+      2,
+      160
     );
     let movingPlatform = new MovingPlatform(
       680,
@@ -100,6 +127,7 @@ const p5Map = (p) => {
       90,
       0
     );
+    let trophy = new Flag(200, 480, 80, 80);
     gameCharacters.push(character);
     gameCharacters.push(enemy);
     gameCharacters.push(enemy2);
@@ -107,19 +135,44 @@ const p5Map = (p) => {
     gameObjects.push(platform3);
     gameObjects.push(platform2);
     gameObjects.push(movingPlatform);
-    p.allObjects = [...gameCharacters, ...gameObjects];
+    gameObjects.push(trophy);
+    gameObjects.push(blockingPlatform);
+    setInterval(() => {
+      addRandomEnemy(gameCharacters, mapX, mapY);
+    }, monsterRefreshTimeMs);
   };
 
   p.draw = function () {
+    p.allObjects = [...gameCharacters, ...gameObjects];
+
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
     if (!!!gamer) {
       p.background(255, 0, 0);
+      p.fill(255, 255, 255);
+      p.textSize(32);
+      p.textAlign(p.CENTER, p.CENTER);
+      p.text("You Lost", mapX / 2, mapY / 2);
+      p.textAlign(p.CENTER, p.CENTER);
+      p.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
+      return;
+    }
+    if (!!gamer.isVictorious) {
+      p.background(0, 255, 0);
+      p.fill(255, 255, 255);
+      p.textSize(32);
+      p.textAlign(p.CENTER, p.CENTER);
+      p.text("You Are Victorious", mapX / 2, mapY / 2);
+      p.textAlign(p.CENTER, p.CENTER);
+      p.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
       return;
     }
     p.background(135, 206, 250);
     drawBackground(p);
+    score += gameCharacters.filter(
+      (char) => !!char.isDead && char.type === ObjectTypes.Enemy
+    ).length;
     gameCharacters = gameCharacters.filter((c) => !!!c.isDead);
     p.allObjects = p.allObjects.filter((c) => !!!c.isDead);
     gameCharacters.forEach((char) => {
@@ -127,9 +180,10 @@ const p5Map = (p) => {
       //   char.move(p);
     });
     gameObjects.forEach((obj) => obj.draw(p));
-
+    p.fill(0);
+    p.textSize(16);
+    p.text(`Score: ${score}`, 2, 45);
     lives = gamer.lives;
-    console.log(gamer.lives);
     for (let i = 0; i < lives; i++) {
       let heart = new Heart(i + i * 10, 10, 20, 20, new ColorObject(255, 0, 0));
       heart.draw(p);

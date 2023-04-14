@@ -1,4 +1,4 @@
-import { Directions } from "../../helpers/enums.js";
+import { Directions, ObjectTypes } from "../../helpers/enums.js";
 import ColorObject from "./colorObj.js";
 export default class GameOjbect {
   constructor(
@@ -7,8 +7,8 @@ export default class GameOjbect {
     width,
     height,
     colorObject = new ColorObject(),
-    stepX = 5,
-    stepY = 20
+    stepX = 10,
+    stepY = 15
     //shape = null
   ) {
     this.x = x;
@@ -25,14 +25,14 @@ export default class GameOjbect {
     let rightPointAfterLeftPoint = this.x + this.width > otherObject.x;
     let verticalCollision =
       leftPointBeforeRightPoint && rightPointAfterLeftPoint;
-
     let lowestPointIsBelowHighest = this.y < otherObject.y + otherObject.height;
     let highestPointIsAboveLowest = this.y + this.height > otherObject.y;
 
     let horizontalCollision =
       lowestPointIsBelowHighest && highestPointIsAboveLowest;
+
+    //prioritize vertical from horizontal collitions
     if (verticalCollision) {
-      //prioritize vertical from horizontal collitions
       let over =
         this.y <= otherObject.y + otherObject.height + this.stepY &&
         this.y >= otherObject.y + otherObject.height - this.stepY;
@@ -56,7 +56,12 @@ export default class GameOjbect {
   }
 
   draw(p5Map) {
-    p5Map.fill(this.color.red, this.color.green, this.color.blue);
+    p5Map.fill(
+      this.color.red,
+      this.color.green,
+      this.color.blue,
+      this.color.transparency
+    );
     p5Map.rect(
       this.x,
       p5Map.groundY - this.y - this.height,
