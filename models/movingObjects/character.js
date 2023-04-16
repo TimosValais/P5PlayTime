@@ -144,6 +144,7 @@ export default class Character extends GameOjbect {
     if (this.lives <= 0) {
       this.isDead = true;
     } else {
+      this.#horizontalSpeed = 0;
       this.x = 0;
       this.y = 800;
     }
