@@ -79,7 +79,12 @@ export default class Character extends GameOjbect {
     }
   }
   drawMovingLeft(map) {
-    map.fill(200, 20, 100);
+    map.fill(
+      this.color.red,
+      this.color.green,
+      this.color.blue,
+      this.color.transparency
+    );
     map.rect(
       this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
       map.groundY - this.y - (this.sizeY * 11) / 16,
@@ -141,7 +146,12 @@ export default class Character extends GameOjbect {
     this.clearStrokesAndFills(map);
   }
   drawJumpingLeft(map) {
-    map.fill(200, 20, 100);
+    map.fill(
+      this.color.red,
+      this.color.green,
+      this.color.blue,
+      this.color.transparency
+    );
     map.rect(
       this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
       map.groundY - this.y - (this.sizeY * 11) / 16,
@@ -205,7 +215,12 @@ export default class Character extends GameOjbect {
   }
   drawJumpingRight(map) {
     //body
-    map.fill(200, 20, 100);
+    map.fill(
+      this.color.red,
+      this.color.green,
+      this.color.blue,
+      this.color.transparency
+    );
     map.rect(
       this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
       map.groundY - this.y - (this.sizeY * 11) / 16,
@@ -272,7 +287,12 @@ export default class Character extends GameOjbect {
   }
   drawMovingRight(map) {
     //body
-    map.fill(200, 20, 100);
+    map.fill(
+      this.color.red,
+      this.color.green,
+      this.color.blue,
+      this.color.transparency
+    );
     map.rect(
       this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
       map.groundY - this.y - (this.sizeY * 11) / 16,
@@ -338,7 +358,12 @@ export default class Character extends GameOjbect {
   }
   drawJumping(map) {
     //body
-    map.fill(200, 20, 100);
+    map.fill(
+      this.color.red,
+      this.color.green,
+      this.color.blue,
+      this.color.transparency
+    );
     map.rect(
       this.x + this.sizeX / 2 - this.sizeX / 5,
       map.groundY - this.y - (this.sizeY * 11) / 16,
@@ -388,7 +413,12 @@ export default class Character extends GameOjbect {
   }
   drawStanding(map) {
     //body
-    map.fill(200, 20, 100);
+    map.fill(
+      this.color.red,
+      this.color.green,
+      this.color.blue,
+      this.color.transparency
+    );
     map.rect(
       this.x + this.sizeX / 2 - this.sizeX / 5,
       map.groundY - this.y - (this.sizeY * 11) / 16,

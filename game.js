@@ -191,16 +191,17 @@ const p5Map = (p) => {
   };
 
   p.keyPressed = (e) => {
+    console.log(p.keyIsPressed);
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
-    if (e.key === "ArrowLeft") {
+    if (e.key === "ArrowLeft" || e.key === "A" || e.key === "a") {
       gamer.move(MovementTypes.Run, Directions.LEFT);
     }
-    if (e.key === "ArrowRight") {
+    if (e.key === "ArrowRight" || e.key === "D" || e.key === "d") {
       gamer.move(MovementTypes.Run, Directions.RIGHT);
     }
-    if (e.key === "ArrowUp") {
+    if (e.key === "ArrowUp" || e.key === "W" || e.key === "w") {
       gamer.move(MovementTypes.Jump);
     }
   };
@@ -208,7 +209,14 @@ const p5Map = (p) => {
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
-    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+    if (
+      e.key === "ArrowLeft" ||
+      e.key === "ArrowRight" ||
+      e.key === "A" ||
+      e.key === "a" ||
+      e.key === "D" ||
+      e.key === "d"
+    ) {
       gamer.stop();
     }
   };
