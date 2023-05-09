@@ -60,27 +60,387 @@ export default class Character extends GameOjbect {
       this.#verticalSpeed = 0;
       this.#jumps = 0;
     }
-    if (!this.#isGrounded) {
-      let x1 = this.x;
-      let y1 = p5Map.groundY - this.y;
-      let x2 = this.x + this.sizeX;
-      let y2 = p5Map.groundY - this.y;
-      let x3 = this.x + this.sizeX / 2;
-      let y3 = p5Map.groundY - this.y - this.sizeY;
-      p5Map.fill(this.color.red, this.color.green, this.color.blue);
-      p5Map.triangle(x1, y1, x2, y2, x3, y3);
-    } else {
-      p5Map.fill(this.color.red, this.color.green, this.color.blue);
-      p5Map.rect(
-        this.x,
-        p5Map.groundY - this.y - this.sizeY,
-        this.sizeX,
-        this.sizeY
-      );
-    }
+    this.drawCharacter(p5Map);
     this.handleCollisions(p5Map.allObjects);
   }
+  drawCharacter(map) {
+    if (!this.#isGrounded && this.#horizontalSpeed == 0) {
+      this.drawJumping(map);
+    } else if (!this.#isGrounded && this.#horizontalSpeed > 0) {
+      this.drawJumpingRight(map);
+    } else if (!this.#isGrounded && this.#horizontalSpeed < 0) {
+      this.drawJumpingLeft(map);
+    } else if (this.#isGrounded && this.#horizontalSpeed > 0) {
+      this.drawMovingRight(map);
+    } else if (this.#isGrounded && this.#horizontalSpeed < 0) {
+      this.drawMovingLeft(map);
+    } else {
+      this.drawStanding(map);
+    }
+  }
+  drawMovingLeft(map) {
+    map.fill(200, 20, 100);
+    map.rect(
+      this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      (this.sizeX * 6) / 50,
+      this.sizeY / 2
+    );
+    //head
+    map.noFill();
+    map.strokeWeight(3);
+    map.stroke(0, 0, 0);
+    map.ellipse(
+      this.x + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 13) / 16,
+      this.sizeX / 5,
+      this.sizeY / 4
+    );
+    //left hand
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 10,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 - (this.sizeX * 12) / 50,
+      map.groundY - this.y - this.sizeY / 2
+    );
+    map.line(
+      this.x + this.sizeX / 2 - (this.sizeX * 12) / 50,
+      map.groundY - this.y - this.sizeY / 2,
+      this.x + this.sizeX / 2 - this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 9) / 16
+    );
+    //right hand
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 10,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 + (this.sizeX * 12) / 50,
+      map.groundY - this.y - this.sizeY / 2
+    );
+    map.line(
+      this.x + this.sizeX / 2 + (this.sizeX * 12) / 50,
+      map.groundY - this.y - this.sizeY / 2,
+      this.x + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 7) / 16
+    );
 
+    //left foot
+    map.strokeWeight(4);
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 25,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 - (this.sizeX * 3) / 10,
+      map.groundY - this.y - this.sizeX / 16
+    );
+    //right foot
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 25,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 + this.sizeX / 7,
+      map.groundY - this.y
+    );
+    this.clearStrokesAndFills(map);
+  }
+  drawJumpingLeft(map) {
+    map.fill(200, 20, 100);
+    map.rect(
+      this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      (this.sizeX * 3) / 25,
+      this.sizeY / 2
+    );
+    //head
+    map.noFill();
+    map.strokeWeight(3);
+    map.stroke(0, 0, 0);
+    map.ellipse(
+      this.x + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 13) / 16,
+      10,
+      20
+    );
+    //left hand
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 10,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 - this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 15) / 16
+    );
+
+    //right hand
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 10,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 - this.sizeX / 5,
+      map.groundY - this.y - this.sizeY / 2
+    );
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 5,
+      map.groundY - this.y - this.sizeY / 2,
+      this.x + this.sizeX / 2 - (this.sizeX * 2) / 5,
+      map.groundY - this.y - (this.sizeY * 10) / 16
+    );
+
+    //left foot
+    map.strokeWeight(4);
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 25,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 - (this.sizeX * 3) / 10,
+      map.groundY - this.y - this.sizeX / 16
+    );
+    //right foot
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 25,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 + this.sizeX / 7,
+      map.groundY - this.y - (this.sizeX * 3) / 80
+    );
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 7,
+      map.groundY - this.y - (this.sizeX * 3) / 80,
+      this.x + this.sizeX / 2 + (this.sizeX * 12) / 50,
+      map.groundY - this.y - (this.sizeX * 3) / 40
+    );
+    this.clearStrokesAndFills(map);
+  }
+  drawJumpingRight(map) {
+    //body
+    map.fill(200, 20, 100);
+    map.rect(
+      this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      (this.sizeX * 3) / 25,
+      this.sizeY / 2
+    );
+    //head
+    map.noFill();
+    map.strokeWeight(3);
+    map.stroke(0, 0, 0);
+    map.ellipse(
+      this.x + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 13) / 16,
+      10,
+      20
+    );
+    //left hand
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 10,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 + this.sizeX / 5,
+      map.groundY - this.y - this.sizeY / 2
+    );
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 5,
+      map.groundY - this.y - this.sizeY / 2,
+      this.x + this.sizeX / 2 + (this.sizeX * 2) / 5,
+      map.groundY - this.y - (this.sizeY * 10) / 16
+    );
+
+    //right hand
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 10,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 15) / 16
+    );
+
+    //   line(this.x+ this.sizeX/2 - this.sizeX / 10, map.groundY - this.y - (this.sizeY * 11) / 16, this.x+ this.sizeX/2 -this.sizeX/2, map.groundY - this.y - (this.sizeY * 15) / 16);
+
+    //left foot
+    map.strokeWeight(4);
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 25,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 - this.sizeX / 7,
+      map.groundY - this.y - (this.sizeY * 3) / 80
+    );
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 7,
+      map.groundY - this.y - (this.sizeY * 3) / 80,
+      this.x + this.sizeX / 2 - (this.sizeX * 12) / 50,
+      map.groundY - this.y - (this.sizeY * 3) / 40
+    );
+
+    //right foot
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 25,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 + (this.sizeX * 3) / 10,
+      map.groundY - this.y - this.sizeX / 16
+    );
+    this.clearStrokesAndFills(map);
+  }
+  drawMovingRight(map) {
+    //body
+    map.fill(200, 20, 100);
+    map.rect(
+      this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      (this.sizeX * 3) / 25,
+      this.sizeY / 2
+    );
+    //head
+    map.noFill();
+    map.strokeWeight(3);
+    map.stroke(0, 0, 0);
+    map.ellipse(
+      this.x + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 13) / 16,
+      10,
+      20
+    );
+    //left hand
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 10,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 - (this.sizeX * 12) / 50,
+      map.groundY - this.y - this.sizeY / 2
+    );
+    map.line(
+      this.x + this.sizeX / 2 - (this.sizeX * 12) / 50,
+      map.groundY - this.y - this.sizeY / 2,
+      this.x + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 7) / 16
+    );
+
+    //right hand
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 10,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 + (this.sizeX * 12) / 50,
+      map.groundY - this.y - this.sizeY / 2
+    );
+    map.line(
+      this.x + this.sizeX / 2 + (this.sizeX * 12) / 50,
+      map.groundY - this.y - this.sizeY / 2,
+      this.x + this.sizeX / 2 + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 9) / 16
+    );
+
+    //left foot
+    map.strokeWeight(4);
+    //   line(this.x+ this.sizeX/2 - this.sizeX / 25, map.groundY - this.y - (this.sizeY * 3) / 16, this.x+ this.sizeX/2 - this.sizeX *3 /10, map.groundY - this.y - this.sizeX / 16);
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 25,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 - this.sizeX / 7,
+      map.groundY - this.y
+    );
+    //right foot
+    //   line(this.x+ this.sizeX/2 + 2, map.groundY - this.y - (this.sizeY * 3) / 16, this.x+ this.sizeX/2 + this.sizeX/7, map.groundY - this.y);
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 25,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 + (this.sizeX * 3) / 10,
+      map.groundY - this.y - this.sizeX / 16
+    );
+    this.clearStrokesAndFills(map);
+  }
+  drawJumping(map) {
+    //body
+    map.fill(200, 20, 100);
+    map.rect(
+      this.x + this.sizeX / 2 - this.sizeX / 5,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      (this.sizeX * 2) / 5,
+      this.sizeY / 2
+    );
+    //head
+    map.noFill();
+    map.strokeWeight(3);
+    map.stroke(0, 0, 0);
+    map.ellipse(
+      this.x + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 13) / 16,
+      20
+    );
+    //left hand
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 5,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 - this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 15) / 16
+    );
+    //right hand
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 5,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 15) / 16
+    );
+
+    //left foot
+    map.strokeWeight(4);
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 7,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 - this.sizeX / 2,
+      map.groundY - this.y - this.sizeY / 8
+    );
+    //right foot
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 7,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 + this.sizeX / 2,
+      map.groundY - this.y - this.sizeY / 8
+    );
+    this.clearStrokesAndFills(map);
+  }
+  drawStanding(map) {
+    //body
+    map.fill(200, 20, 100);
+    map.rect(
+      this.x + this.sizeX / 2 - this.sizeX / 5,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      (this.sizeX * 2) / 5,
+      this.sizeY / 2
+    );
+    //head
+    map.noFill();
+    map.strokeWeight(3);
+    map.stroke(0, 0, 0);
+    map.ellipse(
+      this.x + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 13) / 16,
+      this.sizeY / 4
+    );
+    //left hand
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 5,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 - this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 7) / 16
+    );
+    //right hand
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 5,
+      map.groundY - this.y - (this.sizeY * 11) / 16,
+      this.x + this.sizeX / 2 + this.sizeX / 2,
+      map.groundY - this.y - (this.sizeY * 7) / 16
+    );
+
+    //left foot
+    map.strokeWeight(4);
+    map.line(
+      this.x + this.sizeX / 2 - this.sizeX / 7,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 - this.sizeX / 7,
+      map.groundY - this.y
+    );
+    //right foot
+    map.line(
+      this.x + this.sizeX / 2 + this.sizeX / 7,
+      map.groundY - this.y - (this.sizeY * 3) / 16,
+      this.x + this.sizeX / 2 + this.sizeX / 7,
+      map.groundY - this.y
+    );
+
+    this.clearStrokesAndFills(map);
+  }
+  clearStrokesAndFills(map) {
+    map.strokeWeight(1);
+    map.noFill();
+  }
   move(action, direction = null) {
     if (action === MovementTypes.Jump) {
       if (this.#jumps >= this.maxJumps) {

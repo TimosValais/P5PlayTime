@@ -1,14 +1,14 @@
 import GameOjbect from "../contracts/gameObject.js";
 import ColorObject from "../contracts/colorObj.js";
-
+import { ObjectTypes } from "../../helpers/enums.js";
 export default class MovingPlatform extends GameOjbect {
   #xMovement = 0;
   #yMovement = 0;
   constructor(
     x,
     y,
-    name = "Generic Character",
-    type = ObjectTypes.Character,
+    name = "Generic Moving Platform",
+    type = ObjectTypes.BackgroundObject,
     colorObject = new ColorObject(),
     sizeX = 50,
     sizeY = 50,

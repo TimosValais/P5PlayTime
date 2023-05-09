@@ -3,7 +3,13 @@ import ColorObject from "../contracts/colorObj.js";
 import GameOjbect from "../contracts/gameObject.js";
 
 export default class Flag extends GameOjbect {
-  constructor(x, y, sizeX, sizeY, colorObj = new ColorObject(250, 67, 34)) {
+  constructor(
+    x,
+    y,
+    sizeX,
+    sizeY,
+    colorObj = new ColorObject(255, 255, 0, 255)
+  ) {
     super(x, y, sizeX, sizeY, colorObj);
     this.type = ObjectTypes.Trophy;
   }
