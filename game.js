@@ -7,6 +7,7 @@ import MovingPlatform from "./models/movingObjects/movingPlatform.js";
 import Heart from "./models/staticObjects/heart.js";
 import Flag from "./models/staticObjects/flag.js";
 import Ground from "./models/staticObjects/ground.js";
+import GiftBox from "./models/staticObjects/giftBox.js";
 
 const gravity = 1;
 const monsterRefreshTimeMs = 3000;
@@ -107,6 +108,7 @@ const p5Map = (p) => {
       20,
       600
     );
+    let giftBox = new GiftBox(200, 400, 100);
     let canyon = new Platform(
       300,
       0,
@@ -153,6 +155,7 @@ const p5Map = (p) => {
     gameObjects.push(movingPlatform);
     gameObjects.push(trophy);
     gameObjects.push(blockingPlatform);
+    gameObjects.push(giftBox);
 
     setInterval(() => {
       addRandomEnemy(gameCharacters, mapX, mapY);
@@ -190,13 +193,23 @@ const p5Map = (p) => {
     score += gameCharacters.filter(
       (char) => !!char.isDead && char.type === ObjectTypes.Enemy
     ).length;
-    gameCharacters = gameCharacters.filter((c) => !!!c.isDead);
-    p.allObjects = p.allObjects.filter((c) => !!!c.isDead);
-    gameCharacters.forEach((char) => {
-      char.draw(p);
-      //   char.move(p);
-    });
+
+    //check for claimed objects that give points, add points and remove them
+
+    console.log(p.allObjects.find((obj) => obj.isDestroyed));
+    gameCharacters.forEach((char) => char.draw(p));
     gameObjects.forEach((obj) => obj.draw(p));
+    gameObjects = gameObjects.filter((obj) => {
+      if (!!obj.isDestroyed) {
+        if (!!obj.scorePoints) {
+          console.log(obj.scorePoints);
+          score += obj.scorePoints;
+        }
+        return false;
+      }
+      return true;
+    });
+    gameCharacters = gameCharacters.filter((c) => !!!c.isDead);
     p.fill(0);
     p.textSize(16);
     p.text(`Score: ${score}`, 2, 45);

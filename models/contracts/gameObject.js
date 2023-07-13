@@ -18,6 +18,7 @@ export default class GameOjbect {
     this.color = colorObject;
     this.stepX = stepX;
     this.stepY = stepY;
+    this.destroyed = false;
   }
   collidesWith(otherObject) {
     //TODO:tv maybe remove these for memory allocation and just do straight the comparisons
