@@ -545,6 +545,7 @@ export default class Character extends GameOjbect {
       this.isDead = true;
     } else {
       this.#horizontalSpeed = 0;
+      this.#verticalSpeed = 10; //give a more smooth going down transition after death
       this.x = 0;
       this.y = 800;
     }

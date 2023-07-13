@@ -1,5 +1,5 @@
 import GameOjbect from "../contracts/gameObject.js";
-import { ObjectTypes } from "../../helpers/enums.js";
+import { Directions, ObjectTypes } from "../../helpers/enums.js";
 import ColorObject from "../contracts/colorObj.js";
 
 export default class GiftBox extends GameOjbect {
@@ -59,7 +59,8 @@ export default class GiftBox extends GameOjbect {
     let character = collisionObjects.find(
       (obj) => obj.type === ObjectTypes.Character
     );
-    if (!!super.collidesWith(character)) {
+    let collision = super.collidesWith(character);
+    if (!!collision && collision === Directions.UP) {
       this.isDestroyed = true;
     }
   }

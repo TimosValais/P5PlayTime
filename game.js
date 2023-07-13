@@ -181,7 +181,15 @@ const p5Map = (p) => {
       15,
       250
     );
-    let giftBox1 = new GiftBox(200, 400, 100);
+    let giftBox1 = new GiftBox(
+      200,
+      400,
+      3000,
+      "Unobtainable Gift",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(255, 215, 0),
+      new ColorObject(0, 0, 128)
+    );
     let giftBox2 = new GiftBox(
       550,
       750,
@@ -270,7 +278,6 @@ const p5Map = (p) => {
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
-    console.log(gamer.x);
     if (!!!gamer) {
       p.background(255, 0, 0);
       p.fill(255, 255, 255);
