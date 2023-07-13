@@ -52,6 +52,7 @@ const p5Map = (p) => {
   p.setup = function () {
     p.createCanvas(mapX, mapY);
     p.groundY = p.height;
+    //#region Create Player Character
     let character = new Character(
       0,
       p.height * 0.1,
@@ -65,6 +66,8 @@ const p5Map = (p) => {
       50,
       1
     );
+    //#endregion
+    //#region Create Platfororms
     let platform1 = new Platform(
       4450,
       200,
@@ -181,6 +184,8 @@ const p5Map = (p) => {
       15,
       250
     );
+    //#endregion
+    //#region Create Gifts
     let giftBox1 = new GiftBox(
       200,
       400,
@@ -218,6 +223,8 @@ const p5Map = (p) => {
       new ColorObject(129, 231, 29),
       new ColorObject(215, 24, 129)
     );
+    //#endregion
+    //#region Create Enemies
     let enemy = new SampleEnemy(
       1100,
       0,
@@ -244,7 +251,11 @@ const p5Map = (p) => {
       90,
       0
     );
+    //#endregion
+    //Create the trophy to win
     let trophy = new Flag(platform2.x, platform2.y, 80, 80);
+
+    //#region Add everything to the list so they can be drawn
     gameCharacters.push(character);
     gameCharacters.push(enemy);
     gameCharacters.push(enemy2);
@@ -266,9 +277,12 @@ const p5Map = (p) => {
     gameObjects.push(giftBox4);
     gameObjects.push(giftBox5);
 
-    // p.enemiesIntervalId = setInterval(() => {
-    //   addRandomEnemy(gameCharacters, mapX - cameraPositionX, mapY);
-    // }, monsterRefreshTimeMs);
+    //#endregion
+
+    //Create interval to throw enemies at player, get the id to stop it after
+    p.enemiesIntervalId = setInterval(() => {
+      addRandomEnemy(gameCharacters, mapX - cameraPositionX, mapY);
+    }, monsterRefreshTimeMs);
     addBackgroundObjects();
   };
 
