@@ -7,7 +7,7 @@ export default class Ground extends GameOjbect {
     x,
     y,
     name = "Generic Ground",
-    type = ObjectTypes.BackgroundObject,
+    type = ObjectTypes.InteractiveObject,
     colorObject = new ColorObject(50, 205, 50), //default ground color green
     width = 50,
     height = 50

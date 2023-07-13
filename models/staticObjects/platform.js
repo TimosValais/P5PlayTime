@@ -7,7 +7,7 @@ export default class Platform extends GameOjbect {
     x,
     y,
     name = "Generic Platform",
-    type = ObjectTypes.BackgroundObject,
+    type = ObjectTypes.InteractiveObject,
     colorObject = new ColorObject(),
     sizeX = 50,
     sizeY = 50

@@ -87,13 +87,13 @@ export default class SampleEnemy extends Character {
     }
   }
   handleCollisions(collisionObjects) {
-    let backgroundObjects = [];
+    let interactiveObjects = [];
     let enemies = [];
     let otherCharacters = [];
     collisionObjects.forEach((collisionObject) => {
       switch (collisionObject.type) {
-        case ObjectTypes.BackgroundObject:
-          backgroundObjects.push(collisionObject);
+        case ObjectTypes.InteractiveObject:
+          interactiveObjects.push(collisionObject);
           break;
         case ObjectTypes.Enemy:
           enemies.push(collisionObject);
@@ -105,7 +105,7 @@ export default class SampleEnemy extends Character {
           break;
       }
     });
-    this.#handleBackgroundObjectCollision(backgroundObjects);
+    this.#handleInteractiveObjectCollision(interactiveObjects);
     this.#hanldeCharacterCollisions(otherCharacters);
   }
   #hanldeCharacterCollisions = (characterObjects) => {
@@ -123,7 +123,7 @@ export default class SampleEnemy extends Character {
         break;
     }
   };
-  #handleBackgroundObjectCollision = (collisionObjects) => {
+  #handleInteractiveObjectCollision = (collisionObjects) => {
     let collisions = [];
     let landed = false;
     collisionObjects.forEach((obj) => {

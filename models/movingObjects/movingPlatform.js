@@ -8,7 +8,7 @@ export default class MovingPlatform extends GameOjbect {
     x,
     y,
     name = "Generic Moving Platform",
-    type = ObjectTypes.BackgroundObject,
+    type = ObjectTypes.InteractiveObject,
     colorObject = new ColorObject(),
     sizeX = 50,
     sizeY = 50,

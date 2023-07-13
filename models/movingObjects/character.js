@@ -512,14 +512,14 @@ export default class Character extends GameOjbect {
     //TODO:tv maybe we don't need to reinitialize backgroundObjects every time
     //create an update logic for when something is added, this could also be an
     //event logic, in general, research performance issues here.
-    let backgroundObjects = [];
+    let interactiveObject = [];
     let enemies = [];
     let otherCharacters = [];
     let trophy = null;
     collisionObjects.forEach((collisionObject) => {
       switch (collisionObject.type) {
-        case ObjectTypes.BackgroundObject:
-          backgroundObjects.push(collisionObject);
+        case ObjectTypes.InteractiveObject:
+          interactiveObject.push(collisionObject);
           break;
         case ObjectTypes.Enemy:
           enemies.push(collisionObject);
@@ -534,7 +534,7 @@ export default class Character extends GameOjbect {
           break;
       }
     });
-    this.#handleBackgroundObjectCollision(backgroundObjects);
+    this.#handleInteractiveObjectCollision(interactiveObject);
     this.#handleEnemyCollision(enemies);
     this.#handleTrophy(trophy);
   }
@@ -549,7 +549,7 @@ export default class Character extends GameOjbect {
       this.y = 800;
     }
   }
-  #handleBackgroundObjectCollision = (collisionObjects) => {
+  #handleInteractiveObjectCollision = (collisionObjects) => {
     let collision = null;
     let collisionObject = collisionObjects.find((obj) => {
       collision = this.collidesWith(obj);

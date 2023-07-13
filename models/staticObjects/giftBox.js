@@ -8,7 +8,7 @@ export default class GiftBox extends GameOjbect {
     y,
     scorePoints = 10,
     name = "Generic GiftBox",
-    type = ObjectTypes.BackgroundObject,
+    type = ObjectTypes.InteractiveObject,
     colorObject = new ColorObject(200, 30, 100),
     colorWrapingPaper = new ColorObject(0, 120, 60),
     size = 50 //it's a square only needs one size

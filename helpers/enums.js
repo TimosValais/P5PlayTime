@@ -5,6 +5,7 @@ export const ObjectTypes = Object.freeze({
   BackgroundObject: 2,
   Trophy: 3,
   GroundBreaking: 4, //sorry for the pun I had to
+  InteractiveObject: 5,
 });
 
 export const MovementTypes = Object.freeze({

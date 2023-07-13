@@ -66,7 +66,7 @@ const p5Map = (p) => {
       120,
       200,
       "Generic Platform",
-      ObjectTypes.BackgroundObject,
+      ObjectTypes.InteractiveObject,
       new ColorObject(153, 234, 123),
       500,
       20
@@ -75,7 +75,7 @@ const p5Map = (p) => {
       200,
       600,
       "High Platform",
-      ObjectTypes.BackgroundObject,
+      ObjectTypes.InteractiveObject,
       new ColorObject(153, 234, 123),
       500,
       20
@@ -84,7 +84,7 @@ const p5Map = (p) => {
       900,
       300,
       "Midle Platform",
-      ObjectTypes.BackgroundObject,
+      ObjectTypes.InteractiveObject,
       new ColorObject(153, 234, 123),
       500,
       20
@@ -93,7 +93,7 @@ const p5Map = (p) => {
       180,
       platform2.y,
       "Blocking Platform",
-      ObjectTypes.BackgroundObject,
+      ObjectTypes.InteractiveObject,
       new ColorObject(255, 255, 255, 0),
       2,
       mapY - platform2.y
@@ -102,7 +102,7 @@ const p5Map = (p) => {
       680,
       450,
       "Moving Platform",
-      ObjectTypes.BackgroundObject,
+      ObjectTypes.InteractiveObject,
       new ColorObject(132, 214, 93),
       240,
       30,
@@ -296,7 +296,7 @@ const p5Map = (p) => {
         0,
         0,
         "Ground Platform",
-        ObjectTypes.BackgroundObject,
+        ObjectTypes.InteractiveObject,
         new ColorObject(50, 205, 50),
         p.width,
         p.height * 0.1
@@ -320,7 +320,7 @@ const p5Map = (p) => {
           groundX,
           groundY,
           "Ground part  " + i,
-          ObjectTypes.BackgroundObject,
+          ObjectTypes.InteractiveObject,
           groundColor,
           pointsToAvoid[i].startX,
           groundHeight
@@ -344,7 +344,7 @@ const p5Map = (p) => {
         pointsToAvoid[i].endX,
         groundY,
         "Ground part " + (i + 1),
-        ObjectTypes.BackgroundObject,
+        ObjectTypes.InteractiveObject,
         groundColor,
         xEndDrawing,
         groundHeight
