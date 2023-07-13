@@ -6,7 +6,7 @@ export default class Tree extends GameOjbect {
   constructor(
     x,
     y,
-    name = "Generic Canyon",
+    name = "Generic Tree",
     type = ObjectTypes.BackgroundObject,
     width = 16,
     height = 50,
@@ -31,8 +31,7 @@ export default class Tree extends GameOjbect {
       this.trunkColor.blue,
       this.trunkColor.transparency
     );
-    //288
-    //382
+
     p5Map.rect(
       this.x,
       p5Map.height - this.y - this.height,

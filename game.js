@@ -10,12 +10,13 @@ import Ground from "./models/staticObjects/ground.js";
 import GiftBox from "./models/staticObjects/giftBox.js";
 import SpikeCanyon from "./models/staticObjects/spikeCanyon.js";
 import Tree from "./models/staticObjects/tree.js";
+import Mountain from "./models/staticObjects/mountains.js";
+import Cloud from "./models/staticObjects/cloud.js";
 
 const gravity = 1;
 const monsterRefreshTimeMs = 3000;
 
 const addRandomEnemy = (enemies, mapX, mapY) => {
-  console.log("max x is : ", mapX);
   let randomX = Math.random() * mapX;
   let randomY = mapY;
   let newEnemy = new SampleEnemy(
@@ -38,9 +39,10 @@ const p5Map = (p) => {
   //TODO:tv remove hardcoded pixel values and get them relative to what they 're supposed to
   let gameCharacters = [];
   let gameObjects = [];
+  let backgroundObjects = [];
   let groundBreakingObjects = [];
-  let cameraPosX = 0;
-  let cameraPosY = 0;
+  let cameraPositionX = 0;
+  let cameraPositionY = 0;
   let lives = 0;
 
   let mapY = window.innerHeight - window.innerHeight * 0.02;
@@ -64,12 +66,12 @@ const p5Map = (p) => {
       1
     );
     let platform1 = new Platform(
-      120,
+      4450,
       200,
-      "Generic Platform",
+      "Low Platform",
       ObjectTypes.InteractiveObject,
       new ColorObject(153, 234, 123),
-      500,
+      350,
       20
     );
     let platform2 = new Platform(
@@ -90,6 +92,34 @@ const p5Map = (p) => {
       500,
       20
     );
+    let platform4 = new Platform(
+      4850,
+      300,
+      "Midle Outside Platform",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(153, 234, 123),
+      250,
+      20
+    );
+    let platform5 = new Platform(
+      4190,
+      600,
+      "High Outside Platform",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(153, 234, 123),
+      400,
+      20
+    );
+    let platform6 = new Platform(
+      4420,
+      450,
+      "Medium High OutsidePlatform",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(153, 234, 123),
+      250,
+      20
+    );
+    //to block cheating getting the flag after death
     let blockingPlatform = new Platform(
       180,
       platform2.y,
@@ -112,9 +142,74 @@ const p5Map = (p) => {
       20,
       600
     );
+    let movingPlatform2 = new MovingPlatform(
+      1690,
+      350,
+      "Moving Platform",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(132, 214, 93),
+      240,
+      30,
+      5,
+      3,
+      40,
+      400
+    );
+    let movingPlatform3 = new MovingPlatform(
+      2990,
+      450,
+      "Moving Platform",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(132, 214, 93),
+      240,
+      30,
+      2,
+      4,
+      10,
+      900
+    );
+    let movingPlatform4 = new MovingPlatform(
+      4100,
+      500,
+      "Moving Platform",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(132, 214, 93),
+      240,
+      30,
+      1,
+      1,
+      15,
+      250
+    );
     let giftBox1 = new GiftBox(200, 400, 100);
-    let giftBox2 = new GiftBox(550, 750, 100);
-    let giftBox3 = new GiftBox(800, 800, 50);
+    let giftBox2 = new GiftBox(
+      550,
+      750,
+      50,
+      "Yellow Box",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(129, 231, 29),
+      new ColorObject(215, 24, 129)
+    );
+    let giftBox3 = new GiftBox(800, 800, 100);
+    let giftBox4 = new GiftBox(
+      4410,
+      520,
+      150,
+      "Yellow Box",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(129, 231, 29),
+      new ColorObject(215, 24, 129)
+    );
+    let giftBox5 = new GiftBox(
+      3560,
+      150,
+      150,
+      "Yellow Box",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(129, 231, 29),
+      new ColorObject(215, 24, 129)
+    );
     let enemy = new SampleEnemy(
       1100,
       0,
@@ -148,16 +243,24 @@ const p5Map = (p) => {
     gameObjects.push(platform1);
     gameObjects.push(platform3);
     gameObjects.push(platform2);
+    gameObjects.push(platform4);
+    gameObjects.push(platform5);
+    gameObjects.push(platform6);
     gameObjects.push(movingPlatform);
+    gameObjects.push(movingPlatform2);
+    gameObjects.push(movingPlatform3);
+    gameObjects.push(movingPlatform4);
     gameObjects.push(trophy);
     gameObjects.push(blockingPlatform);
     gameObjects.push(giftBox1);
     gameObjects.push(giftBox2);
     gameObjects.push(giftBox3);
+    gameObjects.push(giftBox4);
+    gameObjects.push(giftBox5);
 
-    p.enemiesIntervalId = setInterval(() => {
-      addRandomEnemy(gameCharacters, mapX - cameraPosX, mapY);
-    }, monsterRefreshTimeMs);
+    // p.enemiesIntervalId = setInterval(() => {
+    //   addRandomEnemy(gameCharacters, mapX - cameraPositionX, mapY);
+    // }, monsterRefreshTimeMs);
     addBackgroundObjects();
   };
 
@@ -167,6 +270,7 @@ const p5Map = (p) => {
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
+    console.log(gamer.x);
     if (!!!gamer) {
       p.background(255, 0, 0);
       p.fill(255, 255, 255);
@@ -199,14 +303,12 @@ const p5Map = (p) => {
       return;
     }
 
-    console.log("camera posX before : ", cameraPosX);
-    console.log(p.width);
-    console.log(gamer.x);
-
-    cameraPosX = -gamer.x + p.width / 2;
+    cameraPositionX = -gamer.x + p.width / 2;
     //if the player goes too far up, change the screen like old school games that raised the level
-    cameraPosY = gamer.y > p.height ? gamer.y / 2 : 0;
-    console.log(cameraPosY);
+    cameraPositionY = gamer.y > p.height ? gamer.y / 2 : 0;
+
+    //pass it to the object so all can see
+    p.cameraPositionX = cameraPositionX;
 
     p.background(135, 206, 250);
 
@@ -233,10 +335,11 @@ const p5Map = (p) => {
     //#region Moving the camera
 
     p.push();
-    p.translate(cameraPosX, cameraPosY);
+    p.translate(cameraPositionX, cameraPositionY);
 
-    gameObjects.forEach((obj) => obj.draw(p));
+    backgroundObjects.forEach((obj) => obj.draw(p));
     groundBreakingObjects.forEach((obj) => obj.draw(p));
+    gameObjects.forEach((obj) => obj.draw(p));
 
     gameCharacters.forEach((char) => char.draw(p));
     p.pop();
@@ -316,7 +419,6 @@ const p5Map = (p) => {
       let xEndDrawing;
       //if it's the first part we need to draw ground until that part
       if (i == 0) {
-        console.log("setting first ground : ");
         let firstGround = new Ground(
           groundX,
           groundY,
@@ -352,9 +454,6 @@ const p5Map = (p) => {
       );
       gameObjects.push(ground);
     }
-
-    console.log(gameObjects);
-    console.log(groundBreakingObjects);
   };
 
   const addBackgroundObjects = () => {
@@ -374,9 +473,198 @@ const p5Map = (p) => {
       200,
       p.height * 0.1
     );
+    let canyon3 = new SpikeCanyon(
+      1120,
+      0,
+      "Spike Canyon 3",
+      ObjectTypes.GroundBreaking,
+      200,
+      p.height * 0.1
+    );
+    let canyon4 = new SpikeCanyon(
+      1960,
+      0,
+      "Spike Canyon 4",
+      ObjectTypes.GroundBreaking,
+      200,
+      p.height * 0.1
+    );
+    let canyon5 = new SpikeCanyon(
+      3380,
+      0,
+      "Spike Canyon 5",
+      ObjectTypes.GroundBreaking,
+      200,
+      p.height * 0.1
+    );
+    let canyon6 = new SpikeCanyon(
+      3600,
+      0,
+      "Spike Canyon 6",
+      ObjectTypes.GroundBreaking,
+      200,
+      p.height * 0.1
+    );
+    let canyon7 = new SpikeCanyon(
+      4120,
+      0,
+      "Spike Canyon 7",
+      ObjectTypes.GroundBreaking,
+      200,
+      p.height * 0.1
+    );
     groundBreakingObjects.push(canyon1);
     groundBreakingObjects.push(canyon2);
+    groundBreakingObjects.push(canyon3);
+    groundBreakingObjects.push(canyon4);
+    groundBreakingObjects.push(canyon5);
+    groundBreakingObjects.push(canyon6);
+    groundBreakingObjects.push(canyon7);
     drawGround();
+
+    //#region Clouds
+
+    let cloud1 = new Cloud(
+      20,
+      (3 * p.height) / 4,
+      "Cloud 1",
+      ObjectTypes.BackgroundObject,
+      50
+    );
+    let cloud2 = new Cloud(
+      400,
+      (5 * p.height) / 6,
+      "Cloud 2",
+      ObjectTypes.BackgroundObject,
+      70
+    );
+    let cloud3 = new Cloud(
+      860,
+      (4 * p.height) / 7,
+      "Cloud 3",
+      ObjectTypes.BackgroundObject,
+      60
+    );
+    let cloud4 = new Cloud(
+      1200,
+      (6 * p.height) / 8,
+      "Cloud 4",
+      ObjectTypes.BackgroundObject,
+      90
+    );
+    let cloud5 = new Cloud(
+      1450,
+      (2 * p.height) / 3,
+      "Cloud 5",
+      ObjectTypes.BackgroundObject,
+      40
+    );
+    let cloud6 = new Cloud(
+      1700,
+      (8 * p.height) / 9,
+      "Cloud 6",
+      ObjectTypes.BackgroundObject,
+      70
+    );
+    let cloud7 = new Cloud(
+      1900,
+      (6 * p.height) / 8,
+      "Cloud 7",
+      ObjectTypes.BackgroundObject,
+      30
+    );
+    let cloud8 = new Cloud(
+      2150,
+      (4 * p.height) / 5,
+      "Cloud 8",
+      ObjectTypes.BackgroundObject,
+      80
+    );
+    let cloud9 = new Cloud(
+      2220,
+      (5 * p.height) / 6,
+      "Cloud 9",
+      ObjectTypes.BackgroundObject,
+      40
+    );
+    let cloud10 = new Cloud(
+      2280,
+      (3 * p.height) / 5,
+      "Cloud 10",
+      ObjectTypes.BackgroundObject,
+      60
+    );
+
+    backgroundObjects.push(
+      cloud1,
+      cloud2,
+      cloud3,
+      cloud4,
+      cloud5,
+      cloud6,
+      cloud7,
+      cloud8,
+      cloud9,
+      cloud10
+    );
+
+    //#endregion
+
+    //#region Mountains
+
+    let mountain1 = new Mountain(
+      500,
+      0,
+      "Mountain 1",
+      ObjectTypes.BackgroundObject,
+      350
+    );
+    let mountain2 = new Mountain(
+      1000,
+      0,
+      "Mountain 2",
+      ObjectTypes.BackgroundObject,
+      500
+    );
+    let mountain3 = new Mountain(
+      1350,
+      0,
+      "Mountain 3",
+      ObjectTypes.BackgroundObject,
+      680
+    );
+    let mountain4 = new Mountain(
+      1475,
+      0,
+      "Mountain 4",
+      ObjectTypes.BackgroundObject,
+      700
+    );
+    let mountain5 = new Mountain(
+      2100,
+      0,
+      "Mountain 5",
+      ObjectTypes.BackgroundObject,
+      350
+    );
+    let mountain6 = new Mountain(
+      3000,
+      0,
+      "Mountain 6",
+      ObjectTypes.BackgroundObject,
+      425
+    );
+    backgroundObjects.push(
+      mountain1,
+      mountain2,
+      mountain3,
+      mountain4,
+      mountain5,
+      mountain6
+    );
+    //#endregion
+
+    //#region Trees
     let tree1 = new Tree(
       250,
       p.height * 0.1,
@@ -390,7 +678,7 @@ const p5Map = (p) => {
       ObjectTypes.BackgroundObject
     );
     let tree3 = new Tree(
-      1300,
+      1340,
       p.height * 0.1,
       "Tree 2",
       ObjectTypes.BackgroundObject
@@ -407,7 +695,8 @@ const p5Map = (p) => {
       "Tree 2",
       ObjectTypes.BackgroundObject
     );
-    gameObjects.push(tree1, tree2, tree3, tree4, tree5);
+    backgroundObjects.push(tree1, tree2, tree3, tree4, tree5);
+    //#endregion
   };
 };
 
