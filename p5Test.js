@@ -59,7 +59,6 @@ function setup() {
 }
 
 function draw() {
-  console.log("drawing in draw : ", drawing);
   if (drawing) {
     drawActiveShape(mouseX, mouseY, 80, 80);
   }
@@ -89,9 +88,7 @@ function drawActiveShape(mouseX, mouseY, height, width) {
 
 function toggleDrawing() {
   toggleBrushButton();
-  console.log("drawing before : ", drawing);
   drawing = !drawing;
-  console.log("drawing after : ", drawing);
 }
 function toggleBrushButton() {
   if (!drawing) {
@@ -109,11 +106,9 @@ function toggleBrushButton() {
 function handleCanvasClick() {
   if (mouseButton === LEFT) {
     toggleDrawing();
-    console.log("drawing is : ", drawing);
     if (!drawing) {
       prevMouseX = mouseX;
       prevMouseY = mouseY;
-      console.log("new prev values :", prevMouseX, prevMouseY);
     }
   } else if (mouseButton === RIGHT) {
     clearTheCanvas();

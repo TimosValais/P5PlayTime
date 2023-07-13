@@ -12,7 +12,6 @@ export default class Ground extends GameOjbect {
     width = 50,
     height = 50
   ) {
-    console.log(width);
     super(x, y, width, height, colorObject);
     this.name = name;
     this.type = type;

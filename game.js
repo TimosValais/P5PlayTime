@@ -8,6 +8,8 @@ import Heart from "./models/staticObjects/heart.js";
 import Flag from "./models/staticObjects/flag.js";
 import Ground from "./models/staticObjects/ground.js";
 import GiftBox from "./models/staticObjects/giftBox.js";
+import Canyon from "./models/staticObjects/canyon.js";
+import SpikeCanyon from "./models/staticObjects/spikeCanyon.js";
 
 const gravity = 1;
 const monsterRefreshTimeMs = 3000;
@@ -35,13 +37,11 @@ const p5Map = (p) => {
   //TODO:tv remove hardcoded pixel values and get them relative to what they 're supposed to
   let gameCharacters = [];
   let gameObjects = [];
+  let groundBreakingObjects = [];
   let lives = 0;
-  console.log(window.innerHeight);
-  console.log(window.innerWidth);
-  console.log(26 / window.innerHeight);
-  console.log(26 / window.innerWidth);
-  let mapY = window.innerHeight - window.innerHeight * 0.025;
-  let mapX = window.innerWidth - window.innerWidth * 0.014;
+
+  let mapY = window.innerHeight - window.innerHeight * 0.02;
+  let mapX = window.innerWidth - window.innerWidth * 0.01;
   let score = 0;
   p.setup = function () {
     p.createCanvas(mapX, mapY);
@@ -109,15 +109,6 @@ const p5Map = (p) => {
       600
     );
     let giftBox = new GiftBox(200, 400, 100);
-    let canyon = new Platform(
-      300,
-      0,
-      "canyon",
-      ObjectTypes.GroundBreaking,
-      new ColorObject(200, 123, 93),
-      150,
-      p.height * 0.1
-    );
     let enemy = new SampleEnemy(
       1100,
       0,
@@ -148,7 +139,6 @@ const p5Map = (p) => {
     gameCharacters.push(character);
     gameCharacters.push(enemy);
     gameCharacters.push(enemy2);
-    gameObjects.push(canyon);
     gameObjects.push(platform1);
     gameObjects.push(platform3);
     gameObjects.push(platform2);
@@ -160,7 +150,7 @@ const p5Map = (p) => {
     setInterval(() => {
       addRandomEnemy(gameCharacters, mapX, mapY);
     }, monsterRefreshTimeMs);
-    drawGround();
+    addBackgroundObjects();
   };
 
   p.draw = function () {
@@ -177,6 +167,8 @@ const p5Map = (p) => {
       p.text("You Lost", mapX / 2, mapY / 2);
       p.textAlign(p.CENTER, p.CENTER);
       p.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
+      gameCharacters = [];
+      gameObjects = [];
       return;
     }
     if (!!gamer.isVictorious) {
@@ -187,22 +179,25 @@ const p5Map = (p) => {
       p.text("You Are Victorious", mapX / 2, mapY / 2);
       p.textAlign(p.CENTER, p.CENTER);
       p.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
+      gameCharacters = gameCharacters.filter(
+        (char) => char.type === ObjectTypes.Character
+      );
+      gameObjects = [];
       return;
     }
     p.background(135, 206, 250);
+
+    //get one point for each enemy that has died (whether you killed them or not, maybe need to add points logic
+    //here as well)
     score += gameCharacters.filter(
       (char) => !!char.isDead && char.type === ObjectTypes.Enemy
     ).length;
 
+    //#region This Complex logics neets to be seperated and cleand up
     //check for claimed objects that give points, add points and remove them
-
-    console.log(p.allObjects.find((obj) => obj.isDestroyed));
-    gameCharacters.forEach((char) => char.draw(p));
-    gameObjects.forEach((obj) => obj.draw(p));
     gameObjects = gameObjects.filter((obj) => {
       if (!!obj.isDestroyed) {
         if (!!obj.scorePoints) {
-          console.log(obj.scorePoints);
           score += obj.scorePoints;
         }
         return false;
@@ -210,19 +205,26 @@ const p5Map = (p) => {
       return true;
     });
     gameCharacters = gameCharacters.filter((c) => !!!c.isDead);
+
+    gameCharacters.forEach((char) => char.draw(p));
+    gameObjects.forEach((obj) => obj.draw(p));
+    groundBreakingObjects.forEach((obj) => obj.draw(p));
+
+    //#endregion
+
+    //TODO:tv need to move this to an object
     p.fill(0);
     p.textSize(16);
-    p.text(`Score: ${score}`, 2, 45);
+    p.text(`Score: ${score}`, window.innerWidth - mapX + 12, 45);
     lives = gamer.lives;
     for (let i = 0; i < lives; i++) {
-      let heart = new Heart(i + i * 10, 10, 20, 20, new ColorObject(255, 0, 0));
+      let heart = new Heart(i + i * 16, 10, 20, 20, new ColorObject(255, 0, 0));
       heart.draw(p);
     }
   };
 
   p.keyPressed = (e) => {
     //using e as the event I find it more usefull that using the key and keyCode p5 constants(it is clearer what is what)
-    console.log(p.keyIsPressed);
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
@@ -258,9 +260,6 @@ const p5Map = (p) => {
     let groundHeight = p.height * 0.1;
     let groundWidth = p.width;
 
-    let groundBreakingObjects = gameObjects.filter(
-      (obj) => obj.type === ObjectTypes.GroundBreaking
-    );
     //if we don't have any ground breaking objects, fill the whole map with ground
     if (!!!groundBreakingObjects || !groundBreakingObjects.length) {
       let ground = new Ground(
@@ -279,39 +278,74 @@ const p5Map = (p) => {
     const pointsToAvoid = groundBreakingObjects.map((obj) => {
       return { startX: obj.x, endX: obj.x + obj.width };
     });
+    let lastEndPoint = 0;
     for (let i = 0; i < pointsToAvoid.length; i++) {
       //we want to draw around these points
       let xStartDrawing;
       let xEndDrawing;
-      if (i == 0) xStartDrawing = groundX;
-      else xStartDrawing = pointsToAvoid[i - 1].endX;
-      if (i == groundBreakingObjects.length - 1) xEndDrawing = groundWidth;
-      else xEndDrawing = pointsToAvoid[i + 1].startX;
+      //if it's the first part we need to draw ground until that part
+      if (i == 0) {
+        console.log("setting first ground : ");
+        let firstGround = new Ground(
+          groundX,
+          groundY,
+          "Ground part  " + i,
+          ObjectTypes.BackgroundObject,
+          groundColor,
+          pointsToAvoid[i].startX,
+          groundHeight
+        );
+        gameObjects.push(firstGround);
+      }
+      //if it is the last, we need to get what's left of the ground width
+      //else we get the width from the next points start minus the end of this point
+      if (i == groundBreakingObjects.length - 1)
+        xEndDrawing = groundWidth - groundX - lastEndPoint;
+      else {
+        xEndDrawing = pointsToAvoid[i + 1].startX - pointsToAvoid[i].endX;
+        lastEndPoint = pointsToAvoid[i].endX;
+      }
+
       //draw until the point
 
-      let groundBefore = new Ground(
-        xStartDrawing,
-        groundY,
-        "Ground part " + i,
-        ObjectTypes.BackgroundObject,
-        groundColor,
-        pointsToAvoid[i].startX,
-        groundHeight
-      );
-      let groundAfter = new Ground(
+      //draw after the point until the start of the next
+
+      let ground = new Ground(
         pointsToAvoid[i].endX,
         groundY,
-        "Ground part " + i,
+        "Ground part " + (i + 1),
         ObjectTypes.BackgroundObject,
         groundColor,
         xEndDrawing,
         groundHeight
       );
-      gameObjects.push(groundBefore);
-      gameObjects.push(groundAfter);
-      // p.fill(50, 205, 50);
-      // p.rect(0, p.groundY, p.width, p.height - p.groundY);
+      gameObjects.push(ground);
     }
+
+    console.log(gameObjects);
+    console.log(groundBreakingObjects);
+  };
+
+  const addBackgroundObjects = () => {
+    let canyon1 = new SpikeCanyon(
+      300,
+      0,
+      "Spike Canyon 1",
+      ObjectTypes.GroundBreaking,
+      200,
+      p.height * 0.1
+    );
+    let canyon2 = new SpikeCanyon(
+      650,
+      0,
+      "Spike Canyon 2",
+      ObjectTypes.GroundBreaking,
+      200,
+      p.height * 0.1
+    );
+    groundBreakingObjects.push(canyon1);
+    groundBreakingObjects.push(canyon2);
+    drawGround();
   };
 };
 

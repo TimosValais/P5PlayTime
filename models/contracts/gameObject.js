@@ -57,6 +57,7 @@ export default class GameOjbect {
   }
 
   draw(p5Map) {
+    p5Map.stroke(0);
     p5Map.fill(
       this.color.red,
       this.color.green,
@@ -69,6 +70,7 @@ export default class GameOjbect {
       this.width,
       this.height
     );
+    p5Map.noStroke();
   }
   handleCollisions(collisionObjects) {
     collisionObjects.forEach((collisionObject) =>

@@ -15,12 +15,14 @@ export default class Flag extends GameOjbect {
   }
   draw(p5Map) {
     p5Map.fill(this.color.red, this.color.green, this.color.blue);
+    p5Map.stroke(0);
     p5Map.line(
       this.x,
       p5Map.height - this.y,
       this.x,
       p5Map.height - this.y - this.height
     );
+    p5Map.noStroke();
     p5Map.triangle(
       this.x,
       p5Map.height - this.y - this.height,
