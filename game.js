@@ -8,13 +8,13 @@ import Heart from "./models/staticObjects/heart.js";
 import Flag from "./models/staticObjects/flag.js";
 import Ground from "./models/staticObjects/ground.js";
 import GiftBox from "./models/staticObjects/giftBox.js";
-import Canyon from "./models/staticObjects/canyon.js";
 import SpikeCanyon from "./models/staticObjects/spikeCanyon.js";
 
 const gravity = 1;
 const monsterRefreshTimeMs = 3000;
 
 const addRandomEnemy = (enemies, mapX, mapY) => {
+  console.log("max x is : ", mapX);
   let randomX = Math.random() * mapX;
   let randomY = mapY;
   let newEnemy = new SampleEnemy(
@@ -38,10 +38,13 @@ const p5Map = (p) => {
   let gameCharacters = [];
   let gameObjects = [];
   let groundBreakingObjects = [];
+  let cameraPosX = 0;
+  let cameraPosY = 0;
   let lives = 0;
 
   let mapY = window.innerHeight - window.innerHeight * 0.02;
   let mapX = window.innerWidth - window.innerWidth * 0.01;
+
   let score = 0;
   p.setup = function () {
     p.createCanvas(mapX, mapY);
@@ -108,7 +111,9 @@ const p5Map = (p) => {
       20,
       600
     );
-    let giftBox = new GiftBox(200, 400, 100);
+    let giftBox1 = new GiftBox(200, 400, 100);
+    let giftBox2 = new GiftBox(550, 750, 100);
+    let giftBox3 = new GiftBox(800, 800, 50);
     let enemy = new SampleEnemy(
       1100,
       0,
@@ -145,10 +150,12 @@ const p5Map = (p) => {
     gameObjects.push(movingPlatform);
     gameObjects.push(trophy);
     gameObjects.push(blockingPlatform);
-    gameObjects.push(giftBox);
+    gameObjects.push(giftBox1);
+    gameObjects.push(giftBox2);
+    gameObjects.push(giftBox3);
 
-    setInterval(() => {
-      addRandomEnemy(gameCharacters, mapX, mapY);
+    p.enemiesIntervalId = setInterval(() => {
+      addRandomEnemy(gameCharacters, mapX - cameraPosX, mapY);
     }, monsterRefreshTimeMs);
     addBackgroundObjects();
   };
@@ -169,6 +176,8 @@ const p5Map = (p) => {
       p.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
       gameCharacters = [];
       gameObjects = [];
+      //stop spamming enemies
+      clearInterval(p.enemiesIntervalId);
       return;
     }
     if (!!gamer.isVictorious) {
@@ -179,12 +188,25 @@ const p5Map = (p) => {
       p.text("You Are Victorious", mapX / 2, mapY / 2);
       p.textAlign(p.CENTER, p.CENTER);
       p.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
+      //leave just the gamer so it won't go to the other loop
       gameCharacters = gameCharacters.filter(
         (char) => char.type === ObjectTypes.Character
       );
       gameObjects = [];
+      //stop spamming enemies
+      clearInterval(p.enemiesIntervalId);
       return;
     }
+
+    console.log("camera posX before : ", cameraPosX);
+    console.log(p.width);
+    console.log(gamer.x);
+
+    cameraPosX = -gamer.x + p.width / 2;
+    //if the player goes too far up, change the screen like old school games that raised the level
+    cameraPosY = gamer.y > p.height ? gamer.y / 2 : 0;
+    console.log(cameraPosY);
+
     p.background(135, 206, 250);
 
     //get one point for each enemy that has died (whether you killed them or not, maybe need to add points logic
@@ -205,10 +227,18 @@ const p5Map = (p) => {
       return true;
     });
     gameCharacters = gameCharacters.filter((c) => !!!c.isDead);
+    //#endregion
 
-    gameCharacters.forEach((char) => char.draw(p));
+    //#region Moving the camera
+
+    p.push();
+    p.translate(cameraPosX, cameraPosY);
+
     gameObjects.forEach((obj) => obj.draw(p));
     groundBreakingObjects.forEach((obj) => obj.draw(p));
+
+    gameCharacters.forEach((char) => char.draw(p));
+    p.pop();
 
     //#endregion
 
@@ -258,7 +288,7 @@ const p5Map = (p) => {
     let groundY = 0;
     let groundColor = new ColorObject(50, 205, 50);
     let groundHeight = p.height * 0.1;
-    let groundWidth = p.width;
+    let groundWidth = 4000;
 
     //if we don't have any ground breaking objects, fill the whole map with ground
     if (!!!groundBreakingObjects || !groundBreakingObjects.length) {
