@@ -64,7 +64,7 @@ export default class GameOjbect {
     );
     p5Map.rect(
       this.x,
-      p5Map.groundY - this.y - this.height,
+      p5Map.height - this.y - this.height,
       this.width,
       this.height
     );

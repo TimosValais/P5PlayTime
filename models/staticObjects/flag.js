@@ -17,17 +17,17 @@ export default class Flag extends GameOjbect {
     p5Map.fill(this.color.red, this.color.green, this.color.blue);
     p5Map.line(
       this.x,
-      p5Map.groundY - this.y,
+      p5Map.height - this.y,
       this.x,
-      p5Map.groundY - this.y - this.height
+      p5Map.height - this.y - this.height
     );
     p5Map.triangle(
       this.x,
-      p5Map.groundY - this.y - this.height,
+      p5Map.height - this.y - this.height,
       this.x,
-      p5Map.groundY - this.y - this.height - this.height,
+      p5Map.height - this.y - this.height - this.height,
       this.x + this.width,
-      p5Map.groundY - this.y - this.height - this.height / 2
+      p5Map.height - this.y - this.height - this.height / 2
     );
   }
 }

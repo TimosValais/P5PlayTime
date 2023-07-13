@@ -50,8 +50,11 @@ export default class Character extends GameOjbect {
 
     // Update the y position with the vertical speed
     this.y += this.#verticalSpeed;
-    // If the character touches the ground (y = 0), stop the vertical movement
-    if (this.y <= 0 && this.#verticalSpeed <= 0) {
+    // If the character touches the ground (y = 0), they die (not the ground that is drawn, what is under it,
+    //we consider the ground is lava rules of old sidescroll games, don't want to add fall damage logic)
+    if (this.y <= 0) {
+      this.takeDamage(1);
+    } else if (this.y <= 0 && this.#verticalSpeed <= 0) {
       this.y = 0;
       this.#verticalSpeed = 0;
       this.#jumps = 0;
@@ -64,6 +67,9 @@ export default class Character extends GameOjbect {
     this.handleCollisions(p5Map.allObjects);
   }
   drawCharacter(map) {
+    //this could be a switch, although I prefer this syntax
+    //TODO:tv wrap the conditions with functions that describe
+    //the movement (eg grounded + horizontalspeed 0 -> isStanding/isNotMoving)
     if (!this.#isGrounded && this.#horizontalSpeed == 0) {
       this.drawJumping(map);
     } else if (!this.#isGrounded && this.#horizontalSpeed > 0) {
@@ -87,7 +93,7 @@ export default class Character extends GameOjbect {
     );
     map.rect(
       this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       (this.sizeX * 6) / 50,
       this.sizeY / 2
     );
@@ -97,51 +103,51 @@ export default class Character extends GameOjbect {
     map.stroke(0, 0, 0);
     map.ellipse(
       this.x + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 13) / 16,
+      map.height - this.y - (this.sizeY * 13) / 16,
       this.sizeX / 5,
       this.sizeY / 4
     );
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 10,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 - (this.sizeX * 12) / 50,
-      map.groundY - this.y - this.sizeY / 2
+      map.height - this.y - this.sizeY / 2
     );
     map.line(
       this.x + this.sizeX / 2 - (this.sizeX * 12) / 50,
-      map.groundY - this.y - this.sizeY / 2,
+      map.height - this.y - this.sizeY / 2,
       this.x + this.sizeX / 2 - this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 9) / 16
+      map.height - this.y - (this.sizeY * 9) / 16
     );
     //right hand
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 10,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 + (this.sizeX * 12) / 50,
-      map.groundY - this.y - this.sizeY / 2
+      map.height - this.y - this.sizeY / 2
     );
     map.line(
       this.x + this.sizeX / 2 + (this.sizeX * 12) / 50,
-      map.groundY - this.y - this.sizeY / 2,
+      map.height - this.y - this.sizeY / 2,
       this.x + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 7) / 16
+      map.height - this.y - (this.sizeY * 7) / 16
     );
 
     //left foot
     map.strokeWeight(4);
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 25,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 - (this.sizeX * 3) / 10,
-      map.groundY - this.y - this.sizeX / 16
+      map.height - this.y - this.sizeX / 16
     );
     //right foot
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 25,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 + this.sizeX / 7,
-      map.groundY - this.y
+      map.height - this.y
     );
     this.clearStrokesAndFills(map);
   }
@@ -154,7 +160,7 @@ export default class Character extends GameOjbect {
     );
     map.rect(
       this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       (this.sizeX * 3) / 25,
       this.sizeY / 2
     );
@@ -164,52 +170,52 @@ export default class Character extends GameOjbect {
     map.stroke(0, 0, 0);
     map.ellipse(
       this.x + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 13) / 16,
+      map.height - this.y - (this.sizeY * 13) / 16,
       10,
       20
     );
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 10,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 - this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 15) / 16
+      map.height - this.y - (this.sizeY * 15) / 16
     );
 
     //right hand
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 10,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 - this.sizeX / 5,
-      map.groundY - this.y - this.sizeY / 2
+      map.height - this.y - this.sizeY / 2
     );
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 5,
-      map.groundY - this.y - this.sizeY / 2,
+      map.height - this.y - this.sizeY / 2,
       this.x + this.sizeX / 2 - (this.sizeX * 2) / 5,
-      map.groundY - this.y - (this.sizeY * 10) / 16
+      map.height - this.y - (this.sizeY * 10) / 16
     );
 
     //left foot
     map.strokeWeight(4);
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 25,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 - (this.sizeX * 3) / 10,
-      map.groundY - this.y - this.sizeX / 16
+      map.height - this.y - this.sizeX / 16
     );
     //right foot
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 25,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 + this.sizeX / 7,
-      map.groundY - this.y - (this.sizeX * 3) / 80
+      map.height - this.y - (this.sizeX * 3) / 80
     );
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 7,
-      map.groundY - this.y - (this.sizeX * 3) / 80,
+      map.height - this.y - (this.sizeX * 3) / 80,
       this.x + this.sizeX / 2 + (this.sizeX * 12) / 50,
-      map.groundY - this.y - (this.sizeX * 3) / 40
+      map.height - this.y - (this.sizeX * 3) / 40
     );
     this.clearStrokesAndFills(map);
   }
@@ -223,7 +229,7 @@ export default class Character extends GameOjbect {
     );
     map.rect(
       this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       (this.sizeX * 3) / 25,
       this.sizeY / 2
     );
@@ -233,55 +239,55 @@ export default class Character extends GameOjbect {
     map.stroke(0, 0, 0);
     map.ellipse(
       this.x + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 13) / 16,
+      map.height - this.y - (this.sizeY * 13) / 16,
       10,
       20
     );
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 10,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 + this.sizeX / 5,
-      map.groundY - this.y - this.sizeY / 2
+      map.height - this.y - this.sizeY / 2
     );
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 5,
-      map.groundY - this.y - this.sizeY / 2,
+      map.height - this.y - this.sizeY / 2,
       this.x + this.sizeX / 2 + (this.sizeX * 2) / 5,
-      map.groundY - this.y - (this.sizeY * 10) / 16
+      map.height - this.y - (this.sizeY * 10) / 16
     );
 
     //right hand
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 10,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 15) / 16
+      map.height - this.y - (this.sizeY * 15) / 16
     );
 
-    //   line(this.x+ this.sizeX/2 - this.sizeX / 10, map.groundY - this.y - (this.sizeY * 11) / 16, this.x+ this.sizeX/2 -this.sizeX/2, map.groundY - this.y - (this.sizeY * 15) / 16);
+    //   line(this.x+ this.sizeX/2 - this.sizeX / 10, map.height - this.y - (this.sizeY * 11) / 16, this.x+ this.sizeX/2 -this.sizeX/2, map.height - this.y - (this.sizeY * 15) / 16);
 
     //left foot
     map.strokeWeight(4);
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 25,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 - this.sizeX / 7,
-      map.groundY - this.y - (this.sizeY * 3) / 80
+      map.height - this.y - (this.sizeY * 3) / 80
     );
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 7,
-      map.groundY - this.y - (this.sizeY * 3) / 80,
+      map.height - this.y - (this.sizeY * 3) / 80,
       this.x + this.sizeX / 2 - (this.sizeX * 12) / 50,
-      map.groundY - this.y - (this.sizeY * 3) / 40
+      map.height - this.y - (this.sizeY * 3) / 40
     );
 
     //right foot
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 25,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 + (this.sizeX * 3) / 10,
-      map.groundY - this.y - this.sizeX / 16
+      map.height - this.y - this.sizeX / 16
     );
     this.clearStrokesAndFills(map);
   }
@@ -295,7 +301,7 @@ export default class Character extends GameOjbect {
     );
     map.rect(
       this.x + this.sizeX / 2 - (this.sizeX * 3) / 50,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       (this.sizeX * 3) / 25,
       this.sizeY / 2
     );
@@ -305,54 +311,54 @@ export default class Character extends GameOjbect {
     map.stroke(0, 0, 0);
     map.ellipse(
       this.x + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 13) / 16,
+      map.height - this.y - (this.sizeY * 13) / 16,
       10,
       20
     );
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 10,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 - (this.sizeX * 12) / 50,
-      map.groundY - this.y - this.sizeY / 2
+      map.height - this.y - this.sizeY / 2
     );
     map.line(
       this.x + this.sizeX / 2 - (this.sizeX * 12) / 50,
-      map.groundY - this.y - this.sizeY / 2,
+      map.height - this.y - this.sizeY / 2,
       this.x + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 7) / 16
+      map.height - this.y - (this.sizeY * 7) / 16
     );
 
     //right hand
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 10,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 + (this.sizeX * 12) / 50,
-      map.groundY - this.y - this.sizeY / 2
+      map.height - this.y - this.sizeY / 2
     );
     map.line(
       this.x + this.sizeX / 2 + (this.sizeX * 12) / 50,
-      map.groundY - this.y - this.sizeY / 2,
+      map.height - this.y - this.sizeY / 2,
       this.x + this.sizeX / 2 + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 9) / 16
+      map.height - this.y - (this.sizeY * 9) / 16
     );
 
     //left foot
     map.strokeWeight(4);
-    //   line(this.x+ this.sizeX/2 - this.sizeX / 25, map.groundY - this.y - (this.sizeY * 3) / 16, this.x+ this.sizeX/2 - this.sizeX *3 /10, map.groundY - this.y - this.sizeX / 16);
+    //   line(this.x+ this.sizeX/2 - this.sizeX / 25, map.height - this.y - (this.sizeY * 3) / 16, this.x+ this.sizeX/2 - this.sizeX *3 /10, map.height - this.y - this.sizeX / 16);
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 25,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 - this.sizeX / 7,
-      map.groundY - this.y
+      map.height - this.y
     );
     //right foot
-    //   line(this.x+ this.sizeX/2 + 2, map.groundY - this.y - (this.sizeY * 3) / 16, this.x+ this.sizeX/2 + this.sizeX/7, map.groundY - this.y);
+    //   line(this.x+ this.sizeX/2 + 2, map.height - this.y - (this.sizeY * 3) / 16, this.x+ this.sizeX/2 + this.sizeX/7, map.height - this.y);
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 25,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 + (this.sizeX * 3) / 10,
-      map.groundY - this.y - this.sizeX / 16
+      map.height - this.y - this.sizeX / 16
     );
     this.clearStrokesAndFills(map);
   }
@@ -366,7 +372,7 @@ export default class Character extends GameOjbect {
     );
     map.rect(
       this.x + this.sizeX / 2 - this.sizeX / 5,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       (this.sizeX * 2) / 5,
       this.sizeY / 2
     );
@@ -376,38 +382,38 @@ export default class Character extends GameOjbect {
     map.stroke(0, 0, 0);
     map.ellipse(
       this.x + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 13) / 16,
+      map.height - this.y - (this.sizeY * 13) / 16,
       20
     );
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 5,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 - this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 15) / 16
+      map.height - this.y - (this.sizeY * 15) / 16
     );
     //right hand
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 5,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 15) / 16
+      map.height - this.y - (this.sizeY * 15) / 16
     );
 
     //left foot
     map.strokeWeight(4);
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 7,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 - this.sizeX / 2,
-      map.groundY - this.y - this.sizeY / 8
+      map.height - this.y - this.sizeY / 8
     );
     //right foot
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 7,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 + this.sizeX / 2,
-      map.groundY - this.y - this.sizeY / 8
+      map.height - this.y - this.sizeY / 8
     );
     this.clearStrokesAndFills(map);
   }
@@ -421,7 +427,7 @@ export default class Character extends GameOjbect {
     );
     map.rect(
       this.x + this.sizeX / 2 - this.sizeX / 5,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       (this.sizeX * 2) / 5,
       this.sizeY / 2
     );
@@ -431,38 +437,38 @@ export default class Character extends GameOjbect {
     map.stroke(0, 0, 0);
     map.ellipse(
       this.x + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 13) / 16,
+      map.height - this.y - (this.sizeY * 13) / 16,
       this.sizeY / 4
     );
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 5,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 - this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 7) / 16
+      map.height - this.y - (this.sizeY * 7) / 16
     );
     //right hand
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 5,
-      map.groundY - this.y - (this.sizeY * 11) / 16,
+      map.height - this.y - (this.sizeY * 11) / 16,
       this.x + this.sizeX / 2 + this.sizeX / 2,
-      map.groundY - this.y - (this.sizeY * 7) / 16
+      map.height - this.y - (this.sizeY * 7) / 16
     );
 
     //left foot
     map.strokeWeight(4);
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 7,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 - this.sizeX / 7,
-      map.groundY - this.y
+      map.height - this.y
     );
     //right foot
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 7,
-      map.groundY - this.y - (this.sizeY * 3) / 16,
+      map.height - this.y - (this.sizeY * 3) / 16,
       this.x + this.sizeX / 2 + this.sizeX / 7,
-      map.groundY - this.y
+      map.height - this.y
     );
 
     this.clearStrokesAndFills(map);
@@ -503,6 +509,9 @@ export default class Character extends GameOjbect {
     this.#isGrounded = false;
   }
   handleCollisions(collisionObjects) {
+    //TODO:tv maybe we don't need to reinitialize backgroundObjects every time
+    //create an update logic for when something is added, this could also be an
+    //event logic, in general, research performance issues here.
     let backgroundObjects = [];
     let enemies = [];
     let otherCharacters = [];
@@ -530,6 +539,7 @@ export default class Character extends GameOjbect {
     this.#handleTrophy(trophy);
   }
   takeDamage(damageTaken) {
+    //kill character if they are out of lives, or else place at beginning of the map(falling down)
     this.lives -= damageTaken;
     if (this.lives <= 0) {
       this.isDead = true;

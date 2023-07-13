@@ -69,15 +69,15 @@ export default class SampleEnemy extends Character {
   }
   #drawRectangle(map) {
     map.fill(this.color.red, this.color.green, this.color.blue);
-    map.rect(this.x, map.groundY - this.y - this.sizeY, this.sizeX, this.sizeY);
+    map.rect(this.x, map.height - this.y - this.sizeY, this.sizeX, this.sizeY);
   }
   #drawTriangle(map) {
     let x1 = this.x;
-    let y1 = map.groundY - this.y;
+    let y1 = map.height - this.y;
     let x2 = this.x + this.sizeX;
-    let y2 = map.groundY - this.y;
+    let y2 = map.height - this.y;
     let x3 = this.x + this.sizeX / 2;
-    let y3 = map.groundY - this.y - this.sizeY;
+    let y3 = map.height - this.y - this.sizeY;
     map.fill(this.color.red, this.color.green, this.color.blue);
     map.triangle(x1, y1, x2, y2, x3, y3);
   }

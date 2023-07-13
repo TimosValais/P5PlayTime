@@ -1,8 +1,10 @@
+//object freeze works like an enum from other languages
 export const ObjectTypes = Object.freeze({
   Character: 0,
   Enemy: 1,
   BackgroundObject: 2,
   Trophy: 3,
+  GroundBreaking: 4, //sorry for the pun I had to
 });
 
 export const MovementTypes = Object.freeze({

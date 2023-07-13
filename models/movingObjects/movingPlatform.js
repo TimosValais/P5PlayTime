@@ -17,7 +17,6 @@ export default class MovingPlatform extends GameOjbect {
     verticalDistance = 200,
     horizontalDistance = 200
   ) {
-    console.log("color obj : ", colorObject);
     super(x, y, sizeX, sizeY, colorObject);
     this.name = name;
     this.type = type;
