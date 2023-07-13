@@ -9,6 +9,7 @@ import Flag from "./models/staticObjects/flag.js";
 import Ground from "./models/staticObjects/ground.js";
 import GiftBox from "./models/staticObjects/giftBox.js";
 import SpikeCanyon from "./models/staticObjects/spikeCanyon.js";
+import Tree from "./models/staticObjects/tree.js";
 
 const gravity = 1;
 const monsterRefreshTimeMs = 3000;
@@ -376,6 +377,37 @@ const p5Map = (p) => {
     groundBreakingObjects.push(canyon1);
     groundBreakingObjects.push(canyon2);
     drawGround();
+    let tree1 = new Tree(
+      250,
+      p.height * 0.1,
+      "Tree 1",
+      ObjectTypes.BackgroundObject
+    );
+    let tree2 = new Tree(
+      900,
+      p.height * 0.1,
+      "Tree 2",
+      ObjectTypes.BackgroundObject
+    );
+    let tree3 = new Tree(
+      1300,
+      p.height * 0.1,
+      "Tree 2",
+      ObjectTypes.BackgroundObject
+    );
+    let tree4 = new Tree(
+      2200,
+      p.height * 0.1,
+      "Tree 2",
+      ObjectTypes.BackgroundObject
+    );
+    let tree5 = new Tree(
+      2800,
+      p.height * 0.1,
+      "Tree 2",
+      ObjectTypes.BackgroundObject
+    );
+    gameObjects.push(tree1, tree2, tree3, tree4, tree5);
   };
 };
 
