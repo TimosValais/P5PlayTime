@@ -1,6 +1,6 @@
 import GameOjbect from "../contracts/gameObject.js";
 import ColorObject from "../contracts/colorObj.js";
-import { ObjectTypes } from "../../helpers/enums.js";
+import { Directions, ObjectTypes } from "../../helpers/enums.js";
 export default class MovingPlatform extends GameOjbect {
   #xMovement = 0;
   #yMovement = 0;
@@ -44,7 +44,33 @@ export default class MovingPlatform extends GameOjbect {
     ) {
       this.verticalSpeed *= -1;
     }
-
+    this.handleCollisions(p5Map.allObjects);
     super.draw(p5Map);
   }
+
+  handleCollisions(collisionObjects) {
+    this.#hanldeInteractiveObjectsCollitions(
+      collisionObjects.filter((o) => o.type === ObjectTypes.InteractiveObject)
+    );
+  }
+  #hanldeInteractiveObjectsCollitions = (collisionObjects) => {
+    let collisions = [];
+    collisionObjects.forEach((obj) => {
+      let collision = this.collidesWith(obj);
+      if (!!collision) {
+        collisions.push(collision);
+      }
+    });
+    if (!!collisions && !!collisions.length)
+      collisions.forEach((col) => {
+        switch (col) {
+          case Directions.LEFT:
+          case Directions.RIGHT:
+            this.horizontalSpeed *= -1;
+            break;
+          default:
+            break;
+        }
+      });
+  };
 }
