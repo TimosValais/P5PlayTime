@@ -550,6 +550,9 @@ export default class Character extends GameOjbect {
       this.y = 800;
     }
   }
+  getCurrentSpeed() {
+    return this.#horizontalSpeed;
+  }
   #handleInteractiveObjectCollision = (collisionObjects) => {
     let collision = null;
     let collisionObject = collisionObjects.find((obj) => {

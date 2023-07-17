@@ -384,7 +384,9 @@ const p5Map = (p) => {
   };
 
   p.keyPressed = (e) => {
-    console.log("pressed : ", e.key);
+    console.log("pressed : ", p.keyCode);
+    console.log("key is pressed : ", p.keyIsDown(KeyboardKeys.RIGHT_ARROW_KEY));
+    console.log("key is pressed 2: ", p.keyIsDown(KeyboardKeys.LEFT_ARROW_KEY));
     //using e as the event I find it more usefull that using the key and keyCode p5 constants(it is clearer what is what)
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
@@ -402,32 +404,34 @@ const p5Map = (p) => {
       gamer.move(MovementTypes.Jump);
     }
   };
-  p.keyReleased = (e) => {
-    console.log("released : ", e.key);
-
+  p.keyReleased = () => {
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
+    let finalDirection = 0;
     if (
-      (e.key === "ArrowLeft" ||
-        e.key === "ArrowRight" ||
-        e.key === "A" ||
-        e.key === "a" ||
-        e.key === "D" ||
-        e.key === "d") &&
-      !!!anySideArrowPressed(p)
-    ) {
-      //TODO:tv change logic so not everything stopes!
-      gamer.stop();
-    }
-  };
-  const anySideArrowPressed = (p) => {
-    return (
       p.keyIsDown(KeyboardKeys.A_KEY) ||
-      p.keyIsDown(KeyboardKeys.LEFT_ARROW_KEY) ||
-      p.keyIsDown(KeyboardKeys.RIGHT_ARROW_KEY) ||
-      p.keyIsDown(KeyboardKeys.D_KEY)
-    );
+      p.keyIsDown(KeyboardKeys.LEFT_ARROW_KEY)
+    ) {
+      finalDirection--;
+    }
+    if (
+      p.keyIsDown(KeyboardKeys.D_KEY) ||
+      p.keyIsDown(KeyboardKeys.RIGHT_ARROW_KEY)
+    ) {
+      finalDirection++;
+    }
+    switch (finalDirection) {
+      case 0:
+        gamer.stop();
+        break;
+      case 1:
+        gamer.move(MovementTypes.Run, Directions.RIGHT);
+        break;
+      case -1:
+        gamer.move(MovementTypes.Run, Directions.LEFT);
+        break;
+    }
   };
   const drawGround = () => {
     let groundX = 0;

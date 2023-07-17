@@ -19,13 +19,12 @@ export const Directions = Object.freeze({
   LEFT: 3,
   RIGHT: 4,
 });
-
 export const KeyboardKeys = Object.freeze({
   SPACE_KEY: "32",
   A_KEY: "65",
   D_KEY: "68",
   S_KEY: "83",
   W_KEY: "87",
-  LEFT_ARROW_KEY: "LEFT_ARROW",
-  RIGHT_ARROW_KEY: "RIGHT_ARROW",
+  LEFT_ARROW_KEY: "37",
+  RIGHT_ARROW_KEY: "39",
 });
