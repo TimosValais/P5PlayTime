@@ -36,7 +36,6 @@ export default class SampleEnemy extends Character {
   }
 
   checkScreenBoundaries(p5Map) {
-    console.log(p5Map.cameraPositionX);
     if (this.x <= -p5Map.cameraPositionX) {
       this.#direction = Directions.RIGHT;
     } else if (this.x + this.sizeX >= p5Map.width - p5Map.cameraPositionX) {

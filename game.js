@@ -1,5 +1,10 @@
 import Character from "./models/movingObjects/character.js";
-import { ObjectTypes, MovementTypes, Directions } from "./helpers/enums.js";
+import {
+  ObjectTypes,
+  MovementTypes,
+  Directions,
+  KeyboardKeys,
+} from "./helpers/enums.js";
 import ColorObject from "./models/contracts/colorObj.js";
 import Platform from "./models/staticObjects/platform.js";
 import SampleEnemy from "./models/movingObjects/sampleEnemy.js";
@@ -14,7 +19,7 @@ import Mountain from "./models/staticObjects/mountains.js";
 import Cloud from "./models/staticObjects/cloud.js";
 
 const gravity = 1;
-const monsterRefreshTimeMs = 3000;
+const monsterRefreshTimeMs = 1500;
 
 const addRandomEnemy = (enemies, mapX, mapY) => {
   let randomX = Math.random() * mapX;
@@ -379,34 +384,50 @@ const p5Map = (p) => {
   };
 
   p.keyPressed = (e) => {
+    console.log("pressed : ", e.key);
     //using e as the event I find it more usefull that using the key and keyCode p5 constants(it is clearer what is what)
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
     if (e.key === "ArrowLeft" || e.key === "A" || e.key === "a") {
       gamer.move(MovementTypes.Run, Directions.LEFT);
-    }
-    if (e.key === "ArrowRight" || e.key === "D" || e.key === "d") {
+    } else if (e.key === "ArrowRight" || e.key === "D" || e.key === "d") {
       gamer.move(MovementTypes.Run, Directions.RIGHT);
-    }
-    if (e.key === "ArrowUp" || e.key === "W" || e.key === "w") {
+    } else if (
+      e.key === "ArrowUp" ||
+      e.key === "W" ||
+      e.key === "w" ||
+      e.key === " "
+    ) {
       gamer.move(MovementTypes.Jump);
     }
   };
   p.keyReleased = (e) => {
+    console.log("released : ", e.key);
+
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
     if (
-      e.key === "ArrowLeft" ||
-      e.key === "ArrowRight" ||
-      e.key === "A" ||
-      e.key === "a" ||
-      e.key === "D" ||
-      e.key === "d"
+      (e.key === "ArrowLeft" ||
+        e.key === "ArrowRight" ||
+        e.key === "A" ||
+        e.key === "a" ||
+        e.key === "D" ||
+        e.key === "d") &&
+      !!!anySideArrowPressed(p)
     ) {
+      //TODO:tv change logic so not everything stopes!
       gamer.stop();
     }
+  };
+  const anySideArrowPressed = (p) => {
+    return (
+      p.keyIsDown(KeyboardKeys.A_KEY) ||
+      p.keyIsDown(KeyboardKeys.LEFT_ARROW_KEY) ||
+      p.keyIsDown(KeyboardKeys.RIGHT_ARROW_KEY) ||
+      p.keyIsDown(KeyboardKeys.D_KEY)
+    );
   };
   const drawGround = () => {
     let groundX = 0;
@@ -423,10 +444,10 @@ const p5Map = (p) => {
         "Ground Platform",
         ObjectTypes.InteractiveObject,
         new ColorObject(50, 205, 50),
-        p.width,
-        p.height * 0.1
+        groundWidth,
+        groundHeight
       );
-      p.gameObjects.push(ground);
+      gameObjects.push(ground);
       return;
     }
     //draw ground before and after groundbreaking objects
