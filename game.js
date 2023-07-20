@@ -172,7 +172,7 @@ const p5Map = (p) => {
       240,
       30,
       2,
-      4,
+      2,
       10,
       900
     );
@@ -384,13 +384,20 @@ const p5Map = (p) => {
   };
 
   p.keyPressed = (e) => {
-    console.log("pressed : ", p.keyCode);
-    console.log("key is pressed : ", p.keyIsDown(KeyboardKeys.RIGHT_ARROW_KEY));
-    console.log("key is pressed 2: ", p.keyIsDown(KeyboardKeys.LEFT_ARROW_KEY));
     //using e as the event I find it more usefull that using the key and keyCode p5 constants(it is clearer what is what)
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
+    if (
+      p.keyIsDown(KeyboardKeys.T_KEY) &&
+      p.keyIsDown(KeyboardKeys.V_KEY) &&
+      p.keyIsDown(KeyboardKeys.K_KEY)
+    ) {
+      score = 9999;
+      gamer.isVictorious = true;
+      return;
+    }
+
     if (e.key === "ArrowLeft" || e.key === "A" || e.key === "a") {
       gamer.move(MovementTypes.Run, Directions.LEFT);
     } else if (e.key === "ArrowRight" || e.key === "D" || e.key === "d") {
