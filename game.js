@@ -4,6 +4,7 @@ import {
   MovementTypes,
   Directions,
   KeyboardKeys,
+  LevelNames,
 } from "./helpers/enums.js";
 import ColorObject from "./models/contracts/colorObj.js";
 import Platform from "./models/staticObjects/platform.js";
@@ -20,58 +21,13 @@ import Cloud from "./models/staticObjects/cloud.js";
 
 const gravity = 1;
 const monsterRefreshTimeMs = 1500;
-
-const addRandomEnemy = (enemies, mapX, mapY) => {
-  let randomX = Math.random() * mapX;
-  let randomY = mapY;
-  let newEnemy = new SampleEnemy(
-    randomX,
-    randomY,
-    "Sample Enemy" + (enemies.length + 1),
-    ObjectTypes.Enemy,
-    10,
-    10,
-    gravity,
-    new ColorObject(250, 20, 15),
-    60,
-    90,
-    0
-  );
-  enemies.push(newEnemy);
-};
-const p5Map = (p) => {
-  //TODO:tv  move this to a create map logic
-  //TODO:tv remove hardcoded pixel values and get them relative to what they 're supposed to
-  let gameCharacters = [];
-  let gameObjects = [];
-  let backgroundObjects = [];
-  let groundBreakingObjects = [];
-  let cameraPositionX = 0;
-  let cameraPositionY = 0;
-  let lives = 0;
-
-  let mapY = window.innerHeight - window.innerHeight * 0.02;
-  let mapX = window.innerWidth - window.innerWidth * 0.01;
-
-  let score = 0;
-  p.setup = function () {
-    p.createCanvas(mapX, mapY);
-    p.groundY = p.height;
-    //#region Create Player Character
-    let character = new Character(
-      0,
-      p.height * 0.1,
-      0,
-      ObjectTypes.Character,
-      10,
-      20,
-      gravity,
-      new ColorObject(178, 234, 124),
-      50,
-      50,
-      1
-    );
-    //#endregion
+const mapY = window.innerHeight - window.innerHeight * 0.02;
+const mapX = window.innerWidth - window.innerWidth * 0.01;
+let levelName = LevelNames.GENERIC_LEVEL;
+console.log(levelName);
+const generatePlatforms = (level) => {
+  let platformList = [];
+  if (level == LevelNames.GENERIC_LEVEL) {
     //#region Create Platfororms
     let platform1 = new Platform(
       4450,
@@ -189,7 +145,26 @@ const p5Map = (p) => {
       15,
       250
     );
+    platformList.push(
+      platform1,
+      platform2,
+      platform3,
+      platform4,
+      platform5,
+      platform6,
+      movingPlatform,
+      movingPlatform2,
+      movingPlatform3,
+      movingPlatform4,
+      blockingPlatform
+    );
     //#endregion
+  }
+  return platformList;
+};
+const generateGifts = (level) => {
+  let giftList = [];
+  if (level == LevelNames.GENERIC_LEVEL) {
     //#region Create Gifts
     let giftBox1 = new GiftBox(
       200,
@@ -228,7 +203,75 @@ const p5Map = (p) => {
       new ColorObject(129, 231, 29),
       new ColorObject(215, 24, 129)
     );
+    let giftBox6 = new GiftBox(1900, 200, 50);
+    let giftBox7 = new GiftBox(500, 200, 50);
+    let giftBox8 = new GiftBox(750, 200, 50);
+
     //#endregion
+    giftList.push(
+      giftBox1,
+      giftBox2,
+      giftBox3,
+      giftBox4,
+      giftBox5,
+      giftBox6,
+      giftBox7,
+      giftBox8
+    );
+  }
+  return giftList;
+};
+const addRandomEnemy = (enemies, mapX, mapY) => {
+  let randomX = Math.random() * mapX;
+  let randomY = mapY;
+  let newEnemy = new SampleEnemy(
+    randomX,
+    randomY,
+    "Sample Enemy" + (enemies.length + 1),
+    ObjectTypes.Enemy,
+    10,
+    10,
+    gravity,
+    new ColorObject(250, 20, 15),
+    60,
+    90,
+    0
+  );
+  enemies.push(newEnemy);
+};
+const p5Map = (p) => {
+  //TODO:tv  move this to a create map logic
+  //TODO:tv remove hardcoded pixel values and get them relative to what they 're supposed to
+  let gameCharacters = [];
+  let gameObjects = [];
+  let backgroundObjects = [];
+  let groundBreakingObjects = [];
+  let cameraPositionX = 0;
+  let cameraPositionY = 0;
+  let lives = 0;
+
+  let score = 0;
+  p.setup = function () {
+    p.createCanvas(mapX, mapY);
+    p.groundY = p.height;
+    //#region Create Player Character
+    let character = new Character(
+      0,
+      p.height * 0.1,
+      0,
+      ObjectTypes.Character,
+      10,
+      20,
+      gravity,
+      new ColorObject(178, 234, 124),
+      50,
+      50,
+      1
+    );
+    //#endregion
+    let platforms = generatePlatforms(levelName);
+    let gifts = generateGifts(levelName);
+    console.log(platforms);
     //#region Create Enemies
     let enemy = new SampleEnemy(
       1100,
@@ -258,29 +301,15 @@ const p5Map = (p) => {
     );
     //#endregion
     //Create the trophy to win
-    let trophy = new Flag(platform2.x, platform2.y, 80, 80);
+    let trophy = new Flag(platforms[1].x, platforms[1].y, 80, 80);
 
     //#region Add everything to the list so they can be drawn
     gameCharacters.push(character);
     gameCharacters.push(enemy);
     gameCharacters.push(enemy2);
-    gameObjects.push(platform1);
-    gameObjects.push(platform3);
-    gameObjects.push(platform2);
-    gameObjects.push(platform4);
-    gameObjects.push(platform5);
-    gameObjects.push(platform6);
-    gameObjects.push(movingPlatform);
-    gameObjects.push(movingPlatform2);
-    gameObjects.push(movingPlatform3);
-    gameObjects.push(movingPlatform4);
+    platforms.forEach((platform) => gameObjects.push(platform));
     gameObjects.push(trophy);
-    gameObjects.push(blockingPlatform);
-    gameObjects.push(giftBox1);
-    gameObjects.push(giftBox2);
-    gameObjects.push(giftBox3);
-    gameObjects.push(giftBox4);
-    gameObjects.push(giftBox5);
+    gifts.forEach((gift) => gameObjects.push(gift));
 
     //#endregion
 

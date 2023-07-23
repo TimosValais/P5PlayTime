@@ -31,3 +31,7 @@ export const KeyboardKeys = Object.freeze({
   LEFT_ARROW_KEY: "37",
   RIGHT_ARROW_KEY: "39",
 });
+
+export const LevelNames = Object.freeze({
+  GENERIC_LEVEL: "genericLevlel",
+});
