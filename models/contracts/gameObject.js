@@ -8,7 +8,7 @@ export default class GameOjbect {
     height,
     colorObject = new ColorObject(),
     stepX = 10,
-    stepY = 15
+    stepY = 17
     //shape = null
   ) {
     this.x = x;
