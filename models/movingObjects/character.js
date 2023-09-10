@@ -12,7 +12,7 @@ export default class Character extends GameOjbect {
     y,
     name = "Generic Character",
     type = ObjectTypes.Character,
-    horizontalSpeedCapacity = 3,
+    horizontalSpeedCapacity = 7,
     verticalSpeedCapacity = 30,
     gravity = 1,
     colorObject = new ColorObject(),
@@ -98,15 +98,7 @@ export default class Character extends GameOjbect {
       this.sizeY / 2
     );
     //head
-    map.noFill();
-    map.strokeWeight(3);
-    map.stroke(0, 0, 0);
-    map.ellipse(
-      this.x + this.sizeX / 2,
-      map.height - this.y - (this.sizeY * 13) / 16,
-      this.sizeX / 5,
-      this.sizeY / 4
-    );
+    this.#drawHead(map);
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 10,
@@ -165,15 +157,8 @@ export default class Character extends GameOjbect {
       this.sizeY / 2
     );
     //head
-    map.noFill();
-    map.strokeWeight(3);
-    map.stroke(0, 0, 0);
-    map.ellipse(
-      this.x + this.sizeX / 2,
-      map.height - this.y - (this.sizeY * 13) / 16,
-      10,
-      20
-    );
+    this.#drawHead(map);
+
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 10,
@@ -234,15 +219,8 @@ export default class Character extends GameOjbect {
       this.sizeY / 2
     );
     //head
-    map.noFill();
-    map.strokeWeight(3);
-    map.stroke(0, 0, 0);
-    map.ellipse(
-      this.x + this.sizeX / 2,
-      map.height - this.y - (this.sizeY * 13) / 16,
-      10,
-      20
-    );
+    this.#drawHead(map);
+
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 10,
@@ -306,15 +284,8 @@ export default class Character extends GameOjbect {
       this.sizeY / 2
     );
     //head
-    map.noFill();
-    map.strokeWeight(3);
-    map.stroke(0, 0, 0);
-    map.ellipse(
-      this.x + this.sizeX / 2,
-      map.height - this.y - (this.sizeY * 13) / 16,
-      10,
-      20
-    );
+    this.#drawHead(map);
+
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 10,
@@ -377,14 +348,8 @@ export default class Character extends GameOjbect {
       this.sizeY / 2
     );
     //head
-    map.noFill();
-    map.strokeWeight(3);
-    map.stroke(0, 0, 0);
-    map.ellipse(
-      this.x + this.sizeX / 2,
-      map.height - this.y - (this.sizeY * 13) / 16,
-      20
-    );
+    this.#drawHead(map);
+
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 5,
@@ -432,14 +397,8 @@ export default class Character extends GameOjbect {
       this.sizeY / 2
     );
     //head
-    map.noFill();
-    map.strokeWeight(3);
-    map.stroke(0, 0, 0);
-    map.ellipse(
-      this.x + this.sizeX / 2,
-      map.height - this.y - (this.sizeY * 13) / 16,
-      this.sizeY / 4
-    );
+    this.#drawHead(map);
+
     //left hand
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 5,
@@ -604,5 +563,16 @@ export default class Character extends GameOjbect {
   #handleTrophy = (trophy) => {
     let collision = this.collidesWith(trophy);
     if (!!collision && collision != Directions.DOWN) this.isVictorious = true;
+  };
+  #drawHead = (map) => {
+    map.noFill();
+    map.strokeWeight(3);
+    map.stroke(0, 0, 0);
+    map.ellipse(
+      this.x + this.sizeX / 2,
+      map.height - this.y - (this.sizeY * 13) / 16,
+      this.sizeX / 5,
+      this.sizeY / 4
+    );
   };
 }

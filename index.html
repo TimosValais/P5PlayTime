@@ -6,12 +6,11 @@
     <!--TODO:tv decide game name -->
     <title>Game Title to be decided</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css"> 
+
 </head>
 
 <body>
-    <!-- Main title -->
-
-<!-- First set of divs -->
 <div class="container">
 <div class="choice" id="character_choice">
     <h1 class="text-center my-4">Choose Character</h1>
@@ -19,19 +18,20 @@
     <div class="d-flex justify-content-between flex-wrap">
         
         <div class="col-md-3 mx-3 mb-4 character_element" data-name="Character 1" data-id="character1">
-            <img src="images/baseCharacter.gif" alt="Characters 1 Name" class="img-fluid">
+            <img src="images/baseCharacter.gif" alt="Characters 1 Name" class="img-fluid rounded">
             <h2>Character 1</h2>
         </div>
         <div class="col-md-3 mx-3 mb-4 character_element" data-name="Character 2" data-id="character2">
-            <img src="images/baseCharacter.gif" alt="Characters 2 Name" class="img-fluid">
+            <img src="images/baseCharacter.gif" alt="Characters 2 Name" class="img-fluid rounded">
             <h2>Character 2</h2>
         </div>
         <div class="col-md-3 mx-3 mb-4 character_element" data-name="Character 3" data-id="character3">
-            <img src="images/baseCharacter.gif" alt="Characters 3 Name" class="img-fluid">
+            <img src="images/baseCharacter.gif" alt="Characters 3 Name" class="img-fluid rounded">
             <h2>Character 3</h2>
         </div>
-        <input type="text" class="form-control mt-3" id="selected_character" value="Character 1" disabled>
-        
+        <div class="col-md-3 mx-auto">
+            <input type="text" class="form-control mt-3 rounded" id="selected_character" value="Character 1" disabled>
+        </div>        
     </div>
 
     
@@ -43,26 +43,27 @@
     <div class="d-flex justify-content-between flex-wrap">
         
         <div class="col-md-3 mx-3 mb-4 map_element" data-name="Map 1" data-id="map1">
-            <img src="images/baseCharacter.gif" alt="Map 1 Name" class="img-fluid">
+            <img src="images/baseCharacter.gif" alt="Map 1 Name" class="img-fluid rounded">
             <h2>Map 1</h2>
         </div>
         <div class="col-md-3 mx-3 mb-4 map_element" data-name="Map 2" data-id="map2">
-            <img src="images/baseCharacter.gif" alt="Map 2 Name" class="img-fluid">
+            <img src="images/baseCharacter.gif" alt="Map 2 Name" class="img-fluid rounded">
             <h2>Map 2</h2>
         </div>
         <div class="col-md-3 mx-3 mb-4 map_element" data-name="Map 3" data-id="map3">
-            <img src="images/baseCharacter.gif" alt="Map 3 Name" class="img-fluid">
+            <img src="images/baseCharacter.gif" alt="Map 3 Name" class="img-fluid rounded">
             <h2>Map 3</h2>
         </div>
                         
     </div>
-    <input type="text" class="form-control mt-3" id="selected_map" value="Map 1" disabled>
-
+    <div class="col-md-3 mx-auto">
+        <input type="text" class="form-control mt-3 rounded" id="selected_map" value="Map 1" disabled>
+    </div>
     
 
 </div>
 <div class="text-center my-4">
-    <button class="btn btn-primary" id="start_game_button">Start Game</button>
+    <button class="btn btn-primary rounded" id="start_game_button">Start Game</button>
 </div>
 </div>
 

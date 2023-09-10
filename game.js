@@ -18,9 +18,10 @@ import SpikeCanyon from "./models/staticObjects/spikeCanyon.js";
 import Tree from "./models/staticObjects/tree.js";
 import Mountain from "./models/staticObjects/mountains.js";
 import Cloud from "./models/staticObjects/cloud.js";
+import Snowman from "./models/movingObjects/snowman.js";
 
 const gravity = 1;
-const monsterRefreshTimeMs = 1500;
+const monsterRefreshTimeMs = 8000;
 const mapY = window.innerHeight - window.innerHeight * 0.02;
 const mapX = window.innerWidth - window.innerWidth * 0.01;
 let levelName = LevelNames.GENERIC_LEVEL;
@@ -176,7 +177,7 @@ const generateGifts = (level) => {
       new ColorObject(0, 0, 128)
     );
     let giftBox2 = new GiftBox(
-      550,
+      800,
       750,
       50,
       "Yellow Box",
@@ -184,7 +185,7 @@ const generateGifts = (level) => {
       new ColorObject(129, 231, 29),
       new ColorObject(215, 24, 129)
     );
-    let giftBox3 = new GiftBox(800, 800, 100);
+    let giftBox3 = new GiftBox(1400, 800, 100);
     let giftBox4 = new GiftBox(
       4410,
       520,
@@ -203,7 +204,7 @@ const generateGifts = (level) => {
       new ColorObject(129, 231, 29),
       new ColorObject(215, 24, 129)
     );
-    let giftBox6 = new GiftBox(1900, 200, 50);
+    let giftBox6 = new GiftBox(2300, 200, 50);
     let giftBox7 = new GiftBox(500, 200, 50);
     let giftBox8 = new GiftBox(750, 200, 50);
 
@@ -255,18 +256,12 @@ const p5Map = (p) => {
     p.createCanvas(mapX, mapY);
     p.groundY = p.height;
     //#region Create Player Character
-    let character = new Character(
+    let snowMan = new Snowman(
       0,
       p.height * 0.1,
-      0,
-      ObjectTypes.Character,
-      10,
-      20,
-      gravity,
-      new ColorObject(178, 234, 124),
+      new ColorObject(255, 255, 255),
       50,
-      50,
-      1
+      100
     );
     //#endregion
     let platforms = generatePlatforms(levelName);
@@ -304,7 +299,7 @@ const p5Map = (p) => {
     let trophy = new Flag(platforms[1].x, platforms[1].y, 80, 80);
 
     //#region Add everything to the list so they can be drawn
-    gameCharacters.push(character);
+    gameCharacters.push(snowMan);
     gameCharacters.push(enemy);
     gameCharacters.push(enemy2);
     platforms.forEach((platform) => gameObjects.push(platform));
