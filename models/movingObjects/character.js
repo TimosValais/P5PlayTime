@@ -18,7 +18,8 @@ export default class Character extends GameOjbect {
     colorObject = new ColorObject(),
     sizeX = 50,
     sizeY = 50,
-    maxJumps = 1
+    maxJumps = 1,
+    weaponDamage = 0
   ) {
     super(x, y, sizeX, sizeY);
     this.x = x;
@@ -39,6 +40,7 @@ export default class Character extends GameOjbect {
     this.isDead = false;
     this.isVictorious = false;
     this.gravitationalHorizontalSpeed = 0;
+    this.weaponDamage = weaponDamage;
   }
 
   draw(p5Map) {
@@ -511,6 +513,9 @@ export default class Character extends GameOjbect {
   }
   getCurrentSpeed() {
     return this.#horizontalSpeed;
+  }
+  hasWeapon() {
+    return this.weaponDamage > 0;
   }
   #handleInteractiveObjectCollision = (collisionObjects) => {
     let collision = null;

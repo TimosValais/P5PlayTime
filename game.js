@@ -266,7 +266,6 @@ const p5Map = (p) => {
     //#endregion
     let platforms = generatePlatforms(levelName);
     let gifts = generateGifts(levelName);
-    console.log(platforms);
     //#region Create Enemies
     let enemy = new SampleEnemy(
       1100,
@@ -313,6 +312,10 @@ const p5Map = (p) => {
       addRandomEnemy(gameCharacters, mapX - cameraPositionX, mapY);
     }, monsterRefreshTimeMs);
     addBackgroundObjects();
+
+    p.addGameObject = (obj) => {
+      gameObjects.push(obj);
+    };
   };
 
   p.draw = function () {
@@ -365,7 +368,8 @@ const p5Map = (p) => {
     //get one point for each enemy that has died (whether you killed them or not, maybe need to add points logic
     //here as well)
     score += gameCharacters.filter(
-      (char) => !!char.isDead && char.type === ObjectTypes.Enemy
+      (char) =>
+        !!char.isDead && !!char.wasKilled && char.type === ObjectTypes.Enemy
     ).length;
 
     //#region This Complex logics neets to be seperated and cleand up
@@ -412,6 +416,7 @@ const p5Map = (p) => {
     let gamer = gameCharacters.find(
       (char) => char.type === ObjectTypes.Character
     );
+    //game cheatcode from my initials
     if (
       p.keyIsDown(KeyboardKeys.T_KEY) &&
       p.keyIsDown(KeyboardKeys.V_KEY) &&
@@ -433,6 +438,11 @@ const p5Map = (p) => {
       e.key === " "
     ) {
       gamer.move(MovementTypes.Jump);
+    } else if (
+      (e.key === "F" || e.key === "f" || e.key === "Control") &&
+      !!gamer.hasWeapon()
+    ) {
+      gamer.fire(p);
     }
   };
   p.keyReleased = () => {

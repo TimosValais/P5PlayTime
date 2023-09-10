@@ -1,7 +1,10 @@
 import ColorObject from "../contracts/colorObj.js";
 import { ObjectTypes, MovementTypes, Directions } from "../../helpers/enums.js";
 import Character from "./character.js";
+import GenericAmmo from "./genericAmmo.js";
+import Snowball from "./snowball.js";
 export default class Snowman extends Character {
+  #fireDirection = Directions.RIGHT;
   constructor(
     x,
     y,
@@ -19,7 +22,9 @@ export default class Snowman extends Character {
       1,
       colorObject,
       sizeX,
-      sizeY
+      sizeY,
+      1,
+      1
     );
   }
 
@@ -65,6 +70,7 @@ export default class Snowman extends Character {
     );
 
     this.clearStrokesAndFills(map);
+    this.#fireDirection = Directions.LEFT;
   }
   drawJumpingLeft(map) {
     //head
@@ -109,6 +115,7 @@ export default class Snowman extends Character {
     );
 
     this.clearStrokesAndFills(map);
+    this.#fireDirection = Directions.LEFT;
   }
   drawJumpingRight(map) {
     //head
@@ -153,6 +160,7 @@ export default class Snowman extends Character {
     );
 
     this.clearStrokesAndFills(map);
+    this.#fireDirection = Directions.RIGHT;
   }
   drawMovingRight(map) {
     //head
@@ -196,6 +204,7 @@ export default class Snowman extends Character {
     );
 
     this.clearStrokesAndFills(map);
+    this.#fireDirection = Directions.RIGHT;
   }
   drawStanding(map) {
     //head
@@ -284,11 +293,18 @@ export default class Snowman extends Character {
 
     this.clearStrokesAndFills(map);
   }
-  clearStrokesAndFills(map) {
-    map.strokeWeight(1);
-    map.noFill();
+  fire(map) {
+    let factor = this.#fireDirection == Directions.LEFT ? -1 : 1;
+    let ammo = new Snowball(
+      this.x + this.sizeX,
+      this.y + this.sizeY / 2,
+      10,
+      10,
+      factor * 20,
+      new ColorObject(255, 255, 255)
+    );
+    map.addGameObject(ammo);
   }
-
   #drawHead = (map, firstDirection = null, secondDirection = null) => {
     switch (true) {
       case firstDirection == Directions.LEFT && !!!secondDirection:
@@ -416,7 +432,6 @@ export default class Snowman extends Character {
     map.stroke(0, 0, 0);
     map.strokeWeight(1);
     map.textSize(textSize);
-    console.log(text);
     switch (textAlign) {
       case "RIGHT":
         map.textAlign(map.RIGHT);

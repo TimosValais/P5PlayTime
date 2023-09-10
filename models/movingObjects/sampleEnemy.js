@@ -33,6 +33,7 @@ export default class SampleEnemy extends Character {
     this.lives = 1;
     this.isDead = false;
     this.armor = 0;
+    this.wasKilled = false;
   }
 
   checkScreenBoundaries(p5Map) {
@@ -84,6 +85,7 @@ export default class SampleEnemy extends Character {
   takeDamage(damageTaken) {
     if (damageTaken >= this.armor) {
       this.isDead = true;
+      this.wasKilled = true;
     }
   }
   handleCollisions(collisionObjects) {
