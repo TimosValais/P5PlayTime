@@ -82,10 +82,10 @@ export default class SampleEnemy extends Character {
     map.fill(this.color.red, this.color.green, this.color.blue);
     map.triangle(x1, y1, x2, y2, x3, y3);
   }
-  takeDamage(damageTaken) {
+  takeDamage(damageTaken, selfInflicted = true) {
     if (damageTaken >= this.armor) {
       this.isDead = true;
-      this.wasKilled = true;
+      if (!!!selfInflicted) this.wasKilled = true;
     }
   }
   handleCollisions(collisionObjects) {

@@ -2,6 +2,8 @@ import GameOjbect from "../contracts/gameObject.js";
 import ColorObject from "../contracts/colorObj.js";
 import { Directions, ObjectTypes } from "../../helpers/enums.js";
 export default class GenericAmmo extends GameOjbect {
+  #initPosition;
+  #xLimit = 400;
   constructor(
     x,
     y,
@@ -20,9 +22,12 @@ export default class GenericAmmo extends GameOjbect {
     this.verticalSpeed = verticalSpeed;
     this.isSticky = true;
     this.damage = 1;
+    this.#initPosition = this.x;
   }
 
   draw(p5Map) {
+    if (Math.abs(this.#initPosition - this.x) > this.#xLimit)
+      this.isDestroyed = true;
     this.x += this.horizontalSpeed;
     this.y += this.verticalSpeed;
     this.handleCollisions(p5Map.allObjects);
@@ -30,6 +35,7 @@ export default class GenericAmmo extends GameOjbect {
   }
 
   handleCollisions(collisionObjects) {
+    console.log("called");
     this.#hanldeInteractiveObjectsCollitions(
       collisionObjects.filter((o) => o.type === ObjectTypes.InteractiveObject)
     );
@@ -62,17 +68,20 @@ export default class GenericAmmo extends GameOjbect {
     }
   };
   #handleEnemyCollision = (collisionEnemies) => {
+    console.log(collisionEnemies);
     let collision = null;
     let collisionEnemy = collisionEnemies.find((obj) => {
       collision = this.collidesWith(obj);
       return collision != null;
     });
+    if (collision) console.log(collision);
     switch (collision) {
       case Directions.UP:
       case Directions.DOWN:
       case Directions.LEFT:
       case Directions.RIGHT:
-        collisionEnemy.takeDamage(this.damage);
+        collisionEnemy.takeDamage(this.damage, false);
+        this.isDestroyed = true;
         break;
     }
   };

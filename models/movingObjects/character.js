@@ -551,7 +551,7 @@ export default class Character extends GameOjbect {
     });
     switch (collision) {
       case Directions.UP:
-        collisionEnemy.takeDamage(this.#damage);
+        collisionEnemy.takeDamage(this.#damage, false);
         this.#verticalSpeed = this.verticalSpeedCapacity;
         break;
       case Directions.DOWN:

@@ -34,5 +34,14 @@ export const KeyboardKeys = Object.freeze({
 });
 
 export const LevelNames = Object.freeze({
-  GENERIC_LEVEL: "genericLevlel",
+  DAY_LEVEL: "day",
+  NIGHT_LEVEL: "night",
+});
+export const EnemyTypes = Object.freeze({
+  Sample: 1,
+  SecondEnemy: 2,
+});
+export const CharacterNames = Object.freeze({
+  BUNNY: "bunny",
+  SNOWMAN: "snowman",
 });

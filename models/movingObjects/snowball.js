@@ -1,7 +1,9 @@
-import GameOjbect from "../contracts/gameObject.js";
 import ColorObject from "../contracts/colorObj.js";
 import { Directions, ObjectTypes } from "../../helpers/enums.js";
-export default class Snowball extends GameOjbect {
+import GenericAmmo from "./genericAmmo.js";
+export default class Snowball extends GenericAmmo {
+  #initPosition;
+  #xLimit = 1000;
   constructor(
     x,
     y,
@@ -13,16 +15,19 @@ export default class Snowball extends GameOjbect {
     type = ObjectTypes.Ammo,
     verticalSpeed = 0
   ) {
-    super(x, y, sizeX, sizeY, colorObject);
+    super(x, y, sizeX, sizeY, horizontalSpeed, colorObject);
     this.name = name;
     this.type = type;
     this.horizontalSpeed = horizontalSpeed;
     this.verticalSpeed = verticalSpeed;
     this.isSticky = true;
     this.damage = 1;
+    this.#initPosition = this.x;
   }
 
   draw(p5Map) {
+    if (Math.abs(this.#initPosition - this.x) > this.#xLimit)
+      this.isDestroyed = true;
     this.x += this.horizontalSpeed;
     this.y += this.verticalSpeed;
     this.handleCollisions(p5Map.allObjects);
