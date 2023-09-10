@@ -1,4 +1,31 @@
 body {
-    background: url('../images/backgournd.gif') no-repeat center center fixed;
+    position: relative;
+    background: url('../images/gameBackground.png') center center fixed;
     background-size: cover;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: -1; 
+}
+
+.choice-image {
+    max-height: 30vh; 
+    overflow-y: auto;
+}
+
+.pop-out {
+    box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.6); 
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pop-out:hover {
+    transform: scale(1.05); 
+    box-shadow: 0px 0px 20px rgba(0, 255, 0, 0.8); 
 }

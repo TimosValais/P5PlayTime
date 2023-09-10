@@ -3,7 +3,7 @@ import { ObjectTypes, MovementTypes, Directions } from "../../helpers/enums.js";
 import Character from "./character.js";
 import GenericAmmo from "./genericAmmo.js";
 import Snowball from "./snowball.js";
-export default class Snowman extends Character {
+export default class Snowperson extends Character {
   #fireDirection = Directions.RIGHT;
   constructor(
     x,

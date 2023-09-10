@@ -20,9 +20,11 @@ import SpikeCanyon from "./models/staticObjects/spikeCanyon.js";
 import Tree from "./models/staticObjects/tree.js";
 import Mountain from "./models/staticObjects/mountains.js";
 import Cloud from "./models/staticObjects/cloud.js";
-import Snowman from "./models/movingObjects/snowman.js";
+import Snowperson from "./models/movingObjects/snowperson.js";
 import Bunny from "./models/movingObjects/bunny.js";
 import DayMap from "./models/maps/dayMap.js";
+import NightMap from "./models/maps/nightMap.js";
+import { isRGBLight } from "./helpers/physics.js";
 const url = new URL(window.location.href);
 const params = new URLSearchParams(url.search);
 const gameMap = params.get("map")?.toLowerCase().replace(/\s+/g, "");
@@ -31,7 +33,7 @@ const gravity = 1;
 const monsterRefreshTimeMs = 4000;
 const mapY = window.innerHeight - window.innerHeight * 0.02;
 const mapX = window.innerWidth - window.innerWidth * 0.01;
-
+let backgroundColor = new ColorObject(135, 206, 250);
 const addRandomEnemy = (enemies, type, mapX, mapY) => {
   let randomX = Math.random() * mapX;
   let randomY = mapY;
@@ -58,8 +60,13 @@ const p5Map = (p) => {
   let cameraPositionX = 0;
   let cameraPositionY = 0;
   let lives = 0;
-  let map = new DayMap(mapY);
-
+  let map;
+  if (gameMap == LevelNames.NIGHT_LEVEL) {
+    map = new NightMap(mapY);
+  } else {
+    map = new DayMap(mapY);
+  }
+  backgroundColor = map.getBackgroundColor();
   let score = 0;
   console.log("before : ", p.height);
   p.setup = function () {
@@ -78,13 +85,27 @@ const p5Map = (p) => {
         50,
         100
       );
-    } else {
-      gameCharacter = new Snowman(
+    } else if (character == CharacterNames.SNOWPERSON) {
+      gameCharacter = new Snowperson(
         0,
         p.height * 0.1,
         new ColorObject(255, 255, 255),
         50,
         100
+      );
+    } else {
+      gameCharacter = new Character(
+        0,
+        p.height * 0.1,
+        "Base Character",
+        ObjectTypes.Character,
+        8,
+        22,
+        1,
+        new ColorObject(132, 43, 99),
+        50,
+        75,
+        1
       );
     }
 
@@ -164,7 +185,12 @@ const p5Map = (p) => {
     //pass it to the object so all can see
     p.cameraPositionX = cameraPositionX;
 
-    p.background(135, 206, 250);
+    p.background(
+      backgroundColor.red,
+      backgroundColor.green,
+      backgroundColor.blue,
+      backgroundColor.transparency
+    );
 
     //get one point for each enemy that has died (whether you killed them or not, maybe need to add points logic
     //here as well)
@@ -192,19 +218,24 @@ const p5Map = (p) => {
     p.push();
     p.translate(cameraPositionX, cameraPositionY);
 
-    map.backgroundObjects.forEach((obj) => obj.draw(p));
-    map.groundBreakingObjects.forEach((obj) => obj.draw(p));
-    map.gameObjects.forEach((obj) => obj.draw(p));
+    map.backgroundObjects?.forEach((obj) => obj.draw(p));
+    map.groundBreakingObjects?.forEach((obj) => obj.draw(p));
+    map.gameObjects?.forEach((obj) => obj.draw(p));
 
-    gameCharacters.forEach((char) => char.draw(p));
+    gameCharacters?.forEach((char) => char.draw(p));
+    map.specialObjects?.forEach((obj) => obj.draw(p));
     p.pop();
 
     //#endregion
 
     //TODO:tv need to move this to an object
-    p.fill(0);
+    let scoreColor = 255; //white
+    if (!!isRGBLight(backgroundColor)) {
+      scoreColor = 0;
+    }
+    p.fill(scoreColor);
     p.textSize(16);
-    p.text(`Score: ${score}`, window.innerWidth - mapX + 12, 45);
+    p.text(`Score: ${score}`, window.innerWidth - mapX, 45);
     lives = gamer.lives;
     for (let i = 0; i < lives; i++) {
       let heart = new Heart(i + i * 16, 10, 20, 20, new ColorObject(255, 0, 0));
@@ -278,322 +309,10 @@ const p5Map = (p) => {
         break;
     }
   };
-  // const drawGround = () => {
-  //   let groundX = 0;
-  //   let groundY = 0;
-  //   let groundColor = new ColorObject(50, 205, 50);
-  //   let groundHeight = p.height * 0.1;
-  //   let groundWidth = 4000;
-
-  //   //if we don't have any ground breaking objects, fill the whole map with ground
-  //   if (!!!groundBreakingObjects || !groundBreakingObjects.length) {
-  //     let ground = new Ground(
-  //       0,
-  //       0,
-  //       "Ground Platform",
-  //       ObjectTypes.InteractiveObject,
-  //       new ColorObject(50, 205, 50),
-  //       groundWidth,
-  //       groundHeight
-  //     );
-  //     gameObjects.push(ground);
-  //     return;
-  //   }
-  //   //draw ground before and after groundbreaking objects
-  //   const pointsToAvoid = groundBreakingObjects.map((obj) => {
-  //     return { startX: obj.x, endX: obj.x + obj.width };
-  //   });
-  //   let lastEndPoint = 0;
-  //   for (let i = 0; i < pointsToAvoid.length; i++) {
-  //     //we want to draw around these points
-  //     let xStartDrawing;
-  //     let xEndDrawing;
-  //     //if it's the first part we need to draw ground until that part
-  //     if (i == 0) {
-  //       let firstGround = new Ground(
-  //         groundX,
-  //         groundY,
-  //         "Ground part  " + i,
-  //         ObjectTypes.InteractiveObject,
-  //         groundColor,
-  //         pointsToAvoid[i].startX,
-  //         groundHeight
-  //       );
-  //       gameObjects.push(firstGround);
-  //     }
-  //     //if it is the last, we need to get what's left of the ground width
-  //     //else we get the width from the next points start minus the end of this point
-  //     if (i == groundBreakingObjects.length - 1)
-  //       xEndDrawing = groundWidth - groundX - lastEndPoint;
-  //     else {
-  //       xEndDrawing = pointsToAvoid[i + 1].startX - pointsToAvoid[i].endX;
-  //       lastEndPoint = pointsToAvoid[i].endX;
-  //     }
-
-  //     //draw until the point
-
-  //     //draw after the point until the start of the next
-
-  //     let ground = new Ground(
-  //       pointsToAvoid[i].endX,
-  //       groundY,
-  //       "Ground part " + (i + 1),
-  //       ObjectTypes.InteractiveObject,
-  //       groundColor,
-  //       xEndDrawing,
-  //       groundHeight
-  //     );
-  //     gameObjects.push(ground);
-  //   }
-  // };
-
-  // const addBackgroundObjects = () => {
-  //   let canyon1 = new SpikeCanyon(
-  //     300,
-  //     0,
-  //     "Spike Canyon 1",
-  //     ObjectTypes.GroundBreaking,
-  //     200,
-  //     p.height * 0.1
-  //   );
-  //   let canyon2 = new SpikeCanyon(
-  //     650,
-  //     0,
-  //     "Spike Canyon 2",
-  //     ObjectTypes.GroundBreaking,
-  //     200,
-  //     p.height * 0.1
-  //   );
-  //   let canyon3 = new SpikeCanyon(
-  //     1120,
-  //     0,
-  //     "Spike Canyon 3",
-  //     ObjectTypes.GroundBreaking,
-  //     200,
-  //     p.height * 0.1
-  //   );
-  //   let canyon4 = new SpikeCanyon(
-  //     1960,
-  //     0,
-  //     "Spike Canyon 4",
-  //     ObjectTypes.GroundBreaking,
-  //     200,
-  //     p.height * 0.1
-  //   );
-  //   let canyon5 = new SpikeCanyon(
-  //     3380,
-  //     0,
-  //     "Spike Canyon 5",
-  //     ObjectTypes.GroundBreaking,
-  //     200,
-  //     p.height * 0.1
-  //   );
-  //   let canyon6 = new SpikeCanyon(
-  //     3600,
-  //     0,
-  //     "Spike Canyon 6",
-  //     ObjectTypes.GroundBreaking,
-  //     200,
-  //     p.height * 0.1
-  //   );
-  //   let canyon7 = new SpikeCanyon(
-  //     4120,
-  //     0,
-  //     "Spike Canyon 7",
-  //     ObjectTypes.GroundBreaking,
-  //     200,
-  //     p.height * 0.1
-  //   );
-  //   groundBreakingObjects.push(canyon1);
-  //   groundBreakingObjects.push(canyon2);
-  //   groundBreakingObjects.push(canyon3);
-  //   groundBreakingObjects.push(canyon4);
-  //   groundBreakingObjects.push(canyon5);
-  //   groundBreakingObjects.push(canyon6);
-  //   groundBreakingObjects.push(canyon7);
-  //   drawGround();
-
-  //   //#region Clouds
-
-  //   let cloud1 = new Cloud(
-  //     20,
-  //     (3 * p.height) / 4,
-  //     "Cloud 1",
-  //     ObjectTypes.BackgroundObject,
-  //     50
-  //   );
-  //   let cloud2 = new Cloud(
-  //     400,
-  //     (5 * p.height) / 6,
-  //     "Cloud 2",
-  //     ObjectTypes.BackgroundObject,
-  //     70
-  //   );
-  //   let cloud3 = new Cloud(
-  //     860,
-  //     (4 * p.height) / 7,
-  //     "Cloud 3",
-  //     ObjectTypes.BackgroundObject,
-  //     60
-  //   );
-  //   let cloud4 = new Cloud(
-  //     1200,
-  //     (6 * p.height) / 8,
-  //     "Cloud 4",
-  //     ObjectTypes.BackgroundObject,
-  //     90
-  //   );
-  //   let cloud5 = new Cloud(
-  //     1450,
-  //     (2 * p.height) / 3,
-  //     "Cloud 5",
-  //     ObjectTypes.BackgroundObject,
-  //     40
-  //   );
-  //   let cloud6 = new Cloud(
-  //     1700,
-  //     (8 * p.height) / 9,
-  //     "Cloud 6",
-  //     ObjectTypes.BackgroundObject,
-  //     70
-  //   );
-  //   let cloud7 = new Cloud(
-  //     1900,
-  //     (6 * p.height) / 8,
-  //     "Cloud 7",
-  //     ObjectTypes.BackgroundObject,
-  //     30
-  //   );
-  //   let cloud8 = new Cloud(
-  //     2150,
-  //     (4 * p.height) / 5,
-  //     "Cloud 8",
-  //     ObjectTypes.BackgroundObject,
-  //     80
-  //   );
-  //   let cloud9 = new Cloud(
-  //     2220,
-  //     (5 * p.height) / 6,
-  //     "Cloud 9",
-  //     ObjectTypes.BackgroundObject,
-  //     40
-  //   );
-  //   let cloud10 = new Cloud(
-  //     2280,
-  //     (3 * p.height) / 5,
-  //     "Cloud 10",
-  //     ObjectTypes.BackgroundObject,
-  //     60
-  //   );
-
-  //   backgroundObjects.push(
-  //     cloud1,
-  //     cloud2,
-  //     cloud3,
-  //     cloud4,
-  //     cloud5,
-  //     cloud6,
-  //     cloud7,
-  //     cloud8,
-  //     cloud9,
-  //     cloud10
-  //   );
-
-  //   //#endregion
-
-  //   //#region Mountains
-
-  //   let mountain1 = new Mountain(
-  //     500,
-  //     0,
-  //     "Mountain 1",
-  //     ObjectTypes.BackgroundObject,
-  //     350
-  //   );
-  //   let mountain2 = new Mountain(
-  //     1000,
-  //     0,
-  //     "Mountain 2",
-  //     ObjectTypes.BackgroundObject,
-  //     500
-  //   );
-  //   let mountain3 = new Mountain(
-  //     1350,
-  //     0,
-  //     "Mountain 3",
-  //     ObjectTypes.BackgroundObject,
-  //     680
-  //   );
-  //   let mountain4 = new Mountain(
-  //     1475,
-  //     0,
-  //     "Mountain 4",
-  //     ObjectTypes.BackgroundObject,
-  //     700
-  //   );
-  //   let mountain5 = new Mountain(
-  //     2100,
-  //     0,
-  //     "Mountain 5",
-  //     ObjectTypes.BackgroundObject,
-  //     350
-  //   );
-  //   let mountain6 = new Mountain(
-  //     3000,
-  //     0,
-  //     "Mountain 6",
-  //     ObjectTypes.BackgroundObject,
-  //     425
-  //   );
-  //   backgroundObjects.push(
-  //     mountain1,
-  //     mountain2,
-  //     mountain3,
-  //     mountain4,
-  //     mountain5,
-  //     mountain6
-  //   );
-  //   //#endregion
-
-  //   //#region Trees
-  //   let tree1 = new Tree(
-  //     250,
-  //     p.height * 0.1,
-  //     "Tree 1",
-  //     ObjectTypes.BackgroundObject
-  //   );
-  //   let tree2 = new Tree(
-  //     900,
-  //     p.height * 0.1,
-  //     "Tree 2",
-  //     ObjectTypes.BackgroundObject
-  //   );
-  //   let tree3 = new Tree(
-  //     1340,
-  //     p.height * 0.1,
-  //     "Tree 2",
-  //     ObjectTypes.BackgroundObject
-  //   );
-  //   let tree4 = new Tree(
-  //     2200,
-  //     p.height * 0.1,
-  //     "Tree 2",
-  //     ObjectTypes.BackgroundObject
-  //   );
-  //   let tree5 = new Tree(
-  //     2800,
-  //     p.height * 0.1,
-  //     "Tree 2",
-  //     ObjectTypes.BackgroundObject
-  //   );
-  //   backgroundObjects.push(tree1, tree2, tree3, tree4, tree5);
-  //   //#endregion
-  // };
 };
 document.addEventListener("DOMContentLoaded", () => {
   if (!!!character && !!!gameMap) {
     alert("Character or map not found");
-    return;
   }
   new p5(p5Map);
 });

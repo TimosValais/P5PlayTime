@@ -43,5 +43,5 @@ export const EnemyTypes = Object.freeze({
 });
 export const CharacterNames = Object.freeze({
   BUNNY: "bunny",
-  SNOWMAN: "snowman",
+  SNOWPERSON: "snowperson",
 });

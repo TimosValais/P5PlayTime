@@ -30,6 +30,7 @@ let init = () => {
 
   startGameButton.addEventListener("click", () => {
     console.log(`?character=${characterUrl}&map=${mapUrl}`);
+    window.location.href = `game.html?character=${characterUrl}&map=${mapUrl}`;
   });
 };
 

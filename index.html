@@ -13,48 +13,50 @@
 <body>
 <div class="container">
 <div class="choice" id="character_choice">
-    <h1 class="text-center my-4">Choose Character</h1>
+    <h1 class="text-center my-4 text-light">Choose Character</h1>
 
     <div class="d-flex justify-content-between flex-wrap">
         
-        <div class="col-md-3 mx-3 mb-4 character_element" data-name="Character 1" data-id="character1">
-            <img src="images/baseCharacter.gif" alt="Characters 1 Name" class="img-fluid rounded">
-            <h2>Character 1</h2>
+        <div class="col-md-3 mx-3 mb-4 character_element d-flex flex-column align-items-center" data-name="Character 1" data-id="baseCharacter">
+            <img src="images/baseCharacter.gif" alt="Characters 1 Name" class="img-fluid rounded choice-image">
+            <h2 class="text-warning">Character 1</h2>
+            <div class="rounded shadow p-2 mt-2 bg-light"> 
+                Don't understimate the defaults!
+            </div>
         </div>
-        <div class="col-md-3 mx-3 mb-4 character_element" data-name="Character 2" data-id="character2">
-            <img src="images/baseCharacter.gif" alt="Characters 2 Name" class="img-fluid rounded">
-            <h2>Character 2</h2>
+        <div class="col-md-3 mx-3 mb-4 character_element d-flex flex-column align-items-center" data-name="Skater Bunny" data-id="bunny">
+            <img src="images/bunnyCharacter.gif" alt="Characters 2 Name" class="img-fluid rounded choice-image">
+            <h2 class="text-warning">Skater Bunny</h2>
+            <div class="rounded shadow p-2 mt-2 bg-light"> 
+                After losing to the turtle they decided that they need to get faster. So now, they are a skater bunny. They recently learnt double
+                jumps and can't seem to stop showing off... Can't say no to a carrot.
+            </div>
         </div>
-        <div class="col-md-3 mx-3 mb-4 character_element" data-name="Character 3" data-id="character3">
-            <img src="images/baseCharacter.gif" alt="Characters 3 Name" class="img-fluid rounded">
-            <h2>Character 3</h2>
+        <div class="col-md-3 mx-3 mb-4 character_element d-flex flex-column align-items-center" data-name="Snowperson" data-id="snowperson">
+            <img src="images/snowmanCharacter.gif" alt="Characters 3 Name" class="img-fluid rounded choice-image">
+            <h2 class="text-warning">Snowperson</h2>
+            <div class="rounded shadow p-2 mt-2 bg-light"> 
+                Looking for their nose. Hates the heat. Might be slow but their snowballs hurt! 
+            </div>
         </div>
         <div class="col-md-3 mx-auto">
             <input type="text" class="form-control mt-3 rounded" id="selected_character" value="Character 1" disabled>
         </div>        
     </div>
-
-    
-
 </div>
 <div class="choice" id="map_choice">
-    <h1 class="text-center my-4">Choose Map</h1>
+    <h1 class="text-center my-4 text-light">Choose Map</h1>
 
     <div class="d-flex justify-content-between flex-wrap">
-        
-        <div class="col-md-3 mx-3 mb-4 map_element" data-name="Map 1" data-id="map1">
-            <img src="images/baseCharacter.gif" alt="Map 1 Name" class="img-fluid rounded">
-            <h2>Map 1</h2>
+        <div class="col-md-3 mx-3 mb-4 map_element d-flex flex-column align-items-center map_element" data-name="Day Map" data-id="day">
+            <img src="images/dayMap.gif" alt="Map 1 Name" class="img-fluid rounded choice-image">
+            <h2 class="text-warning">Day Map</h2>
         </div>
-        <div class="col-md-3 mx-3 mb-4 map_element" data-name="Map 2" data-id="map2">
-            <img src="images/baseCharacter.gif" alt="Map 2 Name" class="img-fluid rounded">
-            <h2>Map 2</h2>
+        <div class="col-md-3 mx-3 mb-4 map_element d-flex flex-column align-items-center map_element" data-name="Night Map" data-id="night">
+            <img src="images/dayMap.gif" alt="Map 2 Name" class="img-fluid rounded choice-image">
+            <h2 class="text-warning">Night Map</h2>
         </div>
-        <div class="col-md-3 mx-3 mb-4 map_element" data-name="Map 3" data-id="map3">
-            <img src="images/baseCharacter.gif" alt="Map 3 Name" class="img-fluid rounded">
-            <h2>Map 3</h2>
-        </div>
-                        
+      
     </div>
     <div class="col-md-3 mx-auto">
         <input type="text" class="form-control mt-3 rounded" id="selected_map" value="Map 1" disabled>
@@ -63,8 +65,9 @@
 
 </div>
 <div class="text-center my-4">
-    <button class="btn btn-primary rounded" id="start_game_button">Start Game</button>
+    <button class="btn btn-success btn-lg rounded pop-out" id="start_game_button">Start Game</button>
 </div>
+
 </div>
 
 <script src="libraries/bootstrap.min.js"></script>

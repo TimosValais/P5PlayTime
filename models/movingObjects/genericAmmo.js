@@ -35,7 +35,6 @@ export default class GenericAmmo extends GameOjbect {
   }
 
   handleCollisions(collisionObjects) {
-    console.log("called");
     this.#hanldeInteractiveObjectsCollitions(
       collisionObjects.filter((o) => o.type === ObjectTypes.InteractiveObject)
     );
@@ -68,13 +67,11 @@ export default class GenericAmmo extends GameOjbect {
     }
   };
   #handleEnemyCollision = (collisionEnemies) => {
-    console.log(collisionEnemies);
     let collision = null;
     let collisionEnemy = collisionEnemies.find((obj) => {
       collision = this.collidesWith(obj);
       return collision != null;
     });
-    if (collision) console.log(collision);
     switch (collision) {
       case Directions.UP:
       case Directions.DOWN:

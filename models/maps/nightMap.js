@@ -13,15 +13,15 @@ import Star from "../staticObjects/star.js";
 import Sun from "../staticObjects/sun.js";
 import Tree from "../staticObjects/tree.js";
 
-export default class DayMap {
+export default class NightMap {
   constructor(mapY) {
     this.mapY = mapY;
     this.canvasHeight = mapY;
     this.gameObjects = [];
     this.backgroundObjects = [];
     this.groundBreakingObjects = [];
+    this.specialObjects = [];
   }
-
   generatePlatforms = () => {
     let platformList = [];
     //#region Create Platfororms
@@ -159,7 +159,7 @@ export default class DayMap {
     return platformList;
   };
   getBackgroundColor = () => {
-    return new ColorObject(135, 206, 250);
+    return new ColorObject(46, 68, 130);
   };
   generateGifts = () => {
     let giftList = [];
@@ -375,16 +375,6 @@ export default class DayMap {
     this.groundBreakingObjects.push(canyon7);
     this.drawGround();
 
-    //#region Sun
-    let sun = new Sun(
-      0,
-      (3 * this.canvasHeight) / 5,
-      "Sun",
-      ObjectTypes.BackgroundObject,
-      300
-    );
-    this.backgroundObjects.push(sun);
-    //#endregion
     //#region Clouds
     let cloud1 = new Cloud(
       20,
@@ -469,6 +459,38 @@ export default class DayMap {
       cloud9,
       cloud10
     );
+
+    //#endregion
+
+    //#region stars
+    // let star1 = new Star(0, this.canvasHeight * 0.1);
+    let star1 = new Star(20, (3 * this.canvasHeight) / 4, 50, 100);
+    let star2 = new Star(400, (5 * this.canvasHeight) / 6, 70);
+    let star3 = new Star(860, (4 * this.canvasHeight) / 7, 60);
+    let star4 = new Star(1200, (6 * this.canvasHeight) / 8, 90);
+    let star5 = new Star(1450, (2 * this.canvasHeight) / 3, 40);
+    let star6 = new Star(1700, (8 * this.canvasHeight) / 9, 70);
+    let star7 = new Star(1900, (6 * this.canvasHeight) / 8, 30);
+    let star8 = new Star(2150, (4 * this.canvasHeight) / 5, 80);
+    let star9 = new Star(2220, (5 * this.canvasHeight) / 6, 40);
+    let star10 = new Star(2280, (3 * this.canvasHeight) / 5, 60);
+    this.backgroundObjects.push(
+      star1,
+      star2,
+      star3,
+      star4,
+      star5,
+      star6,
+      star7,
+      star8,
+      star9,
+      star10
+    );
+
+    //#endregion
+    //#region moon
+    let moon = new Moon(0, (5 * this.canvasHeight) / 7, 200);
+    this.backgroundObjects.push(moon);
 
     //#endregion
 
@@ -558,6 +580,16 @@ export default class DayMap {
       ObjectTypes.BackgroundObject
     );
     this.backgroundObjects.push(tree1, tree2, tree3, tree4, tree5);
+    //#endregion
+
+    //#region darkness
+    let darkness = {
+      draw: (map) => {
+        map.fill(0, 0, 0, 200);
+        map.rect(-1000, 0, 6000, this.mapY);
+      },
+    };
+    this.specialObjects.push(darkness);
     //#endregion
   };
 }
