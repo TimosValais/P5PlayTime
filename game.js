@@ -19,6 +19,7 @@ import Tree from "./models/staticObjects/tree.js";
 import Mountain from "./models/staticObjects/mountains.js";
 import Cloud from "./models/staticObjects/cloud.js";
 import Snowman from "./models/movingObjects/snowman.js";
+import Bunny from "./models/movingObjects/bunny.js";
 
 const gravity = 1;
 const monsterRefreshTimeMs = 8000;
@@ -256,10 +257,10 @@ const p5Map = (p) => {
     p.createCanvas(mapX, mapY);
     p.groundY = p.height;
     //#region Create Player Character
-    let snowMan = new Snowman(
+    let snowMan = new Bunny(
       0,
       p.height * 0.1,
-      new ColorObject(255, 255, 255),
+      new ColorObject(200, 200, 200),
       50,
       100
     );
@@ -372,7 +373,7 @@ const p5Map = (p) => {
         !!char.isDead && !!char.wasKilled && char.type === ObjectTypes.Enemy
     ).length;
 
-    //#region This Complex logics neets to be seperated and cleand up
+    //#region This Complex logics neets to be seperated and cleand up/also this is not performant, it's better to add a method that each object can call when removed than iterate through the whole list
     //check for claimed objects that give points, add points and remove them
     gameObjects = gameObjects.filter((obj) => {
       if (!!obj.isDestroyed) {
