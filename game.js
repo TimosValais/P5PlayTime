@@ -28,7 +28,7 @@ const params = new URLSearchParams(url.search);
 const gameMap = params.get("map")?.toLowerCase().replace(/\s+/g, "");
 const character = params.get("character")?.toLowerCase().replace(/\s+/g, "");
 const gravity = 1;
-const monsterRefreshTimeMs = 8000;
+const monsterRefreshTimeMs = 4000;
 const mapY = window.innerHeight - window.innerHeight * 0.02;
 const mapX = window.innerWidth - window.innerWidth * 0.01;
 
@@ -54,7 +54,6 @@ const addRandomEnemy = (enemies, type, mapX, mapY) => {
   enemies.push(newEnemy);
 };
 const p5Map = (p) => {
-  //TODO:tv remove hardcoded pixel values and get them relative to what they 're supposed to
   let gameCharacters = [];
   let cameraPositionX = 0;
   let cameraPositionY = 0;

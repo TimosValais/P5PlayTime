@@ -359,13 +359,13 @@ export default class DayMap {
       200,
       this.canvasHeight * 0.1
     );
-    // this.groundBreakingObjects.push(canyon1);
-    // this.groundBreakingObjects.push(canyon2);
-    // this.groundBreakingObjects.push(canyon3);
-    // this.groundBreakingObjects.push(canyon4);
-    // this.groundBreakingObjects.push(canyon5);
-    // this.groundBreakingObjects.push(canyon6);
-    // this.groundBreakingObjects.push(canyon7);
+    this.groundBreakingObjects.push(canyon1);
+    this.groundBreakingObjects.push(canyon2);
+    this.groundBreakingObjects.push(canyon3);
+    this.groundBreakingObjects.push(canyon4);
+    this.groundBreakingObjects.push(canyon5);
+    this.groundBreakingObjects.push(canyon6);
+    this.groundBreakingObjects.push(canyon7);
     this.drawGround();
 
     //#region Clouds
