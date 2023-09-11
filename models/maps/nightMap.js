@@ -464,7 +464,7 @@ export default class NightMap {
 
     //#region stars
     //adding the stars with a for loop because there are a lot needed to give the night sky feeling
-    for (let i = 0; i < 200; i++) {
+    for (let i = -100; i < 200; i++) {
       let sizeX = 50;
       let sizeY = 75;
       //adding some fake randomness to choose sides, could be done with random as well but no need
