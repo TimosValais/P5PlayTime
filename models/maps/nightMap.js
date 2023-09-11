@@ -582,7 +582,7 @@ export default class NightMap {
     let darkness = {
       draw: (map) => {
         map.fill(0, 0, 0, 200);
-        map.rect(-2000, 0, 9000, this.mapY);
+        map.rect(-2000, -2000, 9000, this.mapY + 9000);
       },
     };
     this.specialObjects.push(darkness);
