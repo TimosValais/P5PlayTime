@@ -25,36 +25,32 @@ import Bunny from "./models/movingObjects/bunny.js";
 import DayMap from "./models/maps/dayMap.js";
 import NightMap from "./models/maps/nightMap.js";
 import { isRGBLight } from "./helpers/physics.js";
+//#region html constants and functions
 const url = new URL(window.location.href);
 const params = new URLSearchParams(url.search);
 const gameMap = params.get("map")?.toLowerCase().replace(/\s+/g, "");
 const character = params.get("character")?.toLowerCase().replace(/\s+/g, "");
+const buttonDiv = document.getElementById("button-container");
+const buttonPlayAgain = document.getElementById("pay_again_button");
+const buttonHome = document.getElementById("home_button");
+const toggleButtonDiv = (shouldHide, refreshMessage) => {
+  if (shouldHide) {
+    buttonDiv.style.display = "none";
+    return;
+  }
+  buttonPlayAgain.textContent = refreshMessage;
+  buttonDiv.style.display = "block";
+};
+//#endregion
+//#region other constants
 const gravity = 1;
 const monsterRefreshTimeMs = 4000;
 const mapY = window.innerHeight - window.innerHeight * 0.02;
 const mapX = window.innerWidth - window.innerWidth * 0.01;
+//#endregion
 let backgroundColor = new ColorObject(135, 206, 250);
-const addRandomEnemy = (enemies, type, mapX, mapY) => {
-  let randomX = Math.random() * mapX;
-  let randomY = mapY;
-  let newEnemy = null;
-  if (type == EnemyTypes.Sample) {
-    newEnemy = new SampleEnemy(
-      randomX,
-      randomY,
-      "Sample Enemy" + (enemies.length + 1),
-      ObjectTypes.Enemy,
-      10,
-      10,
-      gravity,
-      new ColorObject(250, 20, 15),
-      60,
-      90,
-      0
-    );
-  }
-  enemies.push(newEnemy);
-};
+
+//#region p5Map object
 const p5Map = (p) => {
   let gameCharacters = [];
   let cameraPositionX = 0;
@@ -154,6 +150,8 @@ const p5Map = (p) => {
       p.text("You Lost", mapX / 2, mapY / 2);
       p.textAlign(p.CENTER, p.CENTER);
       p.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
+      toggleButtonDiv(false, "Retry");
+
       gameCharacters = [];
       map.gameObjects = [];
       //stop spamming enemies
@@ -168,6 +166,7 @@ const p5Map = (p) => {
       p.text("You Are Victorious", mapX / 2, mapY / 2);
       p.textAlign(p.CENTER, p.CENTER);
       p.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
+      toggleButtonDiv(false, "Play Again");
       //leave just the gamer so it won't go to the other loop
       gameCharacters = gameCharacters.filter(
         (char) => char.type === ObjectTypes.Character
@@ -310,9 +309,19 @@ const p5Map = (p) => {
     }
   };
 };
+const setListeners = () => {
+  buttonHome.addEventListener("click", () => {
+    window.location.href = `index.html`;
+  });
+  buttonPlayAgain.addEventListener("click", () => {
+    window.location.href = `game.html?character=${character}&map=${gameMap}`;
+  });
+};
+//#endregion
 document.addEventListener("DOMContentLoaded", () => {
   if (!!!character && !!!gameMap) {
     alert("Character or map not found");
   }
+  setListeners();
   new p5(p5Map);
 });

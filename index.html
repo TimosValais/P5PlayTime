@@ -17,14 +17,14 @@
 
     <div class="d-flex justify-content-between flex-wrap">
         
-        <div class="col-md-3 mx-3 mb-4 character_element d-flex flex-column align-items-center" data-name="Character 1" data-id="baseCharacter">
+        <div class="col-md-3 mx-3 mb-4 character_element d-flex flex-column align-items-center cursor-pointer" data-name="Stick Figure" data-id="baseCharacter">
             <img src="images/baseCharacter.gif" alt="Characters 1 Name" class="img-fluid rounded choice-image">
-            <h2 class="text-warning">Character 1</h2>
+            <h2 class="text-warning">Stick Figure</h2>
             <div class="rounded shadow p-2 mt-2 bg-light"> 
                 Don't understimate the defaults!
             </div>
         </div>
-        <div class="col-md-3 mx-3 mb-4 character_element d-flex flex-column align-items-center" data-name="Skater Bunny" data-id="bunny">
+        <div class="col-md-3 mx-3 mb-4 character_element d-flex flex-column align-items-center cursor-pointer" data-name="Skater Bunny" data-id="bunny">
             <img src="images/bunnyCharacter.gif" alt="Characters 2 Name" class="img-fluid rounded choice-image">
             <h2 class="text-warning">Skater Bunny</h2>
             <div class="rounded shadow p-2 mt-2 bg-light"> 
@@ -32,7 +32,7 @@
                 jumps and can't seem to stop showing off... Can't say no to a carrot.
             </div>
         </div>
-        <div class="col-md-3 mx-3 mb-4 character_element d-flex flex-column align-items-center" data-name="Snowperson" data-id="snowperson">
+        <div class="col-md-3 mx-3 mb-4 character_element d-flex flex-column align-items-center cursor-pointer" data-name="Snowperson" data-id="snowperson">
             <img src="images/snowmanCharacter.gif" alt="Characters 3 Name" class="img-fluid rounded choice-image">
             <h2 class="text-warning">Snowperson</h2>
             <div class="rounded shadow p-2 mt-2 bg-light"> 
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="col-md-3 mx-auto">
-            <input type="text" class="form-control mt-3 rounded" id="selected_character" value="Character 1" disabled>
+            <input type="text" class="form-control mt-3 rounded text-center" id="selected_character" value="Stick Figure" disabled>
         </div>        
     </div>
 </div>
@@ -48,26 +48,46 @@
     <h1 class="text-center my-4 text-light">Choose Map</h1>
 
     <div class="d-flex justify-content-between flex-wrap">
-        <div class="col-md-3 mx-3 mb-4 map_element d-flex flex-column align-items-center map_element" data-name="Day Map" data-id="day">
+        <div class="col-md-3 mx-3 mb-4 map_element d-flex flex-column align-items-center map_element cursor-pointer" data-name="Day Map" data-id="day">
             <img src="images/dayMap.gif" alt="Map 1 Name" class="img-fluid rounded choice-image">
             <h2 class="text-warning">Day Map</h2>
         </div>
-        <div class="col-md-3 mx-3 mb-4 map_element d-flex flex-column align-items-center map_element" data-name="Night Map" data-id="night">
-            <img src="images/dayMap.gif" alt="Map 2 Name" class="img-fluid rounded choice-image">
+        <div class="col-md-3 mx-3 mb-4 map_element d-flex flex-column align-items-center map_element cursor-pointer" data-name="Night Map" data-id="night">
+            <img src="images/nightMap.gif" alt="Map 2 Name" class="img-fluid rounded choice-image">
             <h2 class="text-warning">Night Map</h2>
         </div>
       
     </div>
     <div class="col-md-3 mx-auto">
-        <input type="text" class="form-control mt-3 rounded" id="selected_map" value="Map 1" disabled>
+        <input type="text" class="form-control mt-3 rounded text-center" id="selected_map" value="Day Map" disabled>
     </div>
     
 
 </div>
 <div class="text-center my-4">
-    <button class="btn btn-success btn-lg rounded pop-out" id="start_game_button">Start Game</button>
+    <button class="btn btn-success btn-lg rounded pop-out-success me-3" id="start_game_button">Start Game</button>
+    <button class="btn btn-info btn-lg rounded pop-out-info" data-bs-toggle="modal" data-bs-target="#howToPlayModal">How to play</button>
 </div>
-
+<!-- How to Play Modal -->
+<div class="modal fade" id="howToPlayModal" tabindex="-1" aria-labelledby="howToPlayModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="howToPlayModalLabel">How to Play</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Your game instructions go here -->
+          <p>Use arrow keys or (wasd) to move left and right. Press space/up arrow/w to jump. Enemies can be killed if stepped on or by using a weapon.
+            Press f or control to fire (only the snowperson character has a weapon). Score can be increased by killing enemies or by collecting 
+            carrots (hidden inside boxes). To collect the carrot you need to hit the box from belowTry to reach the flag to win!</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger pop-out-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="libraries/bootstrap.min.js"></script>

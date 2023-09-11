@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UnNamed Game</title>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script> -->
-  <script src="./libraries/p5.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnNamed Game</title>
+    <script src="./libraries/p5.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
+  <div id="button-container" style="display: none;">
+    <button class="btn btn-success btn-lg rounded pop-out" id="pay_again_button">Play Again</button>
+    <button class="btn btn-primary btn-lg rounded pop-out" id="home_button">Home</button>
+</div>
+
     <script type="module" src="game.js"></script>
+    <script src="libraries/bootstrap.min.js"></script>
 </body>
 </html>
