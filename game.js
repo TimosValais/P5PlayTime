@@ -235,7 +235,7 @@ const p5Map = (p) => {
     }
     p.fill(scoreColor);
     p.textSize(16);
-    p.text(`Score: ${score}`, window.innerWidth - mapX, 45);
+    p.text(`Score: ${score}`, 0, 45);
     lives = gamer.lives;
     for (let i = 0; i < lives; i++) {
       let heart = new Heart(i + i * 16, 10, 20, 20, new ColorObject(255, 0, 0));
