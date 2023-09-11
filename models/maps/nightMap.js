@@ -463,29 +463,25 @@ export default class NightMap {
     //#endregion
 
     //#region stars
-    // let star1 = new Star(0, this.canvasHeight * 0.1);
-    let star1 = new Star(20, (3 * this.canvasHeight) / 4, 50, 100);
-    let star2 = new Star(400, (5 * this.canvasHeight) / 6, 70);
-    let star3 = new Star(860, (4 * this.canvasHeight) / 7, 60);
-    let star4 = new Star(1200, (6 * this.canvasHeight) / 8, 90);
-    let star5 = new Star(1450, (2 * this.canvasHeight) / 3, 40);
-    let star6 = new Star(1700, (8 * this.canvasHeight) / 9, 70);
-    let star7 = new Star(1900, (6 * this.canvasHeight) / 8, 30);
-    let star8 = new Star(2150, (4 * this.canvasHeight) / 5, 80);
-    let star9 = new Star(2220, (5 * this.canvasHeight) / 6, 40);
-    let star10 = new Star(2280, (3 * this.canvasHeight) / 5, 60);
-    this.backgroundObjects.push(
-      star1,
-      star2,
-      star3,
-      star4,
-      star5,
-      star6,
-      star7,
-      star8,
-      star9,
-      star10
-    );
+    //adding the stars with a for loop because there are a lot needed to give the night sky feeling
+    for (let i = 0; i < 200; i++) {
+      let sizeX = 50;
+      let sizeY = 75;
+      //adding some fake randomness to choose sides, could be done with random as well but no need
+      if (i % 3 == 0) {
+        sizeX = 25;
+        sizeY = 35;
+      } else if (i % 5 == 0) {
+        sizeX = 40;
+        sizeY = 40;
+      } else if (i % 7 == 0) {
+        sizeX = 15;
+        sizeY = 20;
+      }
+      this.backgroundObjects.push(
+        new Star(i * 40, Math.random() * this.canvasHeight, sizeX, sizeY)
+      );
+    }
 
     //#endregion
     //#region moon
@@ -586,7 +582,7 @@ export default class NightMap {
     let darkness = {
       draw: (map) => {
         map.fill(0, 0, 0, 200);
-        map.rect(-1000, 0, 6000, this.mapY);
+        map.rect(-2000, 0, 9000, this.mapY);
       },
     };
     this.specialObjects.push(darkness);
