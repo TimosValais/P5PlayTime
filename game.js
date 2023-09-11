@@ -122,7 +122,7 @@ const p5Map = (p) => {
 
     //Create interval to throw enemies at player, get the id to stop it after
     p.enemiesIntervalId = setInterval(() => {
-      addRandomEnemy(
+      map.addRandomEnemy(
         gameCharacters,
         EnemyTypes.Sample,
         mapX - cameraPositionX,

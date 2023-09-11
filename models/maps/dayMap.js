@@ -12,9 +12,12 @@ import SpikeCanyon from "../staticObjects/spikeCanyon.js";
 import Star from "../staticObjects/star.js";
 import Sun from "../staticObjects/sun.js";
 import Tree from "../staticObjects/tree.js";
+import AbstractMap from "./abstractMap.js";
 
-export default class DayMap {
+export default class DayMap extends AbstractMap {
   constructor(mapY) {
+    super(mapY);
+
     this.mapY = mapY;
     this.canvasHeight = mapY;
     this.gameObjects = [];
@@ -232,7 +235,7 @@ export default class DayMap {
         ObjectTypes.Enemy,
         10,
         10,
-        gravity,
+        1,
         new ColorObject(250, 20, 15),
         60,
         90,
