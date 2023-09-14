@@ -58,9 +58,9 @@ const p5Map = (p) => {
   let lives = 0;
   let map;
   if (gameMap == LevelNames.NIGHT_LEVEL) {
-    map = new NightMap(mapY);
+    map = new NightMap(mapY, mapX);
   } else {
-    map = new DayMap(mapY);
+    map = new DayMap(mapY, mapX);
   }
   backgroundColor = map.getBackgroundColor();
   let score = 0;

@@ -15,134 +15,140 @@ import Tree from "../staticObjects/tree.js";
 import AbstractMap from "./abstractMap.js";
 
 export default class DayMap extends AbstractMap {
-  constructor(mapY) {
-    super(mapY);
-
-    this.mapY = mapY;
-    this.canvasHeight = mapY;
+  constructor(mapY, mapX) {
+    super(mapY, mapX);
     this.gameObjects = [];
     this.backgroundObjects = [];
     this.groundBreakingObjects = [];
   }
-
   generatePlatforms = () => {
     let platformList = [];
     //#region Create Platfororms
+
     let platform1 = new Platform(
-      4450,
-      200,
-      "Low Platform",
+      2.10700758 * this.mapX,
+      0.2991453 * this.mapY,
+      "Low Outside Platform",
       ObjectTypes.InteractiveObject,
       new ColorObject(153, 234, 123),
-      350,
-      20
+      0.1657197 * this.mapX,
+      0.01709402 * this.mapY
     );
+
     let platform2 = new Platform(
-      200,
-      600,
+      0.09469697 * this.mapX,
+      0.51282051 * this.mapY,
       "High Platform",
       ObjectTypes.InteractiveObject,
       new ColorObject(153, 234, 123),
-      500,
-      20
+      0.23674242 * this.mapX,
+      0.01709402 * this.mapY
     );
+
     let platform3 = new Platform(
-      900,
-      300,
+      0.42613636 * this.mapX,
+      0.25641026 * this.mapY,
       "Midle Platform",
       ObjectTypes.InteractiveObject,
       new ColorObject(153, 234, 123),
-      500,
-      20
+      0.23674242 * this.mapX,
+      0.01709402 * this.mapY
     );
+
     let platform4 = new Platform(
-      4850,
-      300,
+      2.29640152 * this.mapX,
+      0.38461538 * this.mapY,
       "Midle Outside Platform",
       ObjectTypes.InteractiveObject,
       new ColorObject(153, 234, 123),
-      250,
-      20
+      0.11837121 * this.mapX,
+      0.01709402 * this.mapY
     );
+
     let platform5 = new Platform(
-      4190,
-      600,
+      1.98390152 * this.mapX,
+      0.64102564 * this.mapY,
       "High Outside Platform",
       ObjectTypes.InteractiveObject,
       new ColorObject(153, 234, 123),
-      400,
-      20
+      0.18939394 * this.mapX,
+      0.01709402 * this.mapY
     );
+
     let platform6 = new Platform(
-      4420,
-      450,
+      2.09280303 * this.mapX,
+      0.51282051 * this.mapY,
       "Medium High OutsidePlatform",
       ObjectTypes.InteractiveObject,
       new ColorObject(153, 234, 123),
-      250,
-      20
+      0.11837121 * this.mapX,
+      0.01709402 * this.mapY
     );
-    //to block cheating getting the flag after death
-    let blockingPlatform = new Platform(
-      180,
-      platform2.y,
-      "Blocking Platform",
-      ObjectTypes.InteractiveObject,
-      new ColorObject(255, 255, 255, 0),
-      2,
-      this.mapY - platform2.y
-    );
+
     let movingPlatform = new MovingPlatform(
-      680,
-      450,
+      0.3219697 * this.mapX,
+      0.38461538 * this.mapY,
       "Moving Platform",
       ObjectTypes.InteractiveObject,
       new ColorObject(132, 214, 93),
-      240,
-      30,
+      0.11363636 * this.mapX,
+      0.02564103 * this.mapY,
       3,
       1,
       20,
       600
     );
+
     let movingPlatform2 = new MovingPlatform(
-      1690,
-      350,
+      0.80018939 * this.mapX,
+      0.2991453 * this.mapY,
       "Moving Platform",
       ObjectTypes.InteractiveObject,
       new ColorObject(132, 214, 93),
-      240,
-      30,
+      0.11363636 * this.mapX,
+      0.02564103 * this.mapY,
       5,
       3,
       40,
       400
     );
+
     let movingPlatform3 = new MovingPlatform(
-      2990,
-      450,
+      1.4157197 * this.mapX,
+      0.38461538 * this.mapY,
       "Moving Platform",
       ObjectTypes.InteractiveObject,
       new ColorObject(132, 214, 93),
-      240,
-      30,
+      0.11363636 * this.mapX,
+      0.02564103 * this.mapY,
       2,
       2,
       10,
       900
     );
+
     let movingPlatform4 = new MovingPlatform(
-      4100,
-      500,
+      1.94128788 * this.mapX,
+      0.42735043 * this.mapY,
       "Moving Platform",
       ObjectTypes.InteractiveObject,
       new ColorObject(132, 214, 93),
-      240,
-      30,
+      0.11363636 * this.mapX,
+      0.02564103 * this.mapY,
       1,
       1,
       15,
       250
+    );
+    //to block cheating getting the flag after death
+    let blockingPlatform = new Platform(
+      0.08522727 * this.mapX,
+      0.51282051 * this.mapY,
+      "Blocking Platform",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(255, 255, 255),
+      0.00094697 * this.mapX,
+      0.48728205 * this.mapY
     );
     platformList.push(
       platform1,
@@ -159,56 +165,84 @@ export default class DayMap extends AbstractMap {
     );
     //#endregion
 
+    console.log(platformList);
     return platformList;
   };
   getBackgroundColor = () => {
     return new ColorObject(135, 206, 250);
   };
+
   generateGifts = () => {
     let giftList = [];
 
     //#region Create Gifts
     let giftBox1 = new GiftBox(
-      -250,
-      400,
+      -0.11837121 * this.mapX,
+      0.34188034 * this.mapY,
       3000,
       "Unobtainable Gift",
       ObjectTypes.InteractiveObject,
       new ColorObject(255, 215, 0),
       new ColorObject(0, 0, 128)
     );
+
     let giftBox2 = new GiftBox(
-      800,
-      750,
+      0.37878788 * this.mapX,
+      0.64102564 * this.mapY,
       50,
       "Yellow Box",
       ObjectTypes.InteractiveObject,
       new ColorObject(129, 231, 29),
       new ColorObject(215, 24, 129)
     );
-    let giftBox3 = new GiftBox(1400, 800, 100);
-    let giftBox4 = new GiftBox(
-      4250,
-      520,
-      150,
-      "Yellow Box",
-      ObjectTypes.InteractiveObject,
-      new ColorObject(129, 231, 29),
-      new ColorObject(215, 24, 129)
-    );
-    let giftBox5 = new GiftBox(
-      3560,
-      800,
-      150,
-      "Yellow Box",
-      ObjectTypes.InteractiveObject,
-      new ColorObject(129, 231, 29),
-      new ColorObject(215, 24, 129)
-    );
-    let giftBox6 = new GiftBox(2300, 350, 50);
-    let giftBox7 = new GiftBox(500, 350, 50);
-    let giftBox8 = new GiftBox(750, 350, 50);
 
+    let giftBox3 = new GiftBox(
+      0.66287879 * this.mapX,
+      0.68376068 * this.mapY,
+      100,
+      "Generic GiftBox",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(200, 30, 100),
+      new ColorObject(0, 120, 60)
+    );
+
+    let giftBox4 = new GiftBox(
+      1.84659091 * this.mapX,
+      0.94017094 * this.mapY,
+      150,
+      "Yellow Box",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(129, 231, 29),
+      new ColorObject(215, 24, 129)
+    );
+
+    let giftBox5 = new GiftBox(
+      1.68560606 * this.mapX,
+      0.68376068 * this.mapY,
+      150,
+      "Yellow Box",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(129, 231, 29),
+      new ColorObject(215, 24, 129)
+    );
+
+    let giftBox6 = new GiftBox(
+      1.08901515 * this.mapX,
+      0.2991453 * this.mapY,
+      50
+    );
+
+    let giftBox7 = new GiftBox(
+      0.23674242 * this.mapX,
+      0.2991453 * this.mapY,
+      50
+    );
+
+    let giftBox8 = new GiftBox(
+      0.35511364 * this.mapX,
+      0.2991453 * this.mapY,
+      50
+    );
     //#endregion
     giftList.push(
       giftBox1,
@@ -248,8 +282,9 @@ export default class DayMap extends AbstractMap {
     let groundX = 0;
     let groundY = 0;
     let groundColor = new ColorObject(50, 205, 50);
-    let groundWidth = 4000;
-    let groundHeight = this.canvasHeight * 0.1;
+    let groundWidth = this.mapX * 1.894;
+    // let groundWidth = 4000;
+    let groundHeight = this.mapY * 0.1;
 
     //if we don't have any ground breaking objects, fill the whole map with ground
     if (!!!this.groundBreakingObjects || !this.groundBreakingObjects.length) {
@@ -313,61 +348,68 @@ export default class DayMap extends AbstractMap {
     }
   };
   addBackgroundObjects = () => {
+    //#region canyons
     let canyon1 = new SpikeCanyon(
-      300,
-      0,
+      0.14204545 * this.mapX,
+      0 * this.mapY,
       "Spike Canyon 1",
       ObjectTypes.GroundBreaking,
-      200,
-      this.canvasHeight * 0.1
+      this.mapY * 0.1,
+      0.09469697 * this.mapY
     );
+
     let canyon2 = new SpikeCanyon(
-      650,
-      0,
+      0.30776515 * this.mapX,
+      0 * this.mapY,
       "Spike Canyon 2",
       ObjectTypes.GroundBreaking,
-      200,
-      this.canvasHeight * 0.1
+      this.mapY * 0.1,
+      0.09469697 * this.mapY
     );
+
     let canyon3 = new SpikeCanyon(
-      1120,
-      0,
+      0.53030303 * this.mapX,
+      0 * this.mapY,
       "Spike Canyon 3",
       ObjectTypes.GroundBreaking,
-      200,
-      this.canvasHeight * 0.1
+      this.mapY * 0.1,
+      0.09469697 * this.mapY
     );
+
     let canyon4 = new SpikeCanyon(
-      1960,
-      0,
+      0.9280303 * this.mapX,
+      0 * this.mapY,
       "Spike Canyon 4",
       ObjectTypes.GroundBreaking,
-      200,
-      this.canvasHeight * 0.1
+      this.mapY * 0.1,
+      0.09469697 * this.mapY
     );
+
     let canyon5 = new SpikeCanyon(
-      3380,
-      0,
+      1.60037879 * this.mapX,
+      0 * this.mapY,
       "Spike Canyon 5",
       ObjectTypes.GroundBreaking,
-      200,
-      this.canvasHeight * 0.1
+      this.mapY * 0.1,
+      0.09469697 * this.mapY
     );
+
     let canyon6 = new SpikeCanyon(
-      3600,
-      0,
+      1.70454545 * this.mapX,
+      0 * this.mapY,
       "Spike Canyon 6",
       ObjectTypes.GroundBreaking,
-      200,
-      this.canvasHeight * 0.1
+      this.mapY * 0.1,
+      0.09469697 * this.mapY
     );
+
     let canyon7 = new SpikeCanyon(
-      4120,
-      0,
+      1.95075758 * this.mapX,
+      0 * this.mapY,
       "Spike Canyon 7",
       ObjectTypes.GroundBreaking,
-      200,
-      this.canvasHeight * 0.1
+      this.mapY * 0.1,
+      0.09469697 * this.mapY
     );
     this.groundBreakingObjects.push(canyon1);
     this.groundBreakingObjects.push(canyon2);
@@ -376,148 +418,96 @@ export default class DayMap extends AbstractMap {
     this.groundBreakingObjects.push(canyon5);
     this.groundBreakingObjects.push(canyon6);
     this.groundBreakingObjects.push(canyon7);
-    this.drawGround();
 
+    this.drawGround();
+    //#endregion
     //#region Sun
     let sun = new Sun(
       0,
-      (3 * this.canvasHeight) / 5,
+      (3 * this.mapY) / 5,
       "Sun",
       ObjectTypes.BackgroundObject,
-      300
+      this.mapY * 0.256
     );
     this.backgroundObjects.push(sun);
     //#endregion
     //#region Clouds
-    let cloud1 = new Cloud(
-      20,
-      (3 * this.canvasHeight) / 4,
-      "Cloud 1",
-      ObjectTypes.BackgroundObject,
-      50
-    );
-    let cloud2 = new Cloud(
-      400,
-      (5 * this.canvasHeight) / 6,
-      "Cloud 2",
-      ObjectTypes.BackgroundObject,
-      70
-    );
-    let cloud3 = new Cloud(
-      860,
-      (4 * this.canvasHeight) / 7,
-      "Cloud 3",
-      ObjectTypes.BackgroundObject,
-      60
-    );
-    let cloud4 = new Cloud(
-      1200,
-      (6 * this.canvasHeight) / 8,
-      "Cloud 4",
-      ObjectTypes.BackgroundObject,
-      90
-    );
-    let cloud5 = new Cloud(
-      1450,
-      (2 * this.canvasHeight) / 3,
-      "Cloud 5",
-      ObjectTypes.BackgroundObject,
-      40
-    );
-    let cloud6 = new Cloud(
-      1700,
-      (8 * this.canvasHeight) / 9,
-      "Cloud 6",
-      ObjectTypes.BackgroundObject,
-      70
-    );
-    let cloud7 = new Cloud(
-      1900,
-      (6 * this.canvasHeight) / 8,
-      "Cloud 7",
-      ObjectTypes.BackgroundObject,
-      30
-    );
-    let cloud8 = new Cloud(
-      2150,
-      (4 * this.canvasHeight) / 5,
-      "Cloud 8",
-      ObjectTypes.BackgroundObject,
-      80
-    );
-    let cloud9 = new Cloud(
-      2220,
-      (5 * this.canvasHeight) / 6,
-      "Cloud 9",
-      ObjectTypes.BackgroundObject,
-      40
-    );
-    let cloud10 = new Cloud(
-      2280,
-      (3 * this.canvasHeight) / 5,
-      "Cloud 10",
-      ObjectTypes.BackgroundObject,
-      60
-    );
+    //generate custom clouds
 
-    this.backgroundObjects.push(
-      cloud1,
-      cloud2,
-      cloud3,
-      cloud4,
-      cloud5,
-      cloud6,
-      cloud7,
-      cloud8,
-      cloud9,
-      cloud10
-    );
+    for (let i = 0; i < 60; i++) {
+      let factor = -1;
+
+      if (i > 15 && i < 30) {
+        factor = 0;
+      } else if (i > 30 && i < 45) factor = 1;
+      else if (i > 45) factor = 2;
+      //choose a number between 0.5 and 1
+      let yValue = 0.5 + Math.random() * 0.5;
+      // depending on the factor we get xall over the map
+      let xValue = Math.random() + factor;
+      //size should be between 0.01 0.07
+      let size = 0.01 + Math.random() * 0.06;
+      this.backgroundObjects.push(
+        new Cloud(
+          this.mapX * xValue,
+          this.mapY * yValue,
+          `Cloud ${i + 1}`,
+          ObjectTypes.BackgroundObject,
+          this.mapX * size
+        )
+      );
+    }
 
     //#endregion
 
     //#region Mountains
 
     let mountain1 = new Mountain(
-      500,
+      0.23674242 * this.mapX,
       0,
       "Mountain 1",
       ObjectTypes.BackgroundObject,
-      350
+      0.1657197 * this.mapX
     );
+
     let mountain2 = new Mountain(
-      1000,
+      0.47348485 * this.mapX,
       0,
       "Mountain 2",
       ObjectTypes.BackgroundObject,
-      500
+      0.23674242 * this.mapX
     );
+
     let mountain3 = new Mountain(
-      1350,
+      0.63920455 * this.mapX,
       0,
       "Mountain 3",
       ObjectTypes.BackgroundObject,
-      680
+      0.3219697 * this.mapX
     );
+
     let mountain4 = new Mountain(
-      1475,
+      0.69839015 * this.mapX,
       0,
       "Mountain 4",
       ObjectTypes.BackgroundObject,
-      700
+      0.33143939 * this.mapX
     );
+
     let mountain5 = new Mountain(
-      2100,
+      0.99431818 * this.mapX,
       0,
       "Mountain 5",
       ObjectTypes.BackgroundObject,
-      350
+      0.1657197 * this.mapX
     );
+
     let mountain6 = new Mountain(
-      3000,
+      1.42045455 * this.mapX,
       0,
       "Mountain 6",
       ObjectTypes.BackgroundObject,
-      425
+      0.20123106 * this.mapX
     );
     this.backgroundObjects.push(
       mountain1,
@@ -527,40 +517,201 @@ export default class DayMap extends AbstractMap {
       mountain5,
       mountain6
     );
+
     //#endregion
 
     //#region Trees
     let tree1 = new Tree(
-      250,
-      this.canvasHeight * 0.1,
+      0.11837121 * this.mapX,
+      this.mapY * 0.1,
       "Tree 1",
       ObjectTypes.BackgroundObject
     );
+
     let tree2 = new Tree(
-      900,
-      this.canvasHeight * 0.1,
+      0.42613636 * this.mapX,
+      this.mapY * 0.1,
       "Tree 2",
       ObjectTypes.BackgroundObject
     );
+
     let tree3 = new Tree(
-      1340,
-      this.canvasHeight * 0.1,
+      0.6344697 * this.mapX,
+      this.mapY * 0.1,
       "Tree 2",
       ObjectTypes.BackgroundObject
     );
+
     let tree4 = new Tree(
-      2200,
-      this.canvasHeight * 0.1,
+      1.04166667 * this.mapX,
+      this.mapY * 0.1,
       "Tree 2",
       ObjectTypes.BackgroundObject
     );
+
     let tree5 = new Tree(
-      2800,
-      this.canvasHeight * 0.1,
+      1.32575758 * this.mapX,
+      this.mapY * 0.1,
       "Tree 2",
       ObjectTypes.BackgroundObject
     );
     this.backgroundObjects.push(tree1, tree2, tree3, tree4, tree5);
+
     //#endregion
+  };
+
+  fixPlatforms = (list) => {
+    let message = "";
+    list.forEach((platform, index) => {
+      console.log(platform.color);
+      message += `\n
+        let platform${index + 1} = new Platform(
+          ${
+            Math.round((platform.x / 2112 + Number.EPSILON) * 100000000) /
+            100000000
+          } * this.mapX,
+          ${
+            Math.round((platform.y / 1170 + Number.EPSILON) * 100000000) /
+            100000000
+          } * this.mapY,
+          '${platform.name}',
+          ObjectTypes.InteractiveObject,
+          new ColorObject(${platform.color.red},${platform.color.green},${
+        platform.color.blue
+      }),
+          ${
+            Math.round((platform.width / 2112 + Number.EPSILON) * 100000000) /
+            100000000
+          } * this.mapX,
+          ${
+            Math.round((platform.height / 1170 + Number.EPSILON) * 100000000) /
+            100000000
+          } * this.mapY
+        )
+      `;
+    });
+    console.log(message);
+  };
+  fixGifts = (list) => {
+    let message = "";
+    list.forEach((gift, index) => {
+      console.log(gift.color);
+      message += `\n
+        let giftBox${index + 1} = new GiftBox(
+          ${
+            Math.round((gift.x / 2112 + Number.EPSILON) * 100000000) / 100000000
+          } * this.mapX,
+          ${
+            Math.round((gift.y / 1170 + Number.EPSILON) * 100000000) / 100000000
+          } * this.mapY,
+          ${gift.scorePoints},
+          '${gift.name}',
+          ObjectTypes.InteractiveObject,
+          new ColorObject(${gift.color.red},${gift.color.green},${
+        gift.color.blue
+      }),
+        new ColorObject(${gift.colorWrapingPaper.red},${
+        gift.colorWrapingPaper.green
+      },${gift.colorWrapingPaper.blue})
+      );
+      `;
+    });
+    console.log(message);
+  };
+  fixCanyons = () => {
+    let message = "";
+    this.canyons.forEach((canyon, index) => {
+      console.log(canyon.color);
+      message += `\n
+        let canyon${index + 1} = new SpikeCanyon(
+          ${
+            Math.round((canyon.x / 2112 + Number.EPSILON) * 100000000) /
+            100000000
+          } * this.mapX,
+          ${
+            Math.round((canyon.y / 1170 + Number.EPSILON) * 100000000) /
+            100000000
+          } * this.mapY,
+          '${canyon.name}',
+          ObjectTypes.GroundBreaking,
+          this.mapY * 0.1,
+          ${
+            Math.round((canyon.width / 2112 + Number.EPSILON) * 100000000) /
+            100000000
+          } * this.mapY,
+      );
+      `;
+    });
+    console.log(message);
+  };
+  fixClouds = () => {
+    let message = "";
+    this.canyons.forEach((cloud, index) => {
+      console.log(cloud.color);
+      message += `
+      this.mapX *${
+        Math.round((cloud.x / 2112 + Number.EPSILON) * 100000000) / 100000000
+      }
+
+          \t\tthis.mapX*${
+            Math.round((cloud.width / 2112 + Number.EPSILON) * 100000000) /
+            100000000
+          }
+        \n
+      `;
+    });
+    console.log(message);
+  };
+
+  fixMountains = () => {
+    let mountain1 = new Mountain(
+      500,
+      0,
+      "Mountain 1",
+      ObjectTypes.BackgroundObject,
+      350
+    );
+    let message = "";
+    this.canyons.forEach((mountain, index) => {
+      console.log(mountain.color);
+      message += `\n
+        let mountain${index + 1} = new Mountain(
+          ${
+            Math.round((mountain.x / 2112 + Number.EPSILON) * 100000000) /
+            100000000
+          } * this.mapX,
+          0,
+          '${mountain.name}',
+          ObjectTypes.BackgroundObject,
+          ${
+            Math.round((mountain.width / 2112 + Number.EPSILON) * 100000000) /
+            100000000
+          } * this.mapX
+      );
+      `;
+    });
+    console.log(message);
+  };
+  fixTrees = () => {
+    let tree1 = new Tree(
+      250,
+      this.mapY * 0.1,
+      "Tree 1",
+      ObjectTypes.BackgroundObject
+    );
+    let message = "";
+    this.canyons.forEach((tree, index) => {
+      message += `\n
+        let tree${index + 1} = new Tree(
+          ${
+            Math.round((tree.x / 2112 + Number.EPSILON) * 100000000) / 100000000
+          } * this.mapX,
+          this.mapY * 0.1,
+          '${tree.name}',
+          ObjectTypes.BackgroundObject
+      );
+      `;
+    });
+    console.log(message);
   };
 }
