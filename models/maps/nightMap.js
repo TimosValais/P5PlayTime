@@ -1,4 +1,5 @@
 import { EnemyTypes, ObjectTypes } from "../../helpers/enums.js";
+import { refreshStrokesAndFills } from "../../helpers/p5HelperFunctions.js";
 import ColorObject from "../contracts/colorObj.js";
 import MovingPlatform from "../movingObjects/movingPlatform.js";
 import SampleEnemy from "../movingObjects/sampleEnemy.js";
@@ -575,6 +576,16 @@ export default class NightMap extends AbstractMap {
     );
     this.backgroundObjects.push(tree1, tree2, tree3, tree4, tree5);
 
+    //#endregion
+    //#region darkness
+    let darkness = {
+      draw: (map) => {
+        map.fill(0, 0, 0, 200);
+        map.rect(-2000, -2000, 9000, this.mapY + 9000);
+        refreshStrokesAndFills(map);
+      },
+    };
+    this.specialObjects.push(darkness);
     //#endregion
   };
 }
