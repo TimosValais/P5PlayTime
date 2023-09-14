@@ -295,6 +295,7 @@ export default class Snowperson extends Character {
   }
   fire(map) {
     let factor = this.#fireDirection == Directions.LEFT ? -1 : 1;
+    //TODO:tv this needs to be an abstraction because we 're violating Dependency Injection, we should be able to use any kind of ammo here (create the type of ammo in the constractor)
     let ammo = new Snowball(
       this.x + this.sizeX,
       this.y + this.sizeY / 2,

@@ -1,6 +1,7 @@
 import GameOjbect from "../contracts/gameObject.js";
 import { Directions, ObjectTypes } from "../../helpers/enums.js";
 import ColorObject from "../contracts/colorObj.js";
+import Carrot from "../movingObjects/carrot.js";
 
 export default class GiftBox extends GameOjbect {
   constructor(
@@ -20,7 +21,7 @@ export default class GiftBox extends GameOjbect {
     this.colorWrapingPaper = colorWrapingPaper;
   }
   draw(p5Map) {
-    this.handleCollisions(p5Map.allObjects);
+    this.handleCollisions(p5Map);
     //5. a collectable token - eg. a jewel, fruit, coins
     //... add your code here
     //box
@@ -55,12 +56,15 @@ export default class GiftBox extends GameOjbect {
     );
     p5Map.noStroke();
   }
-  handleCollisions(collisionObjects) {
-    let character = collisionObjects.find(
+  handleCollisions(map) {
+    let character = map.allObjects.find(
       (obj) => obj.type === ObjectTypes.Character
     );
     let collision = super.collidesWith(character);
     if (!!collision && collision === Directions.UP) {
+      //TODO:tv this needs to be an abstraction because we 're violating Dependency Injection, we should be able to use any kind of gift popup here (create the type of gift popup in the constractor)
+      let carrot = new Carrot(this.x, this.y);
+      map.addGameObject(carrot);
       this.isDestroyed = true;
     }
   }

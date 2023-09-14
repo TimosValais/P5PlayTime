@@ -20,7 +20,7 @@ export default class Snowball extends GenericAmmo {
     this.type = type;
     this.horizontalSpeed = horizontalSpeed;
     this.verticalSpeed = verticalSpeed;
-    this.isSticky = true;
+    this.isSticky = false;
     this.damage = 1;
     this.#initPosition = this.x;
   }

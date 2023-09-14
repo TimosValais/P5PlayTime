@@ -131,6 +131,7 @@ const p5Map = (p) => {
     }, monsterRefreshTimeMs);
     map.addBackgroundObjects();
 
+    console.log(map.backgroundObjects);
     p.addGameObject = (obj) => {
       map.gameObjects.push(obj);
     };

@@ -19,9 +19,11 @@ export default class Character extends GameOjbect {
     sizeX = 50,
     sizeY = 50,
     maxJumps = 1,
-    weaponDamage = 0
+    weaponDamage = 0,
+    stepX = 10,
+    stepY = 17
   ) {
-    super(x, y, sizeX, sizeY);
+    super(x, y, sizeX, sizeY, colorObject, stepX, stepY);
     this.x = x;
     this.y = y;
     this.name = name;
@@ -29,7 +31,6 @@ export default class Character extends GameOjbect {
     this.horizontalSpeedCapacity = horizontalSpeedCapacity;
     this.verticalSpeedCapacity = verticalSpeedCapacity;
     this.gravity = gravity;
-    this.color = colorObject;
     this.sizeX = sizeX;
     this.sizeY = sizeY;
     this.maxJumps = maxJumps;
@@ -533,7 +534,8 @@ export default class Character extends GameOjbect {
         this.stop(true, collisionObject.y + collisionObject.height);
         break;
       case Directions.DOWN:
-        this.stop(true);
+        this.#verticalSpeed = -this.gravity;
+        //this.stop(true);
         break;
       case Directions.LEFT:
       case Directions.RIGHT:

@@ -7,7 +7,9 @@ export default class Bunny extends Character {
     y,
     colorObject = new ColorObject(255, 255, 255),
     sizeX = 50,
-    sizeY = 50
+    sizeY = 50,
+    stepX = 10,
+    stepY = 17
   ) {
     super(
       x,
@@ -15,13 +17,18 @@ export default class Bunny extends Character {
       "Bunny",
       ObjectTypes.Character,
       10,
-      20,
+      19,
       1,
       colorObject,
       sizeX,
       sizeY,
-      2
+      2,
+      0,
+      stepX,
+      stepY
     );
+    console.log("the step y = ", this.stepY);
+    console.log("the step y = ", stepY);
   }
 
   drawMovingLeft(map) {
