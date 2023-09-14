@@ -9,7 +9,7 @@ export default class Bunny extends Character {
     sizeX = 50,
     sizeY = 50,
     stepX = 10,
-    stepY = 17
+    stepY = 18
   ) {
     super(
       x,
@@ -17,7 +17,7 @@ export default class Bunny extends Character {
       "Bunny",
       ObjectTypes.Character,
       10,
-      19,
+      20,
       1,
       colorObject,
       sizeX,

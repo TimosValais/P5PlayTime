@@ -169,7 +169,7 @@ export default class DayMap extends AbstractMap {
 
     //#region Create Gifts
     let giftBox1 = new GiftBox(
-      200,
+      -250,
       400,
       3000,
       "Unobtainable Gift",
@@ -188,7 +188,7 @@ export default class DayMap extends AbstractMap {
     );
     let giftBox3 = new GiftBox(1400, 800, 100);
     let giftBox4 = new GiftBox(
-      4410,
+      4250,
       520,
       150,
       "Yellow Box",
@@ -198,16 +198,16 @@ export default class DayMap extends AbstractMap {
     );
     let giftBox5 = new GiftBox(
       3560,
-      150,
+      800,
       150,
       "Yellow Box",
       ObjectTypes.InteractiveObject,
       new ColorObject(129, 231, 29),
       new ColorObject(215, 24, 129)
     );
-    let giftBox6 = new GiftBox(2300, 200, 50);
-    let giftBox7 = new GiftBox(500, 200, 50);
-    let giftBox8 = new GiftBox(750, 200, 50);
+    let giftBox6 = new GiftBox(2300, 350, 50);
+    let giftBox7 = new GiftBox(500, 350, 50);
+    let giftBox8 = new GiftBox(750, 350, 50);
 
     //#endregion
     giftList.push(
