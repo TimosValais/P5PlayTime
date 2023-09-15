@@ -12,13 +12,15 @@ export default class Snowperson extends Character {
     sizeX = 50,
     sizeY = 50
   ) {
+    let speedX = sizeY > 99 ? 5 : 3;
+    let speedY = sizeY > 99 ? 25 : 22;
     super(
       x,
       y,
       "Snowman",
       ObjectTypes.Character,
-      5,
-      25,
+      speedX,
+      speedY,
       1,
       colorObject,
       sizeX,

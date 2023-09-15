@@ -547,8 +547,8 @@ export default class Character extends GameOjbect {
         this.#verticalSpeed = -this.gravity;
         //this.stop(true);
         break;
-      case Directions.LEFT:
-      case Directions.RIGHT:
+      case Directions.LEFT && this.#horizontalSpeed < 0:
+      case Directions.RIGHT && this.#horizontalSpeed > 0:
         this.stop();
       default:
         this.start();
