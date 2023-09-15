@@ -581,21 +581,6 @@ export default class Character extends GameOjbect {
       collisionEnemy.takeDamage(this.#damage, false);
       this.#verticalSpeed = this.verticalSpeedCapacity;
     }
-    // switch (collision) {
-    //   case Directions.UP:
-    //     collisionEnemy.takeDamage(this.#damage, false);
-    //     this.#verticalSpeed = this.verticalSpeedCapacity;
-    //     break;
-    //   case Directions.DOWN:
-    //   case Directions.LEFT:
-    //   case Directions.RIGHT:
-    //     if (collisionEnemy.damage >= this.armor) {
-    //       this.takeDamage(collisionEnemy.damage);
-    //       this.stop();
-    //     } else {
-    //       this.#verticalSpeed = 5;
-    //     }
-    // }
   };
   #handleTrophy = (trophy) => {
     let collision = this.collidesWith(trophy);
