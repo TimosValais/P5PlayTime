@@ -80,4 +80,8 @@ export default class GameOjbect {
       console.log("Oh no, I collided with ", collisionObject, "object")
     );
   }
+  getCurrentSpeed() {
+    console.log("returns current horizontal speed");
+    return null;
+  }
 }

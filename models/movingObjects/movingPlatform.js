@@ -77,4 +77,7 @@ export default class MovingPlatform extends GameOjbect {
         }
       });
   };
+  getCurrentSpeed() {
+    return this.horizontalSpeed;
+  }
 }

@@ -551,14 +551,18 @@ export default class Character extends GameOjbect {
         if (this.#horizontalSpeed < 0) {
           this.stop();
         } else if (this.#horizontalSpeed == 0) {
-          this.#horizontalSpeed = this.horizontalSpeedCapacity;
+          if (!!collisionObject.getCurrentSpeed())
+            this.#horizontalSpeed =
+              collisionObject.getCurrentSpeed() + this.horizontalSpeedCapacity;
         }
         break;
       case Directions.RIGHT:
         if (this.#horizontalSpeed > 0) {
           this.stop();
         } else if (this.#horizontalSpeed == 0) {
-          this.#horizontalSpeed = -this.horizontalSpeedCapacity;
+          if (!!collisionObject.getCurrentSpeed())
+            this.#horizontalSpeed =
+              collisionObject.getCurrentSpeed() - this.horizontalSpeedCapacity;
         }
         break;
       default:
