@@ -14,6 +14,7 @@ import Star from "../staticObjects/star.js";
 import Tree from "../staticObjects/tree.js";
 import AbstractMap from "./abstractMap.js";
 import SunSpawn from "../movingObjects/sunSpawn.js";
+import addRandomEnemyToEnemyList from "../../helpers/generators.js";
 
 export default class NightMap extends AbstractMap {
   constructor(mapX, mapY) {
@@ -258,40 +259,8 @@ export default class NightMap extends AbstractMap {
 
     return giftList;
   };
-  addRandomEnemy = (enemies, type) => {
-    let randomX = Math.random() * this.mapX;
-    let randomY = this.mapY;
-    let newEnemy = null;
-    if (type == EnemyTypes.Sample) {
-      newEnemy = new SampleEnemy(
-        randomX,
-        randomY,
-        "Sample Enemy" + (enemies.length + 1),
-        ObjectTypes.Enemy,
-        10,
-        10,
-        1,
-        new ColorObject(250, 20, 15),
-        60,
-        90,
-        0
-      );
-    } else if (type == EnemyTypes.SunSpawn) {
-      newEnemy = new SunSpawn(
-        randomX,
-        randomY,
-        "Sun Spawn" + (enemies.length + 1),
-        ObjectTypes.Enemy,
-        10,
-        10,
-        1,
-        new ColorObject(253, 184, 19),
-        60,
-        90,
-        0
-      );
-    }
-    enemies.push(newEnemy);
+  addRandomEnemy = (enemies, type, positionX, positionY, size) => {
+    addRandomEnemyToEnemyList(enemies, type, positionX, positionY, size);
   };
   drawGround = () => {
     let groundX = 0;

@@ -47,7 +47,6 @@ const gravity = 1;
 const monsterRefreshTimeMs = 4000;
 const mapY = window.innerHeight - window.innerHeight * 0.02;
 const mapX = window.innerWidth - window.innerWidth * 0.01;
-console.log(mapY, mapX);
 //#endregion
 let backgroundColor = new ColorObject(135, 206, 250);
 
@@ -58,15 +57,10 @@ const p5Map = (p) => {
   let cameraPositionY = 0;
   let lives = 0;
   let map;
-  console.log(mapY, mapX);
 
   if (gameMap == LevelNames.NIGHT_LEVEL) {
-    console.log(mapY, mapX);
-
     map = new NightMap(mapX, mapY);
   } else {
-    console.log(mapY, mapX);
-
     map = new DayMap(mapX, mapY);
   }
   backgroundColor = map.getBackgroundColor();
@@ -77,7 +71,7 @@ const p5Map = (p) => {
     p.groundY = p.height;
 
     //#region Create Player Character
-    let gameCharacter = getGameCharacter(p, character);
+    let gameCharacter = getGameCharacter(p, character, getCharactersSize());
 
     //#endregion
     let platforms = map.generatePlatforms();
@@ -101,7 +95,8 @@ const p5Map = (p) => {
         gameCharacters,
         EnemyTypes.SunSpawn,
         mapX - cameraPositionX,
-        mapY / 2
+        mapY / 2,
+        getCharactersSize()
       );
     }, monsterRefreshTimeMs);
 
@@ -307,23 +302,23 @@ const handleEndOfGame = (p5Obj, gameMap, isVictorious, score) => {
   clearInterval(p5Obj.enemiesIntervalId);
 };
 
-const getGameCharacter = (p5Obj, character) => {
+const getGameCharacter = (p5Obj, character, size) => {
   let resultCharacter;
   if (character == CharacterNames.BUNNY) {
     resultCharacter = new Bunny(
       0,
       p5Obj.height * 0.1,
       new ColorObject(200, 200, 200),
-      50,
-      100
+      size / 2,
+      size
     );
   } else if (character == CharacterNames.SNOWPERSON) {
     resultCharacter = new Snowperson(
       0,
       p5Obj.height * 0.1,
       new ColorObject(255, 255, 255),
-      50,
-      100
+      size / 2,
+      size
     );
   } else {
     resultCharacter = new Character(
@@ -335,11 +330,16 @@ const getGameCharacter = (p5Obj, character) => {
       22,
       1,
       new ColorObject(132, 43, 99),
-      50,
-      75,
+      (2 * size) / 3,
+      size,
       1
     );
   }
   return resultCharacter;
+};
+const getCharactersSize = () => {
+  if (mapY > 1000) {
+    return 100;
+  } else return 50;
 };
 //#endregion

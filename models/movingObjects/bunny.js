@@ -11,13 +11,15 @@ export default class Bunny extends Character {
     stepX = 10,
     stepY = 18
   ) {
+    let speedX = sizeY > 99 ? 10 : 7;
+    let speedY = sizeY > 99 ? 20 : 18;
     super(
       x,
       y,
       "Bunny",
       ObjectTypes.Character,
-      10,
-      20,
+      speedX,
+      speedY,
       1,
       colorObject,
       sizeX,
