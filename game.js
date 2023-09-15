@@ -113,11 +113,11 @@ const p5Map = (p) => {
     );
     if (!!!gamer) {
       score = 0;
-      handleEndOfGame(p, map, false, score);
+      handleEndOfGame(p, map, false, score, gameCharacters);
       return;
     }
     if (!!gamer.isVictorious) {
-      handleEndOfGame(p, map, true, score);
+      handleEndOfGame(p, map, true, score, gameCharacters);
       return;
     }
 
@@ -271,7 +271,13 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //#region game handling functions
-const handleEndOfGame = (p5Obj, gameMap, isVictorious, score) => {
+const handleEndOfGame = (
+  p5Obj,
+  gameMap,
+  isVictorious,
+  score,
+  gameCharacters
+) => {
   if (!isVictorious) {
     p5Obj.background(255, 0, 0);
     p5Obj.fill(255, 255, 255);
@@ -282,7 +288,7 @@ const handleEndOfGame = (p5Obj, gameMap, isVictorious, score) => {
     p5Obj.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
     toggleButtonDiv(false, "Retry");
 
-    gameMap.gameCharacters = [];
+    gameCharacters = [];
   } else {
     p5Obj.background(0, 255, 0);
     p5Obj.fill(255, 255, 255);
@@ -293,7 +299,7 @@ const handleEndOfGame = (p5Obj, gameMap, isVictorious, score) => {
     p5Obj.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
     toggleButtonDiv(false, "Play Again");
     //leave just the gamer so it won't go to the other loop
-    gameMap.gameCharacters = gameCharacters.filter(
+    gameCharacters = gameCharacters.filter(
       (char) => char.type === ObjectTypes.Character
     );
   }
