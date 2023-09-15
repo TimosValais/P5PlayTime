@@ -113,7 +113,7 @@ export default class DayMap extends AbstractMap {
       5,
       3,
       40,
-      400
+      250
     );
 
     let movingPlatform3 = new MovingPlatform(

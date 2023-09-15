@@ -501,7 +501,6 @@ export default class Character extends GameOjbect {
     this.#handleTrophy(trophy);
   }
   takeDamage(damageTaken) {
-    console.log("damage taken : ", damageTaken);
     if (damageTaken <= this.armor) {
       armor -= damageTaken;
       return;
