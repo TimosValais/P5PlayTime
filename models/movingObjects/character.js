@@ -458,10 +458,12 @@ export default class Character extends GameOjbect {
 
   stop(vertical = false, yLanded = null) {
     if (vertical) {
-      this.#verticalSpeed = 0;
       if (!!yLanded) {
         this.y = yLanded;
         this.#isGrounded = true;
+        this.#verticalSpeed = 0;
+      } else {
+        this.#verticalSpeed = -this.gravity;
       }
     } else {
       this.#horizontalSpeed = 0;
@@ -538,18 +540,27 @@ export default class Character extends GameOjbect {
     switch (collision) {
       case Directions.UP:
         if (!!collisionObject.isSticky) {
-          //TODO:tv need to create object with direction + position of collision for this to work properly
           this.gravitationalHorizontalSpeed = collisionObject.horizontalSpeed;
         }
         this.stop(true, collisionObject.y + collisionObject.height);
         break;
       case Directions.DOWN:
-        this.#verticalSpeed = -this.gravity;
-        //this.stop(true);
+        this.stop(true);
         break;
-      case Directions.LEFT && this.#horizontalSpeed < 0:
-      case Directions.RIGHT && this.#horizontalSpeed > 0:
-        this.stop();
+      case Directions.LEFT:
+        if (this.#horizontalSpeed < 0) {
+          this.stop();
+        } else if (this.#horizontalSpeed == 0) {
+          this.#horizontalSpeed = this.horizontalSpeedCapacity;
+        }
+        break;
+      case Directions.RIGHT:
+        if (this.#horizontalSpeed > 0) {
+          this.stop();
+        } else if (this.#horizontalSpeed == 0) {
+          this.#horizontalSpeed = -this.horizontalSpeedCapacity;
+        }
+        break;
       default:
         this.start();
         break;

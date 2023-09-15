@@ -7,9 +7,7 @@ export default class Bunny extends Character {
     y,
     colorObject = new ColorObject(255, 255, 255),
     sizeX = 50,
-    sizeY = 50,
-    stepX = 10,
-    stepY = 18
+    sizeY = 50
   ) {
     let speedX = sizeY > 99 ? 10 : 7;
     let speedY = sizeY > 99 ? 20 : 18;
@@ -25,9 +23,7 @@ export default class Bunny extends Character {
       sizeX,
       sizeY,
       2,
-      0,
-      stepX,
-      stepY
+      0
     );
   }
 
