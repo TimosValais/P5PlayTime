@@ -68,6 +68,10 @@ export default class MovingPlatform extends GameOjbect {
           case Directions.RIGHT:
             this.horizontalSpeed *= -1;
             break;
+          case Directions.UP:
+          case Directions.DOWN:
+            this.verticalSpeed *= -1;
+            break;
           default:
             break;
         }

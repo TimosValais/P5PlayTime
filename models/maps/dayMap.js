@@ -24,6 +24,7 @@ export default class DayMap extends AbstractMap {
     this.groundBreakingObjects = [];
   }
   generatePlatforms = () => {
+    //a lot of these platform have weird x/y/size values because I first created them in a fixed canvas and then took the ratios
     let platformList = [];
     //#region Create Platfororms
 
@@ -152,6 +153,16 @@ export default class DayMap extends AbstractMap {
       0.00094697 * this.mapX,
       0.48728205 * this.mapY
     );
+
+    let invisiblePlatform = new Platform(
+      2.82 * this.mapX,
+      0.5 * this.mapY,
+      "Invisible Platform",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(255, 255, 255, 0),
+      0.8 * this.mapX,
+      0.02 * this.mapY
+    );
     platformList.push(
       platform1,
       platform2,
@@ -163,7 +174,8 @@ export default class DayMap extends AbstractMap {
       movingPlatform2,
       movingPlatform3,
       movingPlatform4,
-      blockingPlatform
+      blockingPlatform,
+      invisiblePlatform
     );
     //#endregion
 
@@ -244,7 +256,15 @@ export default class DayMap extends AbstractMap {
       0.2991453 * this.mapY,
       50
     );
-    //#endregion
+    let secretGiftBox = new GiftBox(
+      3.605 * this.mapX,
+      0.7 * this.mapY,
+      9999,
+      "Secret Gift",
+      ObjectTypes.InteractiveObject,
+      new ColorObject(255, 255, 255, 0),
+      new ColorObject(255, 255, 255, 0)
+    );
     giftList.push(
       giftBox1,
       giftBox2,
@@ -253,13 +273,21 @@ export default class DayMap extends AbstractMap {
       giftBox5,
       giftBox6,
       giftBox7,
-      giftBox8
+      giftBox8,
+      secretGiftBox
     );
+    //#endregion
 
     return giftList;
   };
   addRandomEnemy = (enemies, type, positionX, positionY, size) => {
-    addRandomEnemyToEnemyList(enemies, type, positionX, positionY, size);
+    addRandomEnemyToEnemyList(
+      enemies,
+      type,
+      positionX / 2,
+      positionY / 2,
+      size
+    );
   };
   drawGround = () => {
     let groundX = 0;

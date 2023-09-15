@@ -258,7 +258,13 @@ export default class NightMap extends AbstractMap {
     return giftList;
   };
   addRandomEnemy = (enemies, type, positionX, positionY, size) => {
-    addRandomEnemyToEnemyList(enemies, type, positionX, positionY, size);
+    addRandomEnemyToEnemyList(
+      enemies,
+      type,
+      positionX / 2,
+      positionY / 2,
+      size
+    );
   };
   drawGround = () => {
     let groundX = 0;

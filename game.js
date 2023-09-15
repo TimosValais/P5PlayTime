@@ -95,7 +95,7 @@ const p5Map = (p) => {
         gameCharacters,
         EnemyTypes.SunSpawn,
         mapX - cameraPositionX,
-        mapY / 2,
+        mapY,
         getCharactersSize()
       );
     }, monsterRefreshTimeMs);
