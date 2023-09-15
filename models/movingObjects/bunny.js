@@ -27,8 +27,6 @@ export default class Bunny extends Character {
       stepX,
       stepY
     );
-    console.log("the step y = ", this.stepY);
-    console.log("the step y = ", stepY);
   }
 
   drawMovingLeft(map) {

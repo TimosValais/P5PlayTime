@@ -11,17 +11,19 @@ import Mountain from "../staticObjects/mountains.js";
 import Platform from "../staticObjects/platform.js";
 import SpikeCanyon from "../staticObjects/spikeCanyon.js";
 import Star from "../staticObjects/star.js";
-import Sun from "../staticObjects/sun.js";
 import Tree from "../staticObjects/tree.js";
 import AbstractMap from "./abstractMap.js";
+import SunSpawn from "../movingObjects/sunSpawn.js";
 
 export default class NightMap extends AbstractMap {
-  constructor(mapY, mapX) {
-    super(mapY, mapX);
+  constructor(mapX, mapY) {
+    super(mapX, mapY);
     this.gameObjects = [];
     this.backgroundObjects = [];
     this.groundBreakingObjects = [];
     this.specialObjects = [];
+
+    console.log(this.mapY, this.mapX);
   }
   generatePlatforms = () => {
     let platformList = [];
@@ -166,8 +168,6 @@ export default class NightMap extends AbstractMap {
       blockingPlatform
     );
     //#endregion
-
-    console.log(platformList);
     return platformList;
   };
   getBackgroundColor = () => {
@@ -264,6 +264,20 @@ export default class NightMap extends AbstractMap {
     let newEnemy = null;
     if (type == EnemyTypes.Sample) {
       newEnemy = new SampleEnemy(
+        randomX,
+        randomY,
+        "Sample Enemy" + (enemies.length + 1),
+        ObjectTypes.Enemy,
+        10,
+        10,
+        1,
+        new ColorObject(250, 20, 15),
+        60,
+        90,
+        0
+      );
+    } else if (type == EnemyTypes.SunSpawn) {
+      newEnemy = new SunSpawn(
         randomX,
         randomY,
         "Sample Enemy" + (enemies.length + 1),

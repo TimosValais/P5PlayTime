@@ -20,8 +20,11 @@ export default class GameOjbect {
     this.stepY = stepY;
     this.destroyed = false;
   }
-  collidesWith(otherObject) {
+  collidesWith(otherObject, isFalling = false) {
     //TODO:tv maybe remove these for memory allocation and just do straight the comparisons
+
+    //need this y step if the character is falling to avoid falling of the map if the step is smaller than it should
+    let yStepToCheck = isFalling ? 2 * this.stepY : this.stepY;
     let leftPointBeforeRightPoint = this.x < otherObject.x + otherObject.width;
     let rightPointAfterLeftPoint = this.x + this.width > otherObject.x;
     let verticalCollision =
@@ -35,13 +38,13 @@ export default class GameOjbect {
     //prioritize vertical from horizontal collitions
     if (verticalCollision) {
       let over =
-        this.y <= otherObject.y + otherObject.height + this.stepY &&
-        this.y >= otherObject.y + otherObject.height - this.stepY;
+        this.y <= otherObject.y + otherObject.height + yStepToCheck &&
+        this.y >= otherObject.y + otherObject.height - yStepToCheck;
       let under =
-        this.y + this.height <= otherObject.y + this.stepY &&
-        this.y + this.height >= otherObject.y - this.stepY;
+        this.y + this.height <= otherObject.y + yStepToCheck &&
+        this.y + this.height >= otherObject.y - yStepToCheck;
       if (over) return Directions.UP;
-      if (under) return Directions.DOWN;
+      if (under && !isFalling) return Directions.DOWN;
     }
     if (horizontalCollision) {
       let left =

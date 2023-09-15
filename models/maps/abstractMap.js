@@ -4,7 +4,7 @@ import GiftBox from "../staticObjects/giftBox.js";
 import Platform from "../staticObjects/platform.js";
 
 export default class AbstractMap {
-  constructor(mapY, mapX) {
+  constructor(mapX, mapY) {
     console.log(
       "must accept a mapY (height) parameter and must implement the following lists as properties:\n1. gameObjects\n2. backgroundObjects\ngroundBreakingObjects"
     );

@@ -39,7 +39,7 @@ export const LevelNames = Object.freeze({
 });
 export const EnemyTypes = Object.freeze({
   Sample: 1,
-  SecondEnemy: 2,
+  SunSpawn: 2,
 });
 export const CharacterNames = Object.freeze({
   BUNNY: "bunny",

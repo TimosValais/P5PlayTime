@@ -1,4 +1,5 @@
 import { ObjectTypes } from "../../helpers/enums.js";
+import { refreshStrokesAndFills } from "../../helpers/p5HelperFunctions.js";
 import ColorObject from "../contracts/colorObj.js";
 import GameOjbect from "../contracts/gameObject.js";
 
@@ -30,6 +31,6 @@ export default class Moon extends GameOjbect {
       this.width,
       this.width
     );
-    p5Map.noFill();
+    refreshStrokesAndFills(p5Map);
   }
 }

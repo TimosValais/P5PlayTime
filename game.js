@@ -47,6 +47,7 @@ const gravity = 1;
 const monsterRefreshTimeMs = 4000;
 const mapY = window.innerHeight - window.innerHeight * 0.02;
 const mapX = window.innerWidth - window.innerWidth * 0.01;
+console.log(mapY, mapX);
 //#endregion
 let backgroundColor = new ColorObject(135, 206, 250);
 
@@ -57,53 +58,26 @@ const p5Map = (p) => {
   let cameraPositionY = 0;
   let lives = 0;
   let map;
+  console.log(mapY, mapX);
+
   if (gameMap == LevelNames.NIGHT_LEVEL) {
-    map = new NightMap(mapY, mapX);
+    console.log(mapY, mapX);
+
+    map = new NightMap(mapX, mapY);
   } else {
-    map = new DayMap(mapY, mapX);
+    console.log(mapY, mapX);
+
+    map = new DayMap(mapX, mapY);
   }
   backgroundColor = map.getBackgroundColor();
   let score = 0;
-  console.log("before : ", p.height);
   p.setup = function () {
     p.createCanvas(mapX, mapY);
 
     p.groundY = p.height;
-    console.log("after : ", p.height);
 
     //#region Create Player Character
-    let gameCharacter;
-    if (character == CharacterNames.BUNNY) {
-      gameCharacter = new Bunny(
-        0,
-        p.height * 0.1,
-        new ColorObject(200, 200, 200),
-        50,
-        100
-      );
-    } else if (character == CharacterNames.SNOWPERSON) {
-      gameCharacter = new Snowperson(
-        0,
-        p.height * 0.1,
-        new ColorObject(255, 255, 255),
-        50,
-        100
-      );
-    } else {
-      gameCharacter = new Character(
-        0,
-        p.height * 0.1,
-        "Base Character",
-        ObjectTypes.Character,
-        8,
-        22,
-        1,
-        new ColorObject(132, 43, 99),
-        50,
-        75,
-        1
-      );
-    }
+    let gameCharacter = getGameCharacter(p, character);
 
     //#endregion
     let platforms = map.generatePlatforms();
@@ -119,19 +93,18 @@ const p5Map = (p) => {
     gifts.forEach((gift) => map.gameObjects.push(gift));
 
     //#endregion
+    map.addBackgroundObjects();
 
     //Create interval to throw enemies at player, get the id to stop it after
     p.enemiesIntervalId = setInterval(() => {
       map.addRandomEnemy(
         gameCharacters,
-        EnemyTypes.Sample,
+        EnemyTypes.SunSpawn,
         mapX - cameraPositionX,
-        mapY
+        mapY / 2
       );
     }, monsterRefreshTimeMs);
-    map.addBackgroundObjects();
 
-    console.log(map.backgroundObjects);
     p.addGameObject = (obj) => {
       map.gameObjects.push(obj);
     };
@@ -144,37 +117,12 @@ const p5Map = (p) => {
       (char) => char.type === ObjectTypes.Character
     );
     if (!!!gamer) {
-      p.background(255, 0, 0);
-      p.fill(255, 255, 255);
-      p.textSize(32);
-      p.textAlign(p.CENTER, p.CENTER);
-      p.text("You Lost", mapX / 2, mapY / 2);
-      p.textAlign(p.CENTER, p.CENTER);
-      p.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
-      toggleButtonDiv(false, "Retry");
-
-      gameCharacters = [];
-      map.gameObjects = [];
-      //stop spamming enemies
-      clearInterval(p.enemiesIntervalId);
+      score = 0;
+      handleEndOfGame(p, map, false, score);
       return;
     }
     if (!!gamer.isVictorious) {
-      p.background(0, 255, 0);
-      p.fill(255, 255, 255);
-      p.textSize(32);
-      p.textAlign(p.CENTER, p.CENTER);
-      p.text("You Are Victorious", mapX / 2, mapY / 2);
-      p.textAlign(p.CENTER, p.CENTER);
-      p.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
-      toggleButtonDiv(false, "Play Again");
-      //leave just the gamer so it won't go to the other loop
-      gameCharacters = gameCharacters.filter(
-        (char) => char.type === ObjectTypes.Character
-      );
-      map.gameObjects = [];
-      //stop spamming enemies
-      clearInterval(p.enemiesIntervalId);
+      handleEndOfGame(p, map, true, score);
       return;
     }
 
@@ -326,3 +274,72 @@ document.addEventListener("DOMContentLoaded", () => {
   setListeners();
   new p5(p5Map);
 });
+
+//#region game handling functions
+const handleEndOfGame = (p5Obj, gameMap, isVictorious, score) => {
+  if (!isVictorious) {
+    p5Obj.background(255, 0, 0);
+    p5Obj.fill(255, 255, 255);
+    p5Obj.textSize(32);
+    p5Obj.textAlign(p5Obj.CENTER, p5Obj.CENTER);
+    p5Obj.text("You Lost", mapX / 2, mapY / 2);
+    p5Obj.textAlign(p5Obj.CENTER, p5Obj.CENTER);
+    p5Obj.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
+    toggleButtonDiv(false, "Retry");
+
+    gameMap.gameCharacters = [];
+  } else {
+    p5Obj.background(0, 255, 0);
+    p5Obj.fill(255, 255, 255);
+    p5Obj.textSize(32);
+    p5Obj.textAlign(p5Obj.CENTER, p5Obj.CENTER);
+    p5Obj.text("You Are Victorious", mapX / 2, mapY / 2);
+    p5Obj.textAlign(p5Obj.CENTER, p5Obj.CENTER);
+    p5Obj.text(`Score: ${score}`, mapX / 2, mapY / 2 + 40);
+    toggleButtonDiv(false, "Play Again");
+    //leave just the gamer so it won't go to the other loop
+    gameMap.gameCharacters = gameCharacters.filter(
+      (char) => char.type === ObjectTypes.Character
+    );
+  }
+  gameMap.gameObjects = [];
+  //stop spamming enemies
+  clearInterval(p5Obj.enemiesIntervalId);
+};
+
+const getGameCharacter = (p5Obj, character) => {
+  let resultCharacter;
+  if (character == CharacterNames.BUNNY) {
+    resultCharacter = new Bunny(
+      0,
+      p5Obj.height * 0.1,
+      new ColorObject(200, 200, 200),
+      50,
+      100
+    );
+  } else if (character == CharacterNames.SNOWPERSON) {
+    resultCharacter = new Snowperson(
+      0,
+      p5Obj.height * 0.1,
+      new ColorObject(255, 255, 255),
+      50,
+      100
+    );
+  } else {
+    resultCharacter = new Character(
+      0,
+      p5Obj.height * 0.1,
+      "Base Character",
+      ObjectTypes.Character,
+      8,
+      22,
+      1,
+      new ColorObject(132, 43, 99),
+      50,
+      75,
+      1
+    );
+  }
+  return resultCharacter;
+};
+//#endregion

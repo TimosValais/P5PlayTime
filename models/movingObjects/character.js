@@ -518,10 +518,13 @@ export default class Character extends GameOjbect {
   hasWeapon() {
     return this.weaponDamage > 0;
   }
+  isFalling() {
+    return this.#verticalSpeed < 0;
+  }
   #handleInteractiveObjectCollision = (collisionObjects) => {
     let collision = null;
     let collisionObject = collisionObjects.find((obj) => {
-      collision = this.collidesWith(obj);
+      collision = this.collidesWith(obj, this.isFalling());
       return collision != null;
     });
     this.gravitationalHorizontalSpeed = 0;

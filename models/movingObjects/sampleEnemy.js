@@ -129,7 +129,7 @@ export default class SampleEnemy extends Character {
     let collisions = [];
     let landed = false;
     collisionObjects.forEach((obj) => {
-      let collision = this.collidesWith(obj);
+      let collision = this.collidesWith(obj, this.isFalling());
       if (collision === Directions.UP) {
         landed = true;
       }

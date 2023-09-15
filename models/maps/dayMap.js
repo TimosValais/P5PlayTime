@@ -2,6 +2,7 @@ import { EnemyTypes, ObjectTypes } from "../../helpers/enums.js";
 import ColorObject from "../contracts/colorObj.js";
 import MovingPlatform from "../movingObjects/movingPlatform.js";
 import SampleEnemy from "../movingObjects/sampleEnemy.js";
+import SunSpawn from "../movingObjects/sunSpawn.js";
 import Cloud from "../staticObjects/cloud.js";
 import GiftBox from "../staticObjects/giftBox.js";
 import Ground from "../staticObjects/ground.js";
@@ -15,11 +16,12 @@ import Tree from "../staticObjects/tree.js";
 import AbstractMap from "./abstractMap.js";
 
 export default class DayMap extends AbstractMap {
-  constructor(mapY, mapX) {
-    super(mapY, mapX);
+  constructor(mapX, mapY) {
+    super(mapX, mapY);
     this.gameObjects = [];
     this.backgroundObjects = [];
     this.groundBreakingObjects = [];
+    console.log(this.mapY, this.mapX);
   }
   generatePlatforms = () => {
     let platformList = [];
@@ -165,7 +167,6 @@ export default class DayMap extends AbstractMap {
     );
     //#endregion
 
-    console.log(platformList);
     return platformList;
   };
   getBackgroundColor = () => {
@@ -257,9 +258,9 @@ export default class DayMap extends AbstractMap {
 
     return giftList;
   };
-  addRandomEnemy = (enemies, type, mapX, mapY) => {
-    let randomX = Math.random() * mapX;
-    let randomY = mapY;
+  addRandomEnemy = (enemies, type) => {
+    let randomX = Math.random() * this.mapX;
+    let randomY = this.mapY;
     let newEnemy = null;
     if (type == EnemyTypes.Sample) {
       newEnemy = new SampleEnemy(
@@ -271,6 +272,20 @@ export default class DayMap extends AbstractMap {
         10,
         1,
         new ColorObject(250, 20, 15),
+        60,
+        90,
+        0
+      );
+    } else if (type == EnemyTypes.SunSpawn) {
+      newEnemy = new SunSpawn(
+        randomX,
+        randomY,
+        "Sun Spawn" + (enemies.length + 1),
+        ObjectTypes.Enemy,
+        10,
+        10,
+        1,
+        new ColorObject(253, 184, 19),
         60,
         90,
         0
@@ -556,162 +571,9 @@ export default class DayMap extends AbstractMap {
       ObjectTypes.BackgroundObject
     );
     this.backgroundObjects.push(tree1, tree2, tree3, tree4, tree5);
+    console.log(this.mapY, this.mapX);
 
+    console.log(this.backgroundObjects);
     //#endregion
-  };
-
-  fixPlatforms = (list) => {
-    let message = "";
-    list.forEach((platform, index) => {
-      console.log(platform.color);
-      message += `\n
-        let platform${index + 1} = new Platform(
-          ${
-            Math.round((platform.x / 2112 + Number.EPSILON) * 100000000) /
-            100000000
-          } * this.mapX,
-          ${
-            Math.round((platform.y / 1170 + Number.EPSILON) * 100000000) /
-            100000000
-          } * this.mapY,
-          '${platform.name}',
-          ObjectTypes.InteractiveObject,
-          new ColorObject(${platform.color.red},${platform.color.green},${
-        platform.color.blue
-      }),
-          ${
-            Math.round((platform.width / 2112 + Number.EPSILON) * 100000000) /
-            100000000
-          } * this.mapX,
-          ${
-            Math.round((platform.height / 1170 + Number.EPSILON) * 100000000) /
-            100000000
-          } * this.mapY
-        )
-      `;
-    });
-    console.log(message);
-  };
-  fixGifts = (list) => {
-    let message = "";
-    list.forEach((gift, index) => {
-      console.log(gift.color);
-      message += `\n
-        let giftBox${index + 1} = new GiftBox(
-          ${
-            Math.round((gift.x / 2112 + Number.EPSILON) * 100000000) / 100000000
-          } * this.mapX,
-          ${
-            Math.round((gift.y / 1170 + Number.EPSILON) * 100000000) / 100000000
-          } * this.mapY,
-          ${gift.scorePoints},
-          '${gift.name}',
-          ObjectTypes.InteractiveObject,
-          new ColorObject(${gift.color.red},${gift.color.green},${
-        gift.color.blue
-      }),
-        new ColorObject(${gift.colorWrapingPaper.red},${
-        gift.colorWrapingPaper.green
-      },${gift.colorWrapingPaper.blue})
-      );
-      `;
-    });
-    console.log(message);
-  };
-  fixCanyons = () => {
-    let message = "";
-    this.canyons.forEach((canyon, index) => {
-      console.log(canyon.color);
-      message += `\n
-        let canyon${index + 1} = new SpikeCanyon(
-          ${
-            Math.round((canyon.x / 2112 + Number.EPSILON) * 100000000) /
-            100000000
-          } * this.mapX,
-          ${
-            Math.round((canyon.y / 1170 + Number.EPSILON) * 100000000) /
-            100000000
-          } * this.mapY,
-          '${canyon.name}',
-          ObjectTypes.GroundBreaking,
-          this.mapY * 0.1,
-          ${
-            Math.round((canyon.width / 2112 + Number.EPSILON) * 100000000) /
-            100000000
-          } * this.mapY,
-      );
-      `;
-    });
-    console.log(message);
-  };
-  fixClouds = () => {
-    let message = "";
-    this.canyons.forEach((cloud, index) => {
-      console.log(cloud.color);
-      message += `
-      this.mapX *${
-        Math.round((cloud.x / 2112 + Number.EPSILON) * 100000000) / 100000000
-      }
-
-          \t\tthis.mapX*${
-            Math.round((cloud.width / 2112 + Number.EPSILON) * 100000000) /
-            100000000
-          }
-        \n
-      `;
-    });
-    console.log(message);
-  };
-
-  fixMountains = () => {
-    let mountain1 = new Mountain(
-      500,
-      0,
-      "Mountain 1",
-      ObjectTypes.BackgroundObject,
-      350
-    );
-    let message = "";
-    this.canyons.forEach((mountain, index) => {
-      console.log(mountain.color);
-      message += `\n
-        let mountain${index + 1} = new Mountain(
-          ${
-            Math.round((mountain.x / 2112 + Number.EPSILON) * 100000000) /
-            100000000
-          } * this.mapX,
-          0,
-          '${mountain.name}',
-          ObjectTypes.BackgroundObject,
-          ${
-            Math.round((mountain.width / 2112 + Number.EPSILON) * 100000000) /
-            100000000
-          } * this.mapX
-      );
-      `;
-    });
-    console.log(message);
-  };
-  fixTrees = () => {
-    let tree1 = new Tree(
-      250,
-      this.mapY * 0.1,
-      "Tree 1",
-      ObjectTypes.BackgroundObject
-    );
-    let message = "";
-    this.canyons.forEach((tree, index) => {
-      message += `\n
-        let tree${index + 1} = new Tree(
-          ${
-            Math.round((tree.x / 2112 + Number.EPSILON) * 100000000) / 100000000
-          } * this.mapX,
-          this.mapY * 0.1,
-          '${tree.name}',
-          ObjectTypes.BackgroundObject
-      );
-      `;
-    });
-    console.log(message);
   };
 }
