@@ -84,44 +84,46 @@ export default class SunSpawn extends SampleEnemy {
   }
 
   #drawBody = (map, firstDirection, secondDirection = null) => {
+    let faceShape = "";
     switch (true) {
       case firstDirection == Directions.UP && !!!secondDirection:
-      case firstDirection == Directions.UP &&
-        secondDirection == Directions.DOWN:
-      case firstDirection == Directions.RIGHT && !!!secondDirection:
-      case firstDirection == Directions.LEFT && !!!secondDirection:
       case firstDirection == Directions.LEFT &&
         secondDirection == Directions.UP:
       case firstDirection == Directions.RIGHT &&
         secondDirection == Directions.UP:
-        map.stroke(0, 0, 0);
-        map.strokeWeight(1);
-        map.fill(
-          this.color.red,
-          this.color.green,
-          this.color.blue,
-          this.color.transparency
-        );
-        map.ellipse(
-          this.x + (this.sizeY * 5.5) / 10,
-          map.height - this.y - (this.sizeY * 4.5) / 10,
-          (2 * (this.sizeY * 1.5)) / 10
-        );
-        this.#drawSymbol(
-          map,
-          this.x + (this.sizeY * 4.5) / 10,
-          map.height - this.y - (this.sizeY * 4.9) / 10,
-          (this.sizeY * 2) / 20,
-          "O\tO",
-          this.sizeY / 12.5,
-          "CENTER"
-        );
-        refreshStrokesAndFills(map);
+        faceShape = "^\t^";
         break;
-
+      case firstDirection == Directions.RIGHT && !!!secondDirection:
+      case firstDirection == Directions.LEFT && !!!secondDirection:
+      case firstDirection == Directions.UP &&
+        secondDirection == Directions.DOWN:
       default:
+        faceShape = "O\tO";
         break;
     }
+    map.stroke(0, 0, 0);
+    map.strokeWeight(1);
+    map.fill(
+      this.color.red,
+      this.color.green,
+      this.color.blue,
+      this.color.transparency
+    );
+    map.ellipse(
+      this.x + (this.sizeY * 5.5) / 10,
+      map.height - this.y - (this.sizeY * 4.5) / 10,
+      (2 * (this.sizeY * 1.5)) / 10
+    );
+    this.#drawSymbol(
+      map,
+      this.x + (this.sizeY * 4.5) / 10,
+      map.height - this.y - (this.sizeY * 4.9) / 10,
+      (this.sizeY * 2) / 20,
+      faceShape,
+      this.sizeY / 12.5,
+      "CENTER"
+    );
+    refreshStrokesAndFills(map);
   };
 
   #drawRays = (map, firstDirection, secondDirection = null) => {

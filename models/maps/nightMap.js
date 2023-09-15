@@ -258,9 +258,9 @@ export default class NightMap extends AbstractMap {
 
     return giftList;
   };
-  addRandomEnemy = (enemies, type, mapX, mapY) => {
-    let randomX = Math.random() * mapX;
-    let randomY = mapY;
+  addRandomEnemy = (enemies, type) => {
+    let randomX = Math.random() * this.mapX;
+    let randomY = this.mapY;
     let newEnemy = null;
     if (type == EnemyTypes.Sample) {
       newEnemy = new SampleEnemy(
@@ -280,12 +280,12 @@ export default class NightMap extends AbstractMap {
       newEnemy = new SunSpawn(
         randomX,
         randomY,
-        "Sample Enemy" + (enemies.length + 1),
+        "Sun Spawn" + (enemies.length + 1),
         ObjectTypes.Enemy,
         10,
         10,
         1,
-        new ColorObject(250, 20, 15),
+        new ColorObject(253, 184, 19),
         60,
         90,
         0
@@ -437,35 +437,6 @@ export default class NightMap extends AbstractMap {
     this.drawGround();
     //#endregion
 
-    //#region Clouds
-    //generate custom clouds
-
-    for (let i = 0; i < 60; i++) {
-      let factor = -1;
-
-      if (i > 15 && i < 30) {
-        factor = 0;
-      } else if (i > 30 && i < 45) factor = 1;
-      else if (i > 45) factor = 2;
-      //choose a number between 0.5 and 1
-      let yValue = 0.5 + Math.random() * 0.5;
-      // depending on the factor we get xall over the map
-      let xValue = Math.random() + factor;
-      //size should be between 0.01 0.07
-      let size = 0.01 + Math.random() * 0.06;
-      this.backgroundObjects.push(
-        new Cloud(
-          this.mapX * xValue,
-          this.mapY * yValue,
-          `Cloud ${i + 1}`,
-          ObjectTypes.BackgroundObject,
-          this.mapX * size
-        )
-      );
-    }
-
-    //#endregion
-
     //#region stars
     //adding the stars with a for loop because there are a lot needed to give the night sky feeling
     for (let i = -100; i < 200; i++) {
@@ -488,12 +459,6 @@ export default class NightMap extends AbstractMap {
     }
 
     //#endregion
-    //#region moon
-    let moon = new Moon(0, (5 * this.mapY) / 7, 200);
-    this.backgroundObjects.push(moon);
-
-    //#endregion
-
     //#region Mountains
 
     let mountain1 = new Mountain(
@@ -553,6 +518,43 @@ export default class NightMap extends AbstractMap {
     );
 
     //#endregion
+    //#region Clouds
+    //generate custom clouds
+
+    for (let i = 0; i < 60; i++) {
+      let factor = -1;
+
+      if (i > 15 && i < 30) {
+        factor = 0;
+      } else if (i > 30 && i < 45) factor = 1;
+      else if (i > 45) factor = 2;
+      //choose a number between 0.5 and 1
+      let yValue = 0.5 + Math.random() * 0.5;
+      // depending on the factor we get xall over the map
+      let xValue = Math.random() + factor;
+      //size should be between 0.01 0.07
+      let size = 0.01 + Math.random() * 0.06;
+      this.backgroundObjects.push(
+        new Cloud(
+          this.mapX * xValue,
+          this.mapY * yValue,
+          `Cloud ${i + 1}`,
+          ObjectTypes.BackgroundObject,
+          this.mapX * size
+        )
+      );
+    }
+
+    //#endregion
+
+    //#region moon
+
+    //moon doesn't make much real sense of being in front of clouds but looks better
+    let moon = new Moon(0, (5 * this.mapY) / 7, 200);
+    this.backgroundObjects.push(moon);
+
+    //#endregion
+
     //#region Trees
     let tree1 = new Tree(
       0.11837121 * this.mapX,
