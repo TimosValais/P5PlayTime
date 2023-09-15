@@ -33,7 +33,6 @@ export default class Carrot extends GameOjbect {
 
     this.y += this.verticalSpeed;
 
-    console.log("drawing carrot");
     this.#drawBody(p5Map);
     this.#drawStems(p5Map);
     this.#drawLines(p5Map);
@@ -55,7 +54,6 @@ export default class Carrot extends GameOjbect {
     refreshStrokesAndFills(p5Map);
   }
   #drawBody = (map) => {
-    console.log("is it light? : ", isRGBLight(this.color));
     if (isRGBLight(this.color)) {
       map.stroke(0, 0, 0);
     } else {

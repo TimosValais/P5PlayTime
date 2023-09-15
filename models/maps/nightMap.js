@@ -23,8 +23,6 @@ export default class NightMap extends AbstractMap {
     this.backgroundObjects = [];
     this.groundBreakingObjects = [];
     this.specialObjects = [];
-
-    console.log(this.mapY, this.mapX);
   }
   generatePlatforms = () => {
     let platformList = [];

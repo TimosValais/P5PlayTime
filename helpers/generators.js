@@ -10,7 +10,6 @@ export default function addRandomEnemyToEnemyList(
   positionY,
   size
 ) {
-  console.log(size);
   let randomX = Math.random() * positionX;
   let randomY = positionY;
   let newEnemy = null;

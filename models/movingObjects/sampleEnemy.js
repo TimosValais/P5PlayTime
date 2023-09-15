@@ -112,7 +112,7 @@ export default class SampleEnemy extends Character {
   }
   #hanldeCharacterCollisions = (characterObjects) => {
     let collision = null;
-    characterObjects.find((obj) => {
+    let character = characterObjects.find((obj) => {
       collision = this.collidesWith(obj);
       return collision != null;
     });
@@ -123,6 +123,9 @@ export default class SampleEnemy extends Character {
       case Directions.RIGHT:
         this.#direction = Directions.LEFT;
         break;
+    }
+    if (!!collision && collision != Directions.DOWN) {
+      character.takeDamage(this.damage);
     }
   };
   #handleInteractiveObjectCollision = (collisionObjects) => {

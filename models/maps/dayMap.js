@@ -22,7 +22,6 @@ export default class DayMap extends AbstractMap {
     this.gameObjects = [];
     this.backgroundObjects = [];
     this.groundBreakingObjects = [];
-    console.log(this.mapY, this.mapX);
   }
   generatePlatforms = () => {
     let platformList = [];
@@ -540,9 +539,7 @@ export default class DayMap extends AbstractMap {
       ObjectTypes.BackgroundObject
     );
     this.backgroundObjects.push(tree1, tree2, tree3, tree4, tree5);
-    console.log(this.mapY, this.mapX);
 
-    console.log(this.backgroundObjects);
     //#endregion
   };
 }

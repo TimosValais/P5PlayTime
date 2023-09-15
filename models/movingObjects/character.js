@@ -501,6 +501,11 @@ export default class Character extends GameOjbect {
     this.#handleTrophy(trophy);
   }
   takeDamage(damageTaken) {
+    console.log("damage taken : ", damageTaken);
+    if (damageTaken <= this.armor) {
+      armor -= damageTaken;
+      return;
+    }
     //kill character if they are out of lives, or else place at beginning of the map(falling down)
     this.lives -= damageTaken;
     if (this.lives <= 0) {
@@ -557,21 +562,26 @@ export default class Character extends GameOjbect {
       collision = this.collidesWith(obj);
       return collision != null;
     });
-    switch (collision) {
-      case Directions.UP:
-        collisionEnemy.takeDamage(this.#damage, false);
-        this.#verticalSpeed = this.verticalSpeedCapacity;
-        break;
-      case Directions.DOWN:
-      case Directions.LEFT:
-      case Directions.RIGHT:
-        if (collisionEnemy.damage >= this.armor) {
-          this.takeDamage(collisionEnemy.damage);
-          this.stop();
-        } else {
-          this.#verticalSpeed = 5;
-        }
+
+    if (!!collision && collision == Directions.UP) {
+      collisionEnemy.takeDamage(this.#damage, false);
+      this.#verticalSpeed = this.verticalSpeedCapacity;
     }
+    // switch (collision) {
+    //   case Directions.UP:
+    //     collisionEnemy.takeDamage(this.#damage, false);
+    //     this.#verticalSpeed = this.verticalSpeedCapacity;
+    //     break;
+    //   case Directions.DOWN:
+    //   case Directions.LEFT:
+    //   case Directions.RIGHT:
+    //     if (collisionEnemy.damage >= this.armor) {
+    //       this.takeDamage(collisionEnemy.damage);
+    //       this.stop();
+    //     } else {
+    //       this.#verticalSpeed = 5;
+    //     }
+    // }
   };
   #handleTrophy = (trophy) => {
     let collision = this.collidesWith(trophy);

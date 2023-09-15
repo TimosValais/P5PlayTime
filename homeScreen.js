@@ -6,9 +6,6 @@ const startGameButton = document.getElementById("start_game_button");
 let mapUrl = "map1";
 let characterUrl = "character1";
 let init = () => {
-  console.log(characterElements);
-  console.log(mapElements);
-
   Array.from(characterElements).forEach((character) => {
     character.addEventListener("click", (event) => {
       let nameProp = event.currentTarget.getAttribute("data-name");
@@ -29,7 +26,6 @@ let init = () => {
   });
 
   startGameButton.addEventListener("click", () => {
-    console.log(`?character=${characterUrl}&map=${mapUrl}`);
     window.location.href = `game.html?character=${characterUrl}&map=${mapUrl}`;
   });
 };

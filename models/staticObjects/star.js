@@ -31,7 +31,6 @@ export default class Star extends GameOjbect {
       this.x + this.width / 2,
       p5Map.height - this.y
     );
-    console.log(this.width, this.height);
     p5Map.line(
       this.x,
       p5Map.height - this.y - this.height / 2,
