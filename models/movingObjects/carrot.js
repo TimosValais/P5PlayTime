@@ -36,21 +36,7 @@ export default class Carrot extends GameOjbect {
     this.#drawBody(p5Map);
     this.#drawStems(p5Map);
     this.#drawLines(p5Map);
-    // p5Map.stroke(0);
-    // p5Map.fill(
-    //   this.color.red,
-    //   this.color.green,
-    //   this.color.blue,
-    //   this.color.transparency
-    // );
-    // p5Map.ellipse(
-    //   this.x,
-    //   p5Map.height - this.y - this.height,
-    //   this.width,
-    //   this.height
-    // );
-    // p5Map.noStroke();
-    // p5Map.noFill();
+
     refreshStrokesAndFills(p5Map);
   }
   #drawBody = (map) => {

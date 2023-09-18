@@ -22,8 +22,6 @@ export default class GiftBox extends GameOjbect {
   }
   draw(p5Map) {
     this.handleCollisions(p5Map);
-    //5. a collectable token - eg. a jewel, fruit, coins
-    //... add your code here
     //box
     p5Map.noStroke();
     p5Map.fill(

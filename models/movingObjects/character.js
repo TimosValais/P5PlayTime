@@ -246,8 +246,6 @@ export default class Character extends GameOjbect {
       map.height - this.y - (this.sizeY * 15) / 16
     );
 
-    //   line(this.x+ this.sizeX/2 - this.sizeX / 10, map.height - this.y - (this.sizeY * 11) / 16, this.x+ this.sizeX/2 -this.sizeX/2, map.height - this.y - (this.sizeY * 15) / 16);
-
     //left foot
     map.strokeWeight(4);
     map.line(
@@ -319,7 +317,6 @@ export default class Character extends GameOjbect {
 
     //left foot
     map.strokeWeight(4);
-    //   line(this.x+ this.sizeX/2 - this.sizeX / 25, map.height - this.y - (this.sizeY * 3) / 16, this.x+ this.sizeX/2 - this.sizeX *3 /10, map.height - this.y - this.sizeX / 16);
     map.line(
       this.x + this.sizeX / 2 - this.sizeX / 25,
       map.height - this.y - (this.sizeY * 3) / 16,
@@ -327,7 +324,6 @@ export default class Character extends GameOjbect {
       map.height - this.y
     );
     //right foot
-    //   line(this.x+ this.sizeX/2 + 2, map.height - this.y - (this.sizeY * 3) / 16, this.x+ this.sizeX/2 + this.sizeX/7, map.height - this.y);
     map.line(
       this.x + this.sizeX / 2 + this.sizeX / 25,
       map.height - this.y - (this.sizeY * 3) / 16,

@@ -37,7 +37,6 @@ export default class Canyon extends GameOjbect {
       this.canyonOuterStrokeColor.blue,
       this.canyonOuterStrokeColor.transparency
     );
-    //   noFill();
     p5Map.fill(
       this.color.red,
       this.color.green,
@@ -90,7 +89,6 @@ export default class Canyon extends GameOjbect {
     p5Map.curveVertex(this.x + this.width, p5Map.height - this.y - this.height);
     p5Map.curveVertex(this.x + this.width, p5Map.height - this.y - this.height);
 
-    //   curveVertex(180, 583);
     p5Map.endShape();
 
     //inner layer

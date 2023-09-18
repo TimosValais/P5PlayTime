@@ -294,7 +294,6 @@ export default class DayMap extends AbstractMap {
     let groundY = 0;
     let groundColor = new ColorObject(50, 205, 50);
     let groundWidth = this.mapX * 1.894;
-    // let groundWidth = 4000;
     let groundHeight = this.mapY * 0.1;
 
     //if we don't have any ground breaking objects, fill the whole map with ground
