@@ -47,6 +47,7 @@ const gravity = 1;
 const monsterRefreshTimeMs = 4000;
 const mapY = window.innerHeight - window.innerHeight * 0.02;
 const mapX = window.innerWidth - window.innerWidth * 0.01;
+let jumpSound = null;
 //#endregion
 let backgroundColor = new ColorObject(135, 206, 250);
 
@@ -65,6 +66,14 @@ const p5Map = (p) => {
   }
   backgroundColor = map.getBackgroundColor();
   let score = 0;
+  p.preload = function () {
+    try {
+      jumpSound = p.loadSound("./sounds/maro-jump-sound-effect_1.mp3");
+      jumpSound.setVolume(0.1);
+    } catch (e) {
+      console.log("loading sound failed", e);
+    }
+  };
   p.setup = function () {
     p.createCanvas(mapX, mapY);
 
@@ -340,6 +349,11 @@ const getGameCharacter = (p5Obj, character, size) => {
       size,
       1
     );
+  }
+  try {
+    resultCharacter.addSound(jumpSound);
+  } catch (e) {
+    console.log("adding sound failed : ", e);
   }
   return resultCharacter;
 };

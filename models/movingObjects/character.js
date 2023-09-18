@@ -42,6 +42,7 @@ export default class Character extends GameOjbect {
     this.isVictorious = false;
     this.gravitationalHorizontalSpeed = 0;
     this.weaponDamage = weaponDamage;
+    this.jumpSound = null;
   }
 
   draw(p5Map) {
@@ -443,6 +444,13 @@ export default class Character extends GameOjbect {
       this.#verticalSpeed = this.verticalSpeedCapacity;
       this.#jumps++;
       this.#isGrounded = false;
+      if (!!this.jumpSound) {
+        try {
+          this.jumpSound.play();
+        } catch (error) {
+          console.log("playing sound failed with : ", error);
+        }
+      }
     }
     if (action === MovementTypes.Run) {
       this.#horizontalSpeed =
@@ -525,6 +533,9 @@ export default class Character extends GameOjbect {
   }
   isJumping() {
     return this.#verticalSpeed > 1;
+  }
+  addSound(sound) {
+    this.jumpSound = sound;
   }
   #handleInteractiveObjectCollision = (collisionObjects) => {
     let collision = null;
